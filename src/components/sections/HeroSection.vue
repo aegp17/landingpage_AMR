@@ -1,0 +1,86 @@
+<script setup lang="ts">
+import { useI18n } from '../../i18n'
+import PrimaryButton from '../ui/PrimaryButton.vue'
+
+const { t } = useI18n()
+
+function scrollTo(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
+</script>
+
+<template>
+  <section id="hero" class="hero">
+    <div class="hero-inner">
+      <h1>{{ t.hero.title }}</h1>
+      <p class="subtitle">{{ t.hero.subtitle }}</p>
+      <div class="cta-group">
+        <PrimaryButton @click="scrollTo('contact')">{{ t.hero.cta }}</PrimaryButton>
+        <PrimaryButton variant="secondary" @click="scrollTo('team')">{{ t.hero.ctaSecondary }}</PrimaryButton>
+      </div>
+    </div>
+    <div class="hero-decoration" aria-hidden="true"></div>
+  </section>
+</template>
+
+<style scoped>
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 1.5rem 4rem;
+}
+
+.hero-inner {
+  max-width: 720px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+h1 {
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1.2;
+  margin-bottom: 1.25rem;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  color: #6b7280;
+  line-height: 1.7;
+  margin-bottom: 2.25rem;
+}
+
+.cta-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-decoration {
+  position: absolute;
+  top: -20%;
+  right: -15%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(169, 199, 232, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+}
+</style>
