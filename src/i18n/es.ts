@@ -7,7 +7,7 @@ export default {
   hero: {
     title: 'Impulsamos soluciones de software e inteligencia artificial para negocios reales',
     subtitle:
-      'Consultoría técnica, implementación de IA y formación especializada por un equipo de doctores en Ciencias Aplicadas.',
+      'Consultoría técnica, desarrollo de software, implementación de IA y formación especializada por un equipo de primer nivel.',
     cta: 'Hablemos',
     ctaSecondary: 'Ver equipo',
   },

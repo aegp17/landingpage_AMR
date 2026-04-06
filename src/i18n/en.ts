@@ -7,7 +7,7 @@ export default {
   hero: {
     title: 'We drive software & AI solutions for real businesses',
     subtitle:
-      'Technical consulting, AI implementation, and specialized training by a team of PhDs in Applied Sciences.',
+      'Technical consulting, software development, AI implementation, and specialized training by a top-tier team.',
     cta: "Let's Talk",
     ctaSecondary: 'Meet the Team',
   },
