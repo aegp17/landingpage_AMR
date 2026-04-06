@@ -5,10 +5,10 @@ import TeamCard from '../ui/TeamCard.vue'
 
 const { t } = useI18n()
 
-const placeholderImages = [
-  'https://api.dicebear.com/9.x/initials/svg?seed=MJ&backgroundColor=7faedb&textColor=ffffff',
-  'https://api.dicebear.com/9.x/initials/svg?seed=AG&backgroundColor=a9c7e8&textColor=ffffff',
-  'https://api.dicebear.com/9.x/initials/svg?seed=RD&backgroundColor=6a9dcf&textColor=ffffff',
+const teamImages = [
+  './marxjhony.jpeg',
+  './angel.png',
+  './ricardo.jpeg',
 ]
 </script>
 
@@ -24,7 +24,7 @@ const placeholderImages = [
           :role="member.role"
           :description="member.description"
           :skills="member.skills"
-          :image="placeholderImages[i]"
+          :image="teamImages[i]"
         />
       </div>
     </div>

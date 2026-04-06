@@ -38,9 +38,9 @@ defineProps<{
 }
 
 .avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+  width: 180px;
+  height: 180px;
+  border-radius: 12px;
   overflow: hidden;
   margin: 0 auto 1.25rem;
   background: rgba(169, 199, 232, 0.15);
