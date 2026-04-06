@@ -66,13 +66,13 @@ export default {
         name: 'Angel Gil',
         role: 'COO · PhD in Applied Sciences',
         description:
-          'Senior Developer, AI specialist, robotics, creative, Product Lead, DevOps, and animal welfare advocate.',
+          'Senior Developer, AI specialist, robotics, creative, Product Lead, DevOps, and animal welfare advocate. A geek who loves solving problems.',
         skills: ['AI', 'Robotics', 'Product', 'DevOps'],
       },
       {
         name: 'Ricardo DosSantos',
         role: 'CTO · PhD in Applied Sciences',
-        description: 'Senior Developer, AI specialist, and Data Science expert.',
+        description: 'Senior Developer, AI specialist, and Data Science expert. Passionate about new technologies and life in nature.',
         skills: ['AI', 'Data Science', 'Software'],
       },
     ],
