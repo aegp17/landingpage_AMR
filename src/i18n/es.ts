@@ -94,6 +94,6 @@ export default {
   },
   footer: {
     rights: '© 2026 Agentic-AMR Consultants. Todos los derechos reservados.',
-    tagline: 'Soluciones de IA y Software por Doctores en Ciencias Aplicadas.',
+    tagline: 'Consultoría en inteligencia artificial, automatización y desarrollo de software para empresas que buscan escalar.',
   },
 }

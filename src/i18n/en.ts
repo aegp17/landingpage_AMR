@@ -94,6 +94,6 @@ export default {
   },
   footer: {
     rights: '© 2026 Agentic-AMR Consultants. All rights reserved.',
-    tagline: 'AI & Software Solutions by PhDs in Applied Sciences.',
+    tagline: 'AI consulting, automation, and software development for businesses ready to scale.',
   },
 }
