@@ -72,8 +72,9 @@ export default {
       {
         name: 'Ricardo DosSantos',
         role: 'CTO · Doctor en Ciencias Aplicadas',
-        description: 'Senior Developer, especialista en IA y Data Science. Apasionado por las nuevas tecnologías y por la vida en la naturaleza.',
-        skills: ['IA', 'Data Science', 'Software'],
+        description:
+          'Especialista en desarrollo de software con IA e investigación en Big Data, Machine Learning y Social Analytics. Diseña entornos inteligentes basados en datos utilizando Semantic Mining y Linked Data para transformar datasets complejos en insights accionables de negocio. Combina pensamiento analítico riguroso con un enfoque estratégico para construir soluciones escalables.',
+        skills: ['IA', 'Big Data', 'Machine Learning', 'Semantic Mining'],
       },
     ],
   },
