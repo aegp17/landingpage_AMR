@@ -59,14 +59,14 @@ export default {
         name: 'Marxjhony Jerez',
         role: 'CEO · PhD in Applied Sciences',
         description:
-          'Product Manager, Senior Developer, AI specialist, DevOps, and football enthusiast.',
-        skills: ['Product Management', 'AI', 'DevOps', 'Software'],
+          'Strategic leader in tech consulting with deep expertise in AI, software development, data analytics, and process automation. He turns complex challenges into solutions that drive operational efficiency and competitive advantage. Combines business vision, agile leadership, and technical expertise to build smarter, scalable organizations.',
+        skills: ['Digital Strategy', 'AI', 'Project Management', 'Automation'],
       },
       {
         name: 'Angel Gil',
         role: 'COO · PhD in Applied Sciences',
         description:
-          'Senior Developer, AI specialist, robotics, creative, Product Lead, DevOps, and animal welfare advocate. A geek who loves solving problems.',
+          'AI and robotics specialist with expertise in software development, DevOps, and product leadership. Designs scalable tech solutions that solve real business problems, combining technical architecture with strategic vision. Passionate about technology and animal welfare.',
         skills: ['AI', 'Robotics', 'Product', 'DevOps'],
       },
       {
@@ -93,7 +93,7 @@ export default {
     },
   },
   footer: {
-    rights: '© 2026 AMR Consulting. All rights reserved.',
+    rights: '© 2026 Ramyx Lab. All rights reserved.',
     tagline: 'AI & Software Solutions by PhDs in Applied Sciences.',
   },
 }

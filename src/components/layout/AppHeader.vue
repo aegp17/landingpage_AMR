@@ -14,7 +14,7 @@ function scrollTo(id: string) {
 <template>
   <header class="app-header">
     <div class="header-inner">
-      <a class="logo" href="#" @click.prevent="scrollTo('hero')">AMR<span>Consulting</span></a>
+      <a class="logo" href="#" @click.prevent="scrollTo('hero')">Ramyx<span>Lab</span></a>
 
       <nav class="nav-desktop">
         <a href="#services" @click.prevent="scrollTo('services')">{{ t.nav.services }}</a>
