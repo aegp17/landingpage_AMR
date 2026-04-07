@@ -15,7 +15,7 @@ const { t } = useI18n()
 
 <style scoped>
 .app-footer {
-  background: #1f2937;
+  background: #0f172a;
   color: rgba(255, 255, 255, 0.7);
   padding: 2.5rem 1.5rem;
   text-align: center;
@@ -29,7 +29,7 @@ const { t } = useI18n()
 .tagline {
   font-size: 0.95rem;
   margin-bottom: 0.5rem;
-  color: #a9c7e8;
+  color: #818cf8;
 }
 
 .rights {

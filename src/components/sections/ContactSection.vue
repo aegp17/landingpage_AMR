@@ -18,7 +18,7 @@ const { t } = useI18n()
 <style scoped>
 .contact {
   padding: 5rem 1.5rem;
-  background: #f7fafc;
+  background: #f8fafc;
 }
 
 .container {

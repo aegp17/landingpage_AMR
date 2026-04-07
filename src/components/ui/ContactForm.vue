@@ -20,7 +20,7 @@ async function handleSubmit() {
   status.value = 'idle'
 
   try {
-    const response = await fetch('https://formsubmit.co/ajax/aegp17@gmail.com', {
+    const response = await fetch('https://formsubmit.co/ajax/b47c1e2a6f8d3e5a9c0b4d7f1e3a5c8d', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,8 +31,9 @@ async function handleSubmit() {
         email: form.value.email,
         company: form.value.company,
         message: form.value.message,
-        _cc: 'marxjhony@gmail.com,ricardojdsg@gmail.com',
-        _subject: '¡Un nuevo cliente desea información!',
+        _subject: 'Ramyx Lab — Nuevo contacto desde la web',
+        _honey: '',
+        _captcha: 'true',
       }),
     })
 
@@ -95,7 +96,7 @@ label {
   display: block;
   font-size: 0.85rem;
   font-weight: 500;
-  color: #1f2937;
+  color: #0f172a;
   margin-bottom: 0.35rem;
 }
 
@@ -103,11 +104,11 @@ input,
 textarea {
   width: 100%;
   padding: 0.7rem 0.9rem;
-  border: 1.5px solid rgba(169, 199, 232, 0.4);
+  border: 1.5px solid rgba(99, 102, 241, 0.2);
   border-radius: 8px;
   font-size: 0.9rem;
   font-family: inherit;
-  color: #1f2937;
+  color: #0f172a;
   transition: border-color 0.2s;
   background: #fff;
   box-sizing: border-box;
@@ -116,8 +117,8 @@ textarea {
 input:focus,
 textarea:focus {
   outline: none;
-  border-color: #7faedb;
-  box-shadow: 0 0 0 3px rgba(127, 174, 219, 0.1);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 textarea {

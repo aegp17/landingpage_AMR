@@ -53,7 +53,7 @@ export default {
   team: {
     title: 'Quiénes somos',
     subtitle:
-      'Un equipo de doctores en Ciencias Aplicadas con profunda experiencia en IA, software y estrategia de producto.',
+      'Ayudamos a empresas a diseñar, construir e implementar soluciones de inteligencia artificial y software a medida, enfocadas en resolver problemas reales de negocio.\n\nSomos un equipo con experiencia en IA, arquitectura de software y estrategia de producto. Nuestro enfoque: automatizar procesos, optimizar operaciones y crear productos digitales escalables que generan impacto medible.\n\nTrabajamos junto a nuestros clientes para transformar ideas en soluciones concretas y reducir la complejidad tecnológica en cada etapa de su crecimiento.',
     members: [
       {
         name: 'Marxjhony Jerez',

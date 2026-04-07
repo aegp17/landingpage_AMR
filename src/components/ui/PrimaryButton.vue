@@ -33,27 +33,27 @@ defineProps<{
 }
 
 .primary-btn.primary {
-  background: #7faedb;
+  background: #6366f1;
   color: #fff;
-  border-color: #7faedb;
+  border-color: #6366f1;
 }
 
 .primary-btn.primary:hover:not(:disabled) {
-  background: #6a9dcf;
-  border-color: #6a9dcf;
+  background: #4f46e5;
+  border-color: #4f46e5;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(127, 174, 219, 0.35);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
 }
 
 .primary-btn.secondary {
   background: transparent;
-  color: #7faedb;
-  border-color: #a9c7e8;
+  color: #6366f1;
+  border-color: rgba(99, 102, 241, 0.4);
 }
 
 .primary-btn.secondary:hover:not(:disabled) {
-  background: rgba(169, 199, 232, 0.1);
-  border-color: #7faedb;
+  background: rgba(99, 102, 241, 0.08);
+  border-color: #6366f1;
 }
 
 .primary-btn:disabled {

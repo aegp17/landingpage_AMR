@@ -44,14 +44,14 @@ function scrollTo(id: string) {
 h1 {
   font-size: 2.75rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #0f172a;
   line-height: 1.2;
   margin-bottom: 1.25rem;
 }
 
 .subtitle {
   font-size: 1.15rem;
-  color: #6b7280;
+  color: #64748b;
   line-height: 1.7;
   margin-bottom: 2.25rem;
 }
@@ -70,7 +70,7 @@ h1 {
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(169, 199, 232, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 

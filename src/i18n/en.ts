@@ -53,7 +53,7 @@ export default {
   team: {
     title: 'Who We Are',
     subtitle:
-      'A team of PhDs in Applied Sciences with deep expertise in AI, software, and product strategy.',
+      'We help businesses design, build, and deploy AI-powered software solutions focused on solving real-world challenges.\n\nOur team brings deep expertise in artificial intelligence, software architecture, and product strategy. We automate processes, optimize operations, and build scalable digital products that drive measurable impact.\n\nWe work alongside our clients to turn ideas into concrete solutions and reduce technological complexity at every stage of growth.',
     members: [
       {
         name: 'Marxjhony Jerez',

@@ -8,7 +8,7 @@ defineProps<{
 <template>
   <div class="section-title">
     <h2>{{ title }}</h2>
-    <p v-if="subtitle">{{ subtitle }}</p>
+    <p v-for="(para, i) in (subtitle?.split('\n\n') ?? [])" :key="i">{{ para }}</p>
   </div>
 </template>
 
@@ -21,15 +21,19 @@ defineProps<{
 .section-title h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #0f172a;
   margin-bottom: 0.75rem;
 }
 
 .section-title p {
   font-size: 1.05rem;
-  color: #6b7280;
+  color: #64748b;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+}
+
+.section-title p + p {
+  margin-top: 0.75rem;
 }
 </style>

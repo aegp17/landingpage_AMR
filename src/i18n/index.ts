@@ -18,6 +18,7 @@ export function useI18n() {
   function setLocale(l: Locale) {
     currentLocale.value = l
     localStorage.setItem('locale', l)
+    document.documentElement.lang = l
   }
 
   function toggleLocale() {

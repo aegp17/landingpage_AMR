@@ -16,7 +16,7 @@ function scrollTo(id: string) {
     <div class="header-inner">
       <a class="logo" href="#" @click.prevent="scrollTo('hero')">Ramyx<span>Lab</span></a>
 
-      <nav class="nav-desktop">
+      <nav class="nav-desktop" aria-label="Main navigation">
         <a href="#services" @click.prevent="scrollTo('services')">{{ t.nav.services }}</a>
         <a href="#team" @click.prevent="scrollTo('team')">{{ t.nav.team }}</a>
         <a href="#contact" @click.prevent="scrollTo('contact')">{{ t.nav.contact }}</a>
@@ -35,7 +35,7 @@ function scrollTo(id: string) {
       </div>
     </div>
 
-    <nav class="nav-mobile" :class="{ open: mobileOpen }">
+    <nav class="nav-mobile" :class="{ open: mobileOpen }" aria-label="Mobile navigation">
       <a href="#services" @click.prevent="scrollTo('services')">{{ t.nav.services }}</a>
       <a href="#team" @click.prevent="scrollTo('team')">{{ t.nav.team }}</a>
       <a href="#contact" @click.prevent="scrollTo('contact')">{{ t.nav.contact }}</a>
@@ -52,7 +52,7 @@ function scrollTo(id: string) {
   z-index: 100;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(169, 199, 232, 0.2);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.1);
 }
 
 .header-inner {
@@ -68,12 +68,12 @@ function scrollTo(id: string) {
 .logo {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #0f172a;
   text-decoration: none;
 }
 
 .logo span {
-  color: #7faedb;
+  color: #6366f1;
   font-weight: 500;
 }
 
@@ -85,20 +85,20 @@ function scrollTo(id: string) {
 
 .nav-desktop a {
   text-decoration: none;
-  color: #6b7280;
+  color: #64748b;
   font-size: 0.9rem;
   font-weight: 500;
   transition: color 0.2s;
 }
 
 .nav-desktop a:hover {
-  color: #7faedb;
+  color: #6366f1;
 }
 
 .lang-toggle {
   background: none;
-  border: 1.5px solid #a9c7e8;
-  color: #7faedb;
+  border: 1.5px solid rgba(99, 102, 241, 0.4);
+  color: #6366f1;
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
   font-size: 0.8rem;
@@ -108,7 +108,7 @@ function scrollTo(id: string) {
 }
 
 .lang-toggle:hover {
-  background: #a9c7e8;
+  background: #6366f1;
   color: #fff;
 }
 
@@ -133,7 +133,7 @@ function scrollTo(id: string) {
   display: block;
   width: 100%;
   height: 2px;
-  background: #1f2937;
+  background: #0f172a;
   border-radius: 2px;
   transition: all 0.3s;
   position: absolute;
@@ -182,11 +182,11 @@ function scrollTo(id: string) {
 
 .nav-mobile a {
   text-decoration: none;
-  color: #6b7280;
+  color: #64748b;
   font-size: 0.95rem;
   font-weight: 500;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(169, 199, 232, 0.15);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.1);
 }
 
 @media (max-width: 768px) {

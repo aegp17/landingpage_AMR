@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aegp17.github.io/landingpage_AMR/sitemap.xml
