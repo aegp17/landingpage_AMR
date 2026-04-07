@@ -14,7 +14,7 @@ function scrollTo(id: string) {
 <template>
   <header class="app-header">
     <div class="header-inner">
-      <a class="logo" href="#" @click.prevent="scrollTo('hero')">Ramyx<span>Lab</span></a>
+      <a class="logo" href="#" @click.prevent="scrollTo('hero')">Agentic<span>-AMR</span></a>
 
       <nav class="nav-desktop" aria-label="Main navigation">
         <a href="#services" @click.prevent="scrollTo('services')">{{ t.nav.services }}</a>
@@ -66,15 +66,16 @@ function scrollTo(id: string) {
 }
 
 .logo {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.15rem;
+  font-weight: 800;
   color: #0f172a;
   text-decoration: none;
+  letter-spacing: -0.02em;
 }
 
 .logo span {
   color: #6366f1;
-  font-weight: 500;
+  font-weight: 800;
 }
 
 .nav-desktop {

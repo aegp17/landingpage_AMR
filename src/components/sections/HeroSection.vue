@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from '../../i18n'
 import PrimaryButton from '../ui/PrimaryButton.vue'
+import ParticleCanvas from '../ui/ParticleCanvas.vue'
 
 const { t } = useI18n()
 
@@ -19,6 +20,7 @@ function scrollTo(id: string) {
         <PrimaryButton variant="secondary" @click="scrollTo('team')">{{ t.hero.ctaSecondary }}</PrimaryButton>
       </div>
     </div>
+    <ParticleCanvas />
     <div class="hero-decoration" aria-hidden="true"></div>
   </section>
 </template>

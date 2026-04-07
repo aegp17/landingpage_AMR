@@ -93,7 +93,7 @@ export default {
     },
   },
   footer: {
-    rights: '© 2026 Ramyx Lab. All rights reserved.',
+    rights: '© 2026 Agentic-AMR Consultants. All rights reserved.',
     tagline: 'AI & Software Solutions by PhDs in Applied Sciences.',
   },
 }
