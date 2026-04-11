@@ -217,7 +217,7 @@ onMounted(() => {
       const t = wp.age / wp.life
       // smooth fade in/out
       const alpha = Math.sin(t * Math.PI) * wp.peakOpacity
-      ctx.font = '33px "Inter", system-ui, sans-serif'
+      ctx.font = '22px "Inter", system-ui, sans-serif'
       ctx.fillStyle = `rgba(165, 180, 252, ${alpha})`
       ctx.fillText('Psalm 23:1', wp.x, wp.y)
     }
