@@ -70,11 +70,11 @@ export default {
         skills: ['AI', 'Robotics', 'Product', 'DevOps'],
       },
       {
-        name: 'Ricardo DosSantos',
+        name: 'Ricardo Dos Santos',
         role: 'CTO · PhD in Applied Sciences',
         description:
           'AI software development specialist with deep research expertise in Big Data, Machine Learning, and Social Analytics. Architects intelligent, data-driven environments using Semantic Mining and Linked Data to transform complex datasets into actionable business insights. Combines rigorous analytical thinking with a strategic approach to building scalable solutions.',
-        skills: ['AI', 'Big Data', 'Machine Learning', 'Semantic Mining'],
+        skills: ['AI', 'Big Data', 'Machine Learning', 'Semantic Mining', 'Linked Data', 'Ambient Intelligence'],
       },
     ],
   },

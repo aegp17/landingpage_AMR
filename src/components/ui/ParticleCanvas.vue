@@ -29,11 +29,20 @@ interface DataPacket {
   speed: number
 }
 
+interface Whisper {
+  x: number
+  y: number
+  age: number
+  life: number
+  peakOpacity: number
+}
+
 onMounted(() => {
   const el = canvas.value!
   const ctx = el.getContext('2d')!
   let agents: Agent[] = []
   let packets: DataPacket[] = []
+  let whispers: Whisper[] = []
   let w = 0
   let h = 0
   let time = 0
@@ -59,6 +68,7 @@ onMounted(() => {
 
     agents = []
     packets = []
+    whispers = []
 
     // Primary agents — larger, brighter, slower, represent main orchestrators
     for (let i = 0; i < primaryCount; i++) {
@@ -182,6 +192,37 @@ onMounted(() => {
     }
   }
 
+  function spawnWhisper() {
+    // Very rare: roughly every 10–20s a faint "Psalm 23:1" appears
+    if (whispers.length > 0) return
+    if (Math.random() > 0.0015) return
+    whispers.push({
+      x: 60 + Math.random() * Math.max(1, w - 120),
+      y: 40 + Math.random() * Math.max(1, h - 80),
+      age: 0,
+      life: 320 + Math.random() * 180,
+      peakOpacity: 0.1 + Math.random() * 0.06,
+    })
+  }
+
+  function updateWhispers() {
+    for (let i = whispers.length - 1; i >= 0; i--) {
+      whispers[i].age++
+      if (whispers[i].age >= whispers[i].life) whispers.splice(i, 1)
+    }
+  }
+
+  function drawWhispers() {
+    for (const wp of whispers) {
+      const t = wp.age / wp.life
+      // smooth fade in/out
+      const alpha = Math.sin(t * Math.PI) * wp.peakOpacity
+      ctx.font = '8px "Inter", system-ui, sans-serif'
+      ctx.fillStyle = `rgba(199, 210, 254, ${alpha})`
+      ctx.fillText('Psalm 23:1', wp.x, wp.y)
+    }
+  }
+
   function updatePackets() {
     for (let i = packets.length - 1; i >= 0; i--) {
       packets[i].progress += packets[i].speed
@@ -272,10 +313,13 @@ onMounted(() => {
     moveAgents()
     spawnPackets()
     updatePackets()
+    spawnWhisper()
+    updateWhispers()
 
     drawConnections()
     drawPackets()
     drawAgents()
+    drawWhispers()
 
     animationId = requestAnimationFrame(draw)
   }
