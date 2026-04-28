@@ -19,6 +19,7 @@ function scrollTo(id: string) {
       <nav class="nav-desktop" aria-label="Main navigation">
         <a href="#services" @click.prevent="scrollTo('services')">{{ t.nav.services }}</a>
         <a href="#team" @click.prevent="scrollTo('team')">{{ t.nav.team }}</a>
+        <a href="#skills" @click.prevent="scrollTo('skills')">{{ t.nav.skills }}</a>
         <a href="#contact" @click.prevent="scrollTo('contact')">{{ t.nav.contact }}</a>
         <button class="lang-toggle" @click="toggleLocale" :aria-label="locale === 'en' ? 'Cambiar a español' : 'Switch to English'">
           {{ locale === 'en' ? 'ES' : 'EN' }}
@@ -38,6 +39,7 @@ function scrollTo(id: string) {
     <nav class="nav-mobile" :class="{ open: mobileOpen }" aria-label="Mobile navigation">
       <a href="#services" @click.prevent="scrollTo('services')">{{ t.nav.services }}</a>
       <a href="#team" @click.prevent="scrollTo('team')">{{ t.nav.team }}</a>
+      <a href="#skills" @click.prevent="scrollTo('skills')">{{ t.nav.skills }}</a>
       <a href="#contact" @click.prevent="scrollTo('contact')">{{ t.nav.contact }}</a>
     </nav>
   </header>

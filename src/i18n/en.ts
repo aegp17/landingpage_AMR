@@ -2,6 +2,7 @@ export default {
   nav: {
     services: 'Services',
     team: 'Our Team',
+    skills: 'Skills',
     contact: 'Contact Us',
   },
   hero: {
@@ -77,6 +78,65 @@ export default {
         skills: ['AI', 'Big Data', 'Machine Learning', 'Semantic Mining', 'Linked Data', 'Ambient Intelligence'],
       },
     ],
+  },
+  skills: {
+    title: 'Skills & Expertise',
+    subtitle: 'A snapshot of the capabilities and domains we operate across.',
+    categories: [
+      {
+        label: 'AI & Data',
+        items: [
+          'LLMs',
+          'RAG',
+          'Machine Learning',
+          'MLOps',
+          'Data Analytics',
+          'Generative AI',
+          'Prompt Engineering',
+          'Computer Vision',
+          'NLP',
+          'Agentic AI',
+        ],
+      },
+      {
+        label: 'Engineering',
+        items: [
+          'Software Development',
+          'DevOps',
+          'Cloud Architecture',
+          'Microservices',
+          'Solution Architecture',
+        ],
+      },
+      {
+        label: 'Operations',
+        items: [
+          'Automation',
+          'Process Optimization',
+          'Project Management',
+          'Agile',
+        ],
+      },
+      {
+        label: 'Industries',
+        items: [
+          'Energy',
+          'Healthcare',
+          'Finance',
+          'Marketing',
+          'Retail',
+          'Manufacturing',
+          'Education',
+          'Logistics',
+          'Sports',
+        ],
+      },
+    ],
+  },
+  ctaBanner: {
+    title: "Let's build something together",
+    subtitle: "Tell us about your challenge — we'll help you scope a clear, viable solution.",
+    cta: 'Start a conversation',
   },
   contact: {
     title: 'Contact Us',

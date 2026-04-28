@@ -2,6 +2,7 @@ export default {
   nav: {
     services: 'Servicios',
     team: 'Equipo',
+    skills: 'Habilidades',
     contact: 'Contáctanos',
   },
   hero: {
@@ -77,6 +78,65 @@ export default {
         skills: ['IA', 'Big Data', 'Machine Learning', 'Semantic Mining', 'Linked Data', 'Ambient Intelligence'],
       },
     ],
+  },
+  skills: {
+    title: 'Habilidades y Áreas de Experiencia',
+    subtitle: 'Un vistazo a las capacidades técnicas e industrias en las que trabajamos.',
+    categories: [
+      {
+        label: 'IA y Datos',
+        items: [
+          'LLMs',
+          'RAG',
+          'Machine Learning',
+          'MLOps',
+          'Analítica de Datos',
+          'IA Generativa',
+          'Prompt Engineering',
+          'Computer Vision',
+          'NLP',
+          'IA Agéntica',
+        ],
+      },
+      {
+        label: 'Ingeniería',
+        items: [
+          'Desarrollo de Software',
+          'DevOps',
+          'Arquitectura Cloud',
+          'Microservicios',
+          'Arquitectura de Soluciones',
+        ],
+      },
+      {
+        label: 'Operaciones',
+        items: [
+          'Automatización',
+          'Optimización de Procesos',
+          'Gestión de Proyectos',
+          'Metodologías Ágiles',
+        ],
+      },
+      {
+        label: 'Industrias',
+        items: [
+          'Energía',
+          'Salud',
+          'Finanzas',
+          'Marketing',
+          'Retail',
+          'Manufactura',
+          'Educación',
+          'Logística',
+          'Deportes',
+        ],
+      },
+    ],
+  },
+  ctaBanner: {
+    title: 'Construyamos algo juntos',
+    subtitle: 'Cuéntanos tu reto y te ayudamos a definir una solución clara y viable.',
+    cta: 'Iniciar conversación',
   },
   contact: {
     title: 'Contáctanos',
