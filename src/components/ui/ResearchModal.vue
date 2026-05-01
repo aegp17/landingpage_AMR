@@ -8,9 +8,12 @@ const props = defineProps<{
   locale: Locale
   closeLabel: string
   referenceLabel: string
+  ctaTitle: string
+  ctaSubtitle: string
+  ctaButton: string
 }>()
 
-const emit = defineEmits<{ close: [] }>()
+const emit = defineEmits<{ close: []; contact: [] }>()
 
 function formatDate(iso: string, locale: Locale): string {
   const d = new Date(iso + 'T00:00:00')
@@ -65,6 +68,16 @@ watch(
         <div class="reference-label">{{ referenceLabel }}</div>
         <p>{{ post.reference[locale] }}</p>
       </footer>
+
+      <aside class="cta">
+        <div class="cta-text">
+          <h3>{{ ctaTitle }}</h3>
+          <p>{{ ctaSubtitle }}</p>
+        </div>
+        <button type="button" class="cta-button" @click="emit('contact')">
+          {{ ctaButton }} →
+        </button>
+      </aside>
     </div>
   </div>
 </template>
@@ -189,6 +202,52 @@ h2 {
   margin: 0;
 }
 
+.cta {
+  margin-top: 2rem;
+  padding: 1.5rem 1.75rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08));
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.cta-text h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.3rem;
+}
+
+.cta-text p {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.cta-button {
+  flex-shrink: 0;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.cta-button:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+}
+
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -212,6 +271,12 @@ h2 {
 
   h2 {
     font-size: 1.35rem;
+  }
+
+  .cta {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
   }
 }
 </style>

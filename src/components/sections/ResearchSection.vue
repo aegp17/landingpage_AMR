@@ -15,6 +15,13 @@ function authorOf(post: Post) {
   return authors[post.author] ?? authors[Object.keys(authors)[0]]
 }
 
+function goToContact() {
+  openPost.value = null
+  requestAnimationFrame(() => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+  })
+}
+
 const sortedPosts = computed(() => posts)
 </script>
 
@@ -44,7 +51,11 @@ const sortedPosts = computed(() => posts)
       :locale="locale"
       :close-label="t.research.close"
       :reference-label="t.research.reference"
+      :cta-title="t.research.ctaTitle"
+      :cta-subtitle="t.research.ctaSubtitle"
+      :cta-button="t.research.ctaButton"
       @close="openPost = null"
+      @contact="goToContact"
     />
   </section>
 </template>

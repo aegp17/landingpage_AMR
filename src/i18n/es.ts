@@ -141,6 +141,9 @@ export default {
     readMore: 'Leer más',
     close: 'Cerrar',
     reference: 'Referencia',
+    ctaTitle: '¿Quieres aplicar esto a tu negocio?',
+    ctaSubtitle: 'Cuéntanos tu reto y te ayudamos a definir una solución clara y viable.',
+    ctaButton: 'Hablemos',
   },
   ctaBanner: {
     title: 'Construyamos algo juntos',
