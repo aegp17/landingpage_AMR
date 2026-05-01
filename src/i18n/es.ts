@@ -3,6 +3,7 @@ export default {
     services: 'Servicios',
     team: 'Equipo',
     skills: 'Habilidades',
+    research: 'Research',
     contact: 'Contáctanos',
   },
   hero: {
@@ -132,6 +133,14 @@ export default {
         ],
       },
     ],
+  },
+  research: {
+    title: 'Research',
+    subtitle:
+      'Sabemos que para dar soluciones primero debemos conocer los fundamentos. Por eso investigamos constantemente y aplicamos esos conocimientos a casos prácticos. Aquí mostramos un poco de lo que hacemos.',
+    readMore: 'Leer más',
+    close: 'Cerrar',
+    reference: 'Referencia',
   },
   ctaBanner: {
     title: 'Construyamos algo juntos',

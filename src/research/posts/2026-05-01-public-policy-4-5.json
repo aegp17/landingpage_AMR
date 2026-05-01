@@ -1,0 +1,30 @@
+{
+  "date": "2026-05-01",
+  "author": "angel",
+  "title": {
+    "en": "Building Public Policy with Emerging Technologies: the 4.5 Approach",
+    "es": "Construcción de Políticas Públicas con Tecnologías Emergentes: el Enfoque 4.5"
+  },
+  "excerpt": {
+    "en": "How integrating AI, IoT, and data analytics across the public policy lifecycle moves decision-making from reactive to proactive — data-driven, context-aware, and co-created with citizens.",
+    "es": "Cómo integrar IA, IoT y analítica de datos en el ciclo completo de la política pública permite pasar de decisiones reactivas a proactivas, basadas en datos y co-creadas con la ciudadanía."
+  },
+  "body": {
+    "en": [
+      "Public policy has evolved from traditionally top-down approaches toward more collaborative models where citizens actively participate in decision-making. In this context, the 4.5 approach introduces a critical shift: integrating emerging technologies such as Artificial Intelligence, IoT, and data analytics across the entire policy lifecycle—from diagnosis to evaluation—enabling more adaptive, data-driven, and context-aware decisions. This transformation moves public policies from reactive mechanisms to proactive systems capable of anticipating societal needs.",
+      "The proposed model extends the traditional public policy cycle (diagnosis, design, implementation, and evaluation) by incorporating a technical-social perspective that enables a deeper understanding of the contexts in which policies are applied. Unlike conventional approaches, the 4.5 model goes beyond process automation, fostering continuous interaction between citizens, data, and decision-makers, allowing policies to dynamically adapt as social conditions evolve.",
+      "A key differentiator of this model is the integration of three cross-cutting dimensions: interpretation of reality, transformation of reality, and evaluation of the transformed reality. These dimensions operate as layers across every phase of the policy cycle, ensuring that decisions are not based solely on static information, but on continuous and contextual insights. This approach helps mitigate structural challenges such as data bias, lack of reliable information, and limitations in citizen participation.",
+      "Finally, the model is supported by two strategic pillars: the intensive use of emerging technologies and the capacity building of stakeholders. The adoption of tools such as data lakes, advanced analytics, and AI models is insufficient without trained actors capable of interpreting and leveraging them effectively. This combination enables a more transparent, efficient, and sustainable co-creation ecosystem, where public policies continuously evolve and generate measurable impact on quality of life."
+    ],
+    "es": [
+      "Las políticas públicas han evolucionado desde modelos verticales hacia esquemas colaborativos donde la ciudadanía participa activamente en su construcción. En este contexto, el enfoque 4.5 propone una transición clave: integrar tecnologías emergentes como Inteligencia Artificial, IoT y analítica de datos en todo el ciclo de vida de la política pública —desde el diagnóstico hasta la evaluación— para lograr decisiones más informadas, adaptativas y alineadas con la realidad territorial. Este cambio no solo mejora la eficiencia del Estado, sino que transforma las políticas de reactivas a proactivas, capaces de anticipar necesidades sociales.",
+      "El modelo propuesto amplía el ciclo tradicional de políticas públicas (diagnóstico, diseño, implementación y evaluación) incorporando una visión técnico-social que permite una comprensión más profunda de los contextos donde se aplican. A diferencia de enfoques convencionales, el modelo 4.5 no se limita a automatizar procesos, sino que busca generar una interacción constante entre ciudadanos, datos y tomadores de decisión, permitiendo ajustar las políticas de forma dinámica conforme evoluciona la realidad social.",
+      "Uno de los elementos diferenciales del modelo es la incorporación de tres dimensiones transversales: interpretación de la realidad, transformación de la realidad y evaluación de la realidad transformada. Estas dimensiones actúan como capas que atraviesan cada fase del ciclo, asegurando que las decisiones no se basen únicamente en información estática, sino en una lectura continua y contextualizada del entorno. Esto permite reducir problemas estructurales como sesgos en los datos, falta de información confiable o limitaciones en la participación ciudadana.",
+      "Finalmente, el modelo se apoya en dos ejes estratégicos: el uso intensivo de tecnologías emergentes y la formación de los actores involucrados. La adopción de herramientas como data lakes, sistemas de analítica avanzada y modelos de IA no es suficiente sin una ciudadanía y funcionarios capacitados para interpretarlas y utilizarlas correctamente. Esta combinación habilita un ecosistema de co-creación más transparente, eficiente y sostenible, donde las políticas públicas evolucionan de forma continua y generan un impacto real en la calidad de vida."
+    ]
+  },
+  "reference": {
+    "en": "A. Gil, M. Arroyo, and J. M. García, “Model for the Construction of Public Policies Using Emerging Technologies under the 4.5 Approach,” in 10th National Conference on Computing, Informatics and Systems (CoNCISa 2024), Caracas, Venezuela, 2024.",
+    "es": "A. Gil, M. Arroyo y J. M. García, “Modelo para la Construcción de Políticas Públicas con el Uso de Tecnologías Emergentes bajo el Enfoque 4.5,” en Décima Conferencia Nacional de Computación, Informática y Sistemas (CoNCISa 2024), Caracas, Venezuela, 2024."
+  }
+}

@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#6366f1" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content="Agentic-AMR Consultants" />
     <meta name="description" content="Agentic-AMR Consultants — AI and software consulting. We design, build, and deploy intelligent solutions for real businesses. Experts in artificial intelligence, automation, and scalable digital products." />
+    <meta name="keywords" content="AI consulting, software consulting, artificial intelligence, machine learning, LLM, RAG, automation, software development, DevOps, data analytics, generative AI" />
     <title>Agentic-AMR Consultants — AI & Software Solutions</title>
 
     <!-- Canonical -->
@@ -32,20 +36,39 @@
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://formsubmit.co;" />
 
-    <!-- Structured Data -->
+    <!-- Structured Data: Organization -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
+      "@id": "https://agentic-amr.com/#organization",
       "name": "Agentic-AMR Consultants",
+      "alternateName": "Ramyx Lab",
       "url": "https://agentic-amr.com/",
+      "logo": "https://agentic-amr.com/favicon.svg",
       "description": "AI and software consulting. We design, build, and deploy intelligent solutions for real businesses.",
-      "knowsAbout": ["Artificial Intelligence", "Software Development", "Process Automation", "Data Analytics", "Digital Strategy"],
+      "knowsAbout": ["Artificial Intelligence", "Software Development", "Process Automation", "Data Analytics", "Digital Strategy", "Machine Learning", "LLMs", "Generative AI", "DevOps", "Cloud Architecture"],
+      "knowsLanguage": ["en", "es"],
+      "areaServed": "Worldwide",
+      "serviceType": ["AI Consulting", "Software Development Consulting", "Specialized Training", "Process Automation"],
       "founder": [
         { "@type": "Person", "name": "Marxjhony Jerez", "jobTitle": "CEO" },
         { "@type": "Person", "name": "Angel Gil", "jobTitle": "COO" },
         { "@type": "Person", "name": "Ricardo Dos Santos", "jobTitle": "CTO" }
       ]
+    }
+    </script>
+
+    <!-- Structured Data: WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://agentic-amr.com/#website",
+      "url": "https://agentic-amr.com/",
+      "name": "Agentic-AMR Consultants",
+      "publisher": { "@id": "https://agentic-amr.com/#organization" },
+      "inLanguage": ["en", "es"]
     }
     </script>
 
@@ -58,7 +81,26 @@
     <div id="app"></div>
     <noscript>
       <h1>Agentic-AMR Consultants — AI & Software Solutions</h1>
-      <p>We help businesses design, build, and deploy AI-powered software solutions focused on solving real-world challenges. Contact us to learn more.</p>
+      <p>We help businesses design, build, and deploy AI-powered software solutions focused on solving real-world challenges.</p>
+
+      <h2>What we do</h2>
+      <ul>
+        <li>Software Development Consulting — solution architecture, technical design, system modernization.</li>
+        <li>AI Solutions Implementation — intelligent automation, AI model integration, AI-assisted systems, custom business solutions.</li>
+        <li>Specialized Training — technical workshops, team training, AI &amp; architecture mentoring.</li>
+      </ul>
+
+      <h2>Team</h2>
+      <ul>
+        <li>Marxjhony Jerez — CEO, PhD in Applied Sciences</li>
+        <li>Angel Gil — COO, PhD in Applied Sciences</li>
+        <li>Ricardo Dos Santos — CTO, PhD in Applied Sciences</li>
+      </ul>
+
+      <h2>Research</h2>
+      <p>We research continuously and apply what we learn to real-world cases. Read our latest entry: <em>Building Public Policy with Emerging Technologies: the 4.5 Approach</em>, by Angel Gil (May 2026).</p>
+
+      <p>Contact: <a href="https://agentic-amr.com/#contact">https://agentic-amr.com/#contact</a></p>
     </noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>

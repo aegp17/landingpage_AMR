@@ -3,6 +3,7 @@ export default {
     services: 'Services',
     team: 'Our Team',
     skills: 'Skills',
+    research: 'Research',
     contact: 'Contact Us',
   },
   hero: {
@@ -132,6 +133,14 @@ export default {
         ],
       },
     ],
+  },
+  research: {
+    title: 'Research',
+    subtitle:
+      'We know that delivering solutions starts with understanding the fundamentals — so we research continuously and apply what we learn to real-world cases. Here is a glimpse of that work.',
+    readMore: 'Read more',
+    close: 'Close',
+    reference: 'Reference',
   },
   ctaBanner: {
     title: "Let's build something together",
