@@ -62,21 +62,21 @@ export default {
         role: 'CEO · Doctor en Ciencias Aplicadas',
         description:
           'Líder estratégico en consultoría tecnológica con experiencia en IA, desarrollo de software, análisis de datos y automatización. Transforma desafíos complejos en soluciones que generan eficiencia operativa y ventaja competitiva. Combina visión de negocio, liderazgo ágil y expertise técnico para impulsar organizaciones más inteligentes y escalables.',
-        skills: ['Estrategia Digital', 'IA', 'Gestión de Proyectos', 'Automatización'],
+        skills: ['Estrategia Digital', 'IA', 'Gestión de Proyectos', 'Automatización', 'Desarrollador de Software', 'Agentes', 'Product Manager'],
       },
       {
         name: 'Angel Gil',
         role: 'COO · Doctor en Ciencias Aplicadas',
         description:
           'Especialista en inteligencia artificial y robótica con experiencia en desarrollo de software, DevOps y liderazgo de producto. Diseña soluciones tecnológicas escalables que resuelven problemas reales de negocio, combinando arquitectura técnica y visión estratégica. Apasionado por la tecnología y el bienestar animal.',
-        skills: ['IA', 'Robótica', 'Producto', 'DevOps'],
+        skills: ['IA', 'Robótica', 'Producto', 'DevOps', 'Desarrollador de Software', 'Agentes', 'Tech Lead'],
       },
       {
         name: 'Ricardo Dos Santos',
         role: 'CTO · Doctor en Ciencias Aplicadas',
         description:
           'Especialista en desarrollo de software con IA e investigación en Big Data, Machine Learning y Social Analytics. Diseña entornos inteligentes basados en datos utilizando Semantic Mining y Linked Data para transformar datasets complejos en insights accionables de negocio. Combina pensamiento analítico riguroso con un enfoque estratégico para construir soluciones escalables.',
-        skills: ['IA', 'Big Data', 'Machine Learning', 'Semantic Mining', 'Linked Data', 'Ambient Intelligence'],
+        skills: ['IA', 'Big Data', 'Machine Learning', 'Semantic Mining', 'Linked Data', 'Ambient Intelligence', 'Desarrollador de Software', 'Agentes', 'Arquitecto de Soluciones'],
       },
     ],
   },

@@ -62,21 +62,21 @@ export default {
         role: 'CEO · PhD in Applied Sciences',
         description:
           'Strategic leader in tech consulting with deep expertise in AI, software development, data analytics, and process automation. He turns complex challenges into solutions that drive operational efficiency and competitive advantage. Combines business vision, agile leadership, and technical expertise to build smarter, scalable organizations.',
-        skills: ['Digital Strategy', 'AI', 'Project Management', 'Automation'],
+        skills: ['Digital Strategy', 'AI', 'Project Management', 'Automation', 'Software Developer', 'Agents', 'Product Manager'],
       },
       {
         name: 'Angel Gil',
         role: 'COO · PhD in Applied Sciences',
         description:
           'AI and robotics specialist with expertise in software development, DevOps, and product leadership. Designs scalable tech solutions that solve real business problems, combining technical architecture with strategic vision. Passionate about technology and animal welfare.',
-        skills: ['AI', 'Robotics', 'Product', 'DevOps'],
+        skills: ['AI', 'Robotics', 'Product', 'DevOps', 'Software Developer', 'Agents', 'Tech Lead'],
       },
       {
         name: 'Ricardo Dos Santos',
         role: 'CTO · PhD in Applied Sciences',
         description:
           'AI software development specialist with deep research expertise in Big Data, Machine Learning, and Social Analytics. Architects intelligent, data-driven environments using Semantic Mining and Linked Data to transform complex datasets into actionable business insights. Combines rigorous analytical thinking with a strategic approach to building scalable solutions.',
-        skills: ['AI', 'Big Data', 'Machine Learning', 'Semantic Mining', 'Linked Data', 'Ambient Intelligence'],
+        skills: ['AI', 'Big Data', 'Machine Learning', 'Semantic Mining', 'Linked Data', 'Ambient Intelligence', 'Software Developer', 'Agents', 'Solutions Architect'],
       },
     ],
   },
