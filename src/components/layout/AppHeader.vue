@@ -18,6 +18,7 @@ function scrollTo(id: string) {
 
       <nav class="nav-desktop" aria-label="Main navigation">
         <a href="#services" @click.prevent="scrollTo('services')">{{ t.nav.services }}</a>
+        <a href="#process" @click.prevent="scrollTo('process')">{{ t.nav.process }}</a>
         <a href="#team" @click.prevent="scrollTo('team')">{{ t.nav.team }}</a>
         <a href="#skills" @click.prevent="scrollTo('skills')">{{ t.nav.skills }}</a>
         <a href="#research" @click.prevent="scrollTo('research')">{{ t.nav.research }}</a>
@@ -39,6 +40,7 @@ function scrollTo(id: string) {
 
     <nav class="nav-mobile" :class="{ open: mobileOpen }" aria-label="Mobile navigation">
       <a href="#services" @click.prevent="scrollTo('services')">{{ t.nav.services }}</a>
+      <a href="#process" @click.prevent="scrollTo('process')">{{ t.nav.process }}</a>
       <a href="#team" @click.prevent="scrollTo('team')">{{ t.nav.team }}</a>
       <a href="#skills" @click.prevent="scrollTo('skills')">{{ t.nav.skills }}</a>
       <a href="#research" @click.prevent="scrollTo('research')">{{ t.nav.research }}</a>
