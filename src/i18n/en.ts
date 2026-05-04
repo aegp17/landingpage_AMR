@@ -1,6 +1,7 @@
 export default {
   nav: {
     services: 'Services',
+    process: 'Process',
     team: 'Our Team',
     skills: 'Skills',
     research: 'Research',
@@ -51,6 +52,168 @@ export default {
         ],
       },
     ],
+  },
+  process: {
+    eyebrow: 'Client Value Delivery Framework',
+    title: 'How we work',
+    subtitle:
+      'We turn real business challenges into measurable, adoptable, and sustainable solutions. Seven stages, three phases, and a clear decision gate at the end of every step — to protect your investment.',
+    phasesLabel: 'Framework phases',
+    phases: [
+      {
+        id: 'discovery',
+        tag: 'Phase 1',
+        title: 'Discovery & Assessment',
+        description:
+          'Understand the problem, evaluate technical maturity, risk, and economic opportunity before committing resources.',
+      },
+      {
+        id: 'design',
+        tag: 'Phase 2',
+        title: 'Design & Build',
+        description:
+          'Co-design the blueprint, build an MVP in short sprints, and validate with technical, functional, and business evidence.',
+      },
+      {
+        id: 'deploy',
+        tag: 'Phase 3',
+        title: 'Deploy & Evolve',
+        description:
+          'Launch with change management, measure adoption and value generated, and evolve with the business.',
+      },
+    ],
+    stagesLabel: 'The 7 stages',
+    deliverableLabel: 'Deliverable',
+    gateLabel: 'Decision gate',
+    stages: [
+      {
+        number: '01',
+        phase: 'discovery',
+        short: 'Listen',
+        title: 'We listen and understand',
+        kicker: 'Initial conversation · no commitment',
+        description:
+          'Initial session to understand the business context, the core problem, strategic objectives, and current constraints. We identify whether the challenge requires consulting, automation, AI, training — or a combination.',
+        deliverable: 'Initial Problem Brief with objectives, constraints, and success criteria.',
+        gate: 'Is there a clear, relevant problem worth exploring?',
+      },
+      {
+        number: '02',
+        phase: 'discovery',
+        short: 'Diagnose',
+        title: 'We diagnose opportunity, maturity, and risk',
+        kicker: 'Technical, business, and data assessment',
+        description:
+          'We evaluate processes, data, architecture, tools, team capabilities, operational risks, and automation opportunities. We build a Business Value Case quantifying expected value, operational savings, financial impact, risk reduction, and required investment.',
+        deliverable: 'Assessment Report, impact/effort map, risk register, business value case.',
+        gate: 'Is it worth investing? What is the best path forward?',
+      },
+      {
+        number: '03',
+        phase: 'design',
+        short: 'Design',
+        title: 'We design the solution blueprint',
+        kicker: 'Co-creation of architecture and plan',
+        description:
+          'We co-create the target architecture, functional scope, user experience, AI agent behavior, integrations, success metrics, risks, and governance plan. Before we build, we define what success means and how we will measure it.',
+        deliverable: 'Solution Blueprint, roadmap, initial backlog, KPIs, acceptance criteria, governance plan.',
+        gate: 'What do we build, how do we measure it, and which risks do we control?',
+      },
+      {
+        number: '04',
+        phase: 'design',
+        short: 'Build',
+        title: 'We pilot and build in short cycles',
+        kicker: 'MVP, sprints, demos, and feedback',
+        description:
+          'We execute in short sprints with frequent demos and continuous feedback. We prioritize a functional MVP or pilot that lets us validate value with real users, data, and processes before scaling. We apply modern testing, CI/CD and — when AI is involved — MLOps and model monitoring.',
+        deliverable: 'Functional MVP/pilot, initial integrations, refined backlog, executive demos.',
+        gate: 'Does the solution show enough value to scale?',
+      },
+      {
+        number: '05',
+        phase: 'design',
+        short: 'Validate',
+        title: 'We validate with evidence',
+        kicker: 'Multidimensional validation · go / no-go',
+        description:
+          'We validate against technical, functional, operational, financial, adoption, and risk metrics. For AI projects we also evaluate accuracy, traceability, explainability, bias, security, and the need for human oversight.',
+        deliverable: 'Validation Report, KPI results, residual risks, go / no-go recommendation.',
+        gate: 'Is it ready for production, adjustment, or scaling?',
+      },
+      {
+        number: '06',
+        phase: 'deploy',
+        short: 'Activate',
+        title: 'We activate and manage adoption',
+        kicker: 'Go-live, change management, and hypercare',
+        description:
+          'We launch with a formal change management plan: stakeholder map, internal champions, role-based training, communication, quick reference guides, adoption metrics, feedback loop, and hypercare support during the first weeks. The goal is not deploying technology — it is achieving real, sustained use.',
+        deliverable: 'Go-live plan, documentation, training, adoption plan, RACI matrix, hypercare support.',
+        gate: 'Is the team ready to operate and adopt the solution?',
+      },
+      {
+        number: '07',
+        phase: 'deploy',
+        short: 'Evolve',
+        title: 'We support, measure, and evolve',
+        kicker: 'Ongoing support, improvement, and new opportunities',
+        description:
+          'After go-live we monitor performance, adoption, value generated, incidents, and new opportunities. The solution evolves with the business, the data, the users, and the technology. We review results periodically and adjust the evolutionary roadmap.',
+        deliverable: 'Support plan, metrics dashboard, evolutionary roadmap, quarterly reviews.',
+        gate: 'How do we keep generating value after launch?',
+      },
+    ],
+    governance: {
+      eyebrow: 'Cross-cutting layer',
+      title: 'Governance, Security & Responsible AI',
+      subtitle: 'Applied across every stage — not as an optional step at the end.',
+      pillars: [
+        { title: 'Data privacy', description: 'Classification and handling of sensitive data per regulation.' },
+        { title: 'Security & access', description: 'Access control, encryption, audit, and traceability.' },
+        { title: 'Model risk', description: 'Bias, fairness, and robustness evaluation.' },
+        { title: 'Human-in-the-loop', description: 'Human oversight on critical decisions.' },
+        { title: 'Explainability', description: 'Transparency in how the agent makes decisions.' },
+        { title: 'Prompt security', description: 'Protection against injection and abuse.' },
+        { title: 'Continuous monitoring', description: 'Drift and degradation detection post go-live.' },
+        { title: 'Usage policy', description: 'Acceptable-use framework and clear accountability.' },
+        { title: 'Compliance', description: 'Auditable documentation at every stage.' },
+      ],
+    },
+    modalities: {
+      title: 'Ways to start',
+      subtitle: 'Three ways to begin — pick the one that matches your organization right now.',
+      items: [
+        {
+          name: 'Advisory Sprint',
+          tag: 'Fast diagnosis',
+          duration: '1 – 2 weeks',
+          description:
+            'For clients who need clarity before investing. Accelerated diagnosis of opportunity, risk, and path forward.',
+          outcomeLabel: 'Outcome',
+          outcome: 'Roadmap, prioritized opportunities, identified risks, and quick wins.',
+        },
+        {
+          name: 'Pilot / MVP Build',
+          tag: 'Prove real value',
+          duration: '4 – 8 weeks',
+          description:
+            'For clients who want to validate a solution with real data and users before committing to a full implementation.',
+          outcomeLabel: 'Outcome',
+          outcome: 'Functional prototype, initial metrics, validated business case, and scaling plan.',
+        },
+        {
+          name: 'Implementation & Scale',
+          tag: 'Production and operation',
+          duration: '8 – 16+ weeks',
+          description:
+            'For clients ready to take the solution to production with full quality, adoption, and operational controls.',
+          outcomeLabel: 'Outcome',
+          outcome: 'Operational solution, documentation, training, monitoring, and ongoing support.',
+        },
+      ],
+    },
+    cta: "Let's talk about your challenge",
   },
   team: {
     title: 'Who We Are',
