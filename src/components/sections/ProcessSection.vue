@@ -8,17 +8,6 @@ const { t } = useI18n()
 const activeIndex = ref(0)
 const activeStage = computed(() => t.value.process.stages[activeIndex.value])
 
-const phaseOf = (id: string) => t.value.process.phases.find((p) => p.id === id)
-const phaseTagOf = (id: string) => phaseOf(id)?.tag ?? ''
-const phaseTitleOf = (id: string) => phaseOf(id)?.title ?? ''
-
-function jumpToPhase(phaseId: string) {
-  const idx = t.value.process.stages.findIndex((s) => s.phase === phaseId)
-  if (idx >= 0) activeIndex.value = idx
-}
-
-const activePhaseId = computed(() => activeStage.value.phase)
-
 function scrollToContact() {
   document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
 }
@@ -33,23 +22,6 @@ function scrollToContact() {
         <p class="subtitle">{{ t.process.subtitle }}</p>
       </header>
 
-      <!-- Phase pills -->
-      <div class="phases" role="tablist" :aria-label="t.process.phasesLabel">
-        <button
-          v-for="phase in t.process.phases"
-          :key="phase.id"
-          class="phase-pill"
-          :class="{ active: activePhaseId === phase.id }"
-          role="tab"
-          :aria-selected="activePhaseId === phase.id"
-          @click="jumpToPhase(phase.id)"
-        >
-          <span class="phase-tag">{{ phase.tag }}</span>
-          <span class="phase-title">{{ phase.title }}</span>
-          <span class="phase-desc">{{ phase.description }}</span>
-        </button>
-      </div>
-
       <!-- Stepper -->
       <div class="stepper" role="tablist" :aria-label="t.process.stagesLabel">
         <div class="stepper-track" aria-hidden="true"></div>
@@ -57,12 +29,7 @@ function scrollToContact() {
           v-for="(stage, i) in t.process.stages"
           :key="stage.number"
           class="step"
-          :class="{
-            active: activeIndex === i,
-            'phase-discovery': stage.phase === 'discovery',
-            'phase-design': stage.phase === 'design',
-            'phase-deploy': stage.phase === 'deploy',
-          }"
+          :class="{ active: activeIndex === i }"
           role="tab"
           :aria-selected="activeIndex === i"
           :aria-label="`${stage.number} — ${stage.title}`"
@@ -78,7 +45,6 @@ function scrollToContact() {
       <!-- Detail panel -->
       <article class="detail" :key="activeIndex">
         <div class="detail-head">
-          <span class="detail-phase">{{ phaseTagOf(activeStage.phase) }} · {{ phaseTitleOf(activeStage.phase) }}</span>
           <div class="detail-heading">
             <span class="detail-number">{{ activeStage.number }}</span>
             <div>
@@ -224,95 +190,21 @@ function scrollToContact() {
   line-height: 1.65;
 }
 
-/* Phase pills */
-.phases {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 3.5rem;
-}
-
-.phase-pill {
-  text-align: left;
-  padding: 1.25rem 1.4rem;
-  border-radius: 14px;
-  background: #fff;
-  border: 1px solid rgba(99, 102, 241, 0.14);
-  cursor: pointer;
-  transition: all 0.25s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  font-family: inherit;
-  position: relative;
-  overflow: hidden;
-}
-
-.phase-pill::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.04), rgba(139, 92, 246, 0.02));
-  opacity: 0;
-  transition: opacity 0.25s;
-  pointer-events: none;
-}
-
-.phase-pill:hover {
-  border-color: rgba(99, 102, 241, 0.35);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.1);
-}
-
-.phase-pill.active {
-  border-color: #6366f1;
-  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.18);
-  background: linear-gradient(180deg, rgba(99, 102, 241, 0.04) 0%, #ffffff 100%);
-}
-
-.phase-pill.active::before {
-  opacity: 1;
-}
-
-.phase-tag {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #6366f1;
-  position: relative;
-}
-
-.phase-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.01em;
-  position: relative;
-}
-
-.phase-desc {
-  font-size: 0.85rem;
-  color: #64748b;
-  line-height: 1.55;
-  position: relative;
-}
-
 /* Stepper */
 .stepper {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0;
   position: relative;
-  margin-bottom: 2.5rem;
+  margin: 1rem 0 2.5rem;
   padding: 1rem 0 0.5rem;
 }
 
 .stepper-track {
   position: absolute;
   top: calc(1rem + 28px);
-  left: 7%;
-  right: 7%;
+  left: 10%;
+  right: 10%;
   height: 2px;
   background: linear-gradient(
     90deg,
@@ -419,16 +311,6 @@ function scrollToContact() {
 
 .detail-head {
   margin-bottom: 1.25rem;
-}
-
-.detail-phase {
-  display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #6366f1;
-  margin-bottom: 1rem;
 }
 
 .detail-heading {
@@ -730,12 +612,8 @@ function scrollToContact() {
 
 /* Tablet */
 @media (max-width: 960px) {
-  .phases {
-    grid-template-columns: 1fr;
-  }
-
   .stepper {
-    grid-template-columns: repeat(7, minmax(72px, 1fr));
+    grid-template-columns: repeat(4, minmax(96px, 1fr));
     overflow-x: auto;
     padding: 1rem 0.5rem 1rem;
     scroll-snap-type: x mandatory;
@@ -747,8 +625,8 @@ function scrollToContact() {
   }
 
   .stepper-track {
-    left: 10%;
-    right: 10%;
+    left: 12%;
+    right: 12%;
   }
 
   .governance-grid,
@@ -772,7 +650,7 @@ function scrollToContact() {
   }
 
   .stepper {
-    grid-template-columns: repeat(7, minmax(64px, 1fr));
+    grid-template-columns: repeat(4, minmax(80px, 1fr));
   }
 
   .step-node {
