@@ -38,6 +38,9 @@ defineProps<{
 
 <style scoped>
 .team-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   padding: 2rem 1.5rem;
   border-radius: 12px;
@@ -92,24 +95,26 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.3rem;
+  margin-bottom: 1.25rem;
 }
 
 .skill-tag {
-  font-size: 0.75rem;
-  padding: 0.2rem 0.65rem;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.55rem;
   border-radius: 20px;
   background: rgba(99, 102, 241, 0.08);
   color: #6366f1;
   font-weight: 500;
+  line-height: 1.5;
 }
 
 .linkedin {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-top: 1.25rem;
-  padding: 0.4rem 0.85rem;
+  margin-top: auto;
+  padding: 0.35rem 0.85rem;
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 500;
