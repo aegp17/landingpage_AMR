@@ -1,9 +1,19 @@
 <script setup lang="ts">
+import { defineAsyncComponent, ref, onMounted } from 'vue'
 import { useI18n } from '../../i18n'
 import PrimaryButton from '../ui/PrimaryButton.vue'
-import ParticleCanvas from '../ui/ParticleCanvas.vue'
+
+const ParticleCanvas = defineAsyncComponent(() => import('../ui/ParticleCanvas.vue'))
 
 const { t } = useI18n()
+const showCanvas = ref(false)
+
+onMounted(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void }).requestIdleCallback
+  if (idle) idle(() => (showCanvas.value = true), { timeout: 800 })
+  else setTimeout(() => (showCanvas.value = true), 200)
+})
 
 function scrollTo(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -20,7 +30,7 @@ function scrollTo(id: string) {
         <PrimaryButton variant="secondary" @click="scrollTo('team')">{{ t.hero.ctaSecondary }}</PrimaryButton>
       </div>
     </div>
-    <ParticleCanvas />
+    <ParticleCanvas v-if="showCanvas" />
     <div class="hero-decoration" aria-hidden="true"></div>
   </section>
 </template>

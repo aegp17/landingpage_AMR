@@ -3,7 +3,7 @@ import type { AuthorMeta } from './types'
 export const authors: Record<string, AuthorMeta> = {
   angel: {
     name: 'Angel Gil',
-    image: '/angel.png',
+    image: '/angel.jpg',
     role: { en: 'COO', es: 'COO' },
   },
   marxjhony: {

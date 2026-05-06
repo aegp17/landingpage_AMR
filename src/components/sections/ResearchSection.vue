@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { useI18n } from '../../i18n'
 import { posts, authors } from '../../research'
 import type { Post } from '../../research'
 import SectionTitle from '../ui/SectionTitle.vue'
 import ResearchCard from '../ui/ResearchCard.vue'
-import ResearchModal from '../ui/ResearchModal.vue'
+
+const ResearchModal = defineAsyncComponent(() => import('../ui/ResearchModal.vue'))
 
 const { t, locale } = useI18n()
 
