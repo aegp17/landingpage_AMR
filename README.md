@@ -26,14 +26,9 @@ Genera la carpeta `dist/` con los archivos estáticos listos para servir.
 
 ## Configuración del base path
 
-El archivo `vite.config.ts` tiene configurado `base: '/landingpage_AMR/'`. Esto determina la ruta raíz desde la que se sirven los assets.
+El archivo `vite.config.ts` tiene configurado `base: '/'` porque el sitio se despliega en un dominio propio (`agentic-amr.com`). Esto determina la ruta raíz desde la que se sirven los assets.
 
-- **Si despliegas en la raíz de un dominio** (ej. `https://ramyxlab.com/`), cambia el base a `'/'`:
-
-  ```ts
-  // vite.config.ts
-  base: '/',
-  ```
+- **Si despliegas en la raíz de un dominio** (configuración actual, ej. `https://agentic-amr.com/`), deja `base: '/'`.
 
 - **Si despliegas en un subdirectorio** (ej. `https://ejemplo.com/mi-sitio/`), usa ese path:
 
@@ -42,7 +37,7 @@ El archivo `vite.config.ts` tiene configurado `base: '/landingpage_AMR/'`. Esto 
   base: '/mi-sitio/',
   ```
 
-Después de cambiar el base, actualiza también las URLs en `index.html` (canonical, og:url, sitemap, structured data) para que coincidan con tu dominio final.
+Después de cambiar el base, actualiza también las URLs en `index.html` (canonical, og:url, hreflang, structured data), `public/sitemap.xml`, `public/robots.txt`, y la constante `SITE_URL` en `src/main.ts` para que coincidan con tu dominio final.
 
 Luego ejecuta `npm run build` de nuevo.
 
@@ -149,8 +144,10 @@ Al cambiar de servidor o dominio, revisa estos archivos:
 |---|---|
 | `vite.config.ts` | `base` path |
 | `index.html` | canonical URL, og:url, hreflang hrefs, structured data URL |
+| `src/main.ts` | constante `SITE_URL` (usada por el JSON-LD de BlogPosting) |
 | `public/robots.txt` | URL del sitemap |
 | `public/sitemap.xml` | `<loc>` URL |
+| `public/CNAME` | dominio personalizado de GitHub Pages |
 | `src/components/ui/ContactForm.vue` | Hash de FormSubmit (ver nota abajo) |
 
 ## Formulario de contacto

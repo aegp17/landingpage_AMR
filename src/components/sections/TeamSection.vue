@@ -7,7 +7,7 @@ const { t } = useI18n()
 
 const teamImages = [
   './marxjhony.jpeg',
-  './angel.png',
+  './angel.jpg',
   './ricardo.jpeg',
 ]
 </script>

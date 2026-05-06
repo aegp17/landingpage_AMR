@@ -12,7 +12,7 @@ Ramyx Lab landing page — a single-page Vue 3 site for a consulting business. B
 - `npm run build` — type-check with `vue-tsc -b` then build for production into `dist/`
 - `npm run preview` — preview the production build locally (`http://localhost:4173`)
 
-No test runner or linter is configured.
+Node 20 (matches CI in `.github/workflows/deploy.yml`). No test runner or linter is configured.
 
 ## Architecture
 
@@ -25,7 +25,7 @@ No test runner or linter is configured.
 
 **Research module** (`src/research/`): blog-style entries shown in the Research section. Each post is a JSON file under `src/research/posts/` and is auto-discovered at build time via `import.meta.glob` in `src/research/index.ts` — drop a new file, ship, it appears (newest first by `date`). `authors.ts` is a small registry (`name`, `image`, `role` per locale) that posts reference by key. `types.ts` defines `PostFile`/`Post`. To add a post: copy an existing `posts/*.json`, set `date` (ISO `YYYY-MM-DD`), `author` (key from `authors.ts`), and the bilingual `title`/`excerpt`/`body` (body is an array of paragraphs per locale). `body` paragraphs render as `<p>` blocks in `ResearchModal`; the optional `reference` field renders as a citation footer. Filename convention: `YYYY-MM-DD-slug.json` (purely cosmetic — sort order comes from the `date` field).
 
-**i18n** (`src/i18n/`): a custom `useI18n` composable in `index.ts` with `en.ts` and `es.ts` dictionaries. Locale is persisted in `localStorage` and also written to `document.documentElement.lang`. All user-facing copy must come from the dictionaries via `t.section.key` — do not hardcode strings in components. (Note: despite the name, this composable lives in `src/i18n/`, not `src/composables/`.)
+**i18n** (`src/i18n/`): a custom `useI18n` composable in `src/i18n/index.ts` (not `src/composables/`) with `en.ts` and `es.ts` dictionaries. Locale is persisted in `localStorage` and also written to `document.documentElement.lang`. All user-facing copy must come from the dictionaries via `t.section.key` — do not hardcode strings in components.
 
 **Contact form** (`src/components/ui/ContactForm.vue`): submits JSON to `https://formsubmit.co/ajax/<hash>`. The hash in the repo is a placeholder — to activate against a real inbox, follow the activation steps in `README.md` ("Formulario de contacto").
 
@@ -33,9 +33,15 @@ No test runner or linter is configured.
 
 ## Deployment notes
 
-- Vite `base` is `'/'` (see `vite.config.ts`). The GitHub Pages workflow uses a custom domain, so root-relative URLs work. If you ever deploy to a subpath (e.g. `username.github.io/landingpage_AMR/`), set `base` accordingly **and** update the canonical/og:url/hreflang/sitemap URLs in `index.html`, `public/robots.txt`, and `public/sitemap.xml` to match.
+- Production canonical domain is `agentic-amr.com` (custom domain on GitHub Pages, see `public/CNAME`). The domain is hardcoded in three places that must stay in sync if it ever changes: `SITE_URL` in `src/main.ts` (used for BlogPosting JSON-LD), the canonical/og:url/hreflang/JSON-LD URLs in `index.html`, and `public/robots.txt` + `public/sitemap.xml`.
+- Vite `base` is `'/'` (see `vite.config.ts`). If you ever deploy to a subpath (e.g. `username.github.io/landingpage_AMR/`), set `base` accordingly **and** update all the URLs above to match.
 - Because it's a SPA, any non-GitHub-Pages static host needs a fallback rewrite of unknown paths to `index.html` (Nginx `try_files`, Apache `.htaccess`, S3 error document, etc. — see `README.md` for sample configs).
 
 ## Static assets
 
-Team photos in `src/assets/` (imported through Vite, hashed at build time). SEO/meta files (`favicon.svg`, `robots.txt`, `sitemap.xml`) live in `public/` and are copied verbatim — reference them with absolute paths.
+Team photos and other public-served images live in `public/` (e.g. `angel.jpg`, `marxjhony.jpeg`, `ricardo.jpeg`) and are referenced with absolute paths — they are copied verbatim, **not** hashed by Vite. Source images should be sized close to their max display size (team avatars render at 180×180 CSS, so ~400×400 source is enough); don't drop in 1024×1024 originals. SEO/meta files (`favicon.svg`, `robots.txt`, `sitemap.xml`, `CNAME`) also live in `public/`.
+
+## Performance notes
+
+- `ParticleCanvas` (hero background, runs an rAF loop) is loaded via `defineAsyncComponent` and gated on `prefers-reduced-motion` + `requestIdleCallback` in `HeroSection.vue` so it doesn't block initial paint. Don't switch it back to a static import.
+- `ResearchModal` is also async-imported in `ResearchSection.vue` so the modal code only loads when a card is clicked.
