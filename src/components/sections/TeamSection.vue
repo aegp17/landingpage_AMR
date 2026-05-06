@@ -5,10 +5,10 @@ import TeamCard from '../ui/TeamCard.vue'
 
 const { t } = useI18n()
 
-const teamImages = [
-  './marxjhony.jpeg',
-  './angel.jpg',
-  './ricardo.jpeg',
+const teamProfiles = [
+  { image: './marxjhony.jpeg', linkedin: 'https://www.linkedin.com/in/marxjhonyjerez/' },
+  { image: './angel.jpg', linkedin: 'https://www.linkedin.com/in/angeleduardogil/' },
+  { image: './ricardo.jpeg', linkedin: 'https://www.linkedin.com/in/ricardojdsg/' },
 ]
 </script>
 
@@ -24,7 +24,8 @@ const teamImages = [
           :role="member.role"
           :description="member.description"
           :skills="member.skills"
-          :image="teamImages[i]"
+          :image="teamProfiles[i].image"
+          :linkedin="teamProfiles[i].linkedin"
         />
       </div>
     </div>
