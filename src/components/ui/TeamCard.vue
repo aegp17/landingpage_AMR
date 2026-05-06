@@ -5,6 +5,7 @@ defineProps<{
   description: string
   skills: string[]
   image: string
+  linkedin?: string
 }>()
 </script>
 
@@ -19,6 +20,19 @@ defineProps<{
     <div class="skills">
       <span v-for="skill in skills" :key="skill" class="skill-tag">{{ skill }}</span>
     </div>
+    <a
+      v-if="linkedin"
+      class="linkedin"
+      :href="linkedin"
+      target="_blank"
+      rel="noopener noreferrer"
+      :aria-label="`LinkedIn — ${name}`"
+    >
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12M7.12 20.45H3.55V9h3.57zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.21 0 22.23 0"/>
+      </svg>
+      <span>LinkedIn</span>
+    </a>
   </div>
 </template>
 
@@ -88,5 +102,37 @@ h3 {
   background: rgba(99, 102, 241, 0.08);
   color: #6366f1;
   font-weight: 500;
+}
+
+.linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #0a66c2;
+  background: rgba(10, 102, 194, 0.08);
+  border: 1px solid rgba(10, 102, 194, 0.18);
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.linkedin:hover,
+.linkedin:focus-visible {
+  background: rgba(10, 102, 194, 0.14);
+  border-color: rgba(10, 102, 194, 0.32);
+  transform: translateY(-1px);
+}
+
+.linkedin:focus-visible {
+  outline: 2px solid #0a66c2;
+  outline-offset: 2px;
+}
+
+.linkedin svg {
+  flex-shrink: 0;
 }
 </style>
