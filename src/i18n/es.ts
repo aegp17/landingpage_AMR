@@ -243,9 +243,40 @@ export default {
     readMore: 'Leer más',
     close: 'Cerrar',
     reference: 'Referencia',
+    back: 'Volver al inicio',
     ctaTitle: '¿Quieres aplicar esto a tu negocio?',
     ctaSubtitle: 'Cuéntanos tu reto y te ayudamos a definir una solución clara y viable.',
     ctaButton: 'Hablemos',
+  },
+  faq: {
+    title: 'Preguntas frecuentes',
+    subtitle: 'Respuestas rápidas a lo que más nos preguntan antes de empezar a trabajar juntos.',
+    items: [
+      {
+        q: '¿Cómo sabemos si vale la pena invertir en IA para nuestra empresa?',
+        a: 'Para eso existe nuestra fase de Descubrimiento: cuantificamos valor esperado, ahorro operativo, impacto financiero y reducción de riesgo en un Business Value Case antes de cualquier compromiso de construcción. Sales de esa etapa con un go / no-go claro y un roadmap priorizado — no con una propuesta comercial.',
+      },
+      {
+        q: '¿Cuál es el plazo típico para un piloto o MVP?',
+        a: 'Un Pilot / MVP Build suele tomar entre 4 y 8 semanas, ejecutado en sprints cortos con demos frecuentes y validación multidimensional contra métricas técnicas, operativas, financieras y de adopción. Si primero necesitas claridad, un Advisory Sprint dura solo 1 – 2 semanas.',
+      },
+      {
+        q: '¿Cómo manejan la privacidad, seguridad y los riesgos del modelo?',
+        a: 'La gobernanza es una capa transversal aplicada en todas las fases, no un paso final. Cubrimos privacidad de datos, control de acceso y cifrado, evaluación de sesgo y robustez, human-in-the-loop en decisiones críticas, explicabilidad, protección contra inyección de prompts, monitoreo de drift y documentación auditable para compliance.',
+      },
+      {
+        q: '¿Trabajan con empresas fuera de España o Latinoamérica?',
+        a: 'Sí — operamos en modalidad remota y trabajamos con clientes en cualquier parte del mundo. Nuestro equipo está distribuido entre España y Latinoamérica y ejecutamos proyectos en español e inglés, adaptándonos a la zona horaria y al ritmo de reuniones de tu equipo.',
+      },
+      {
+        q: '¿En qué industrias tienen experiencia?',
+        a: 'Hemos entregado proyectos en energía, salud, finanzas, marketing, retail, manufactura, educación, logística y deportes. El framework es agnóstico a la industria; lo que cambia es el conocimiento de dominio que incorporamos en las fases de Descubrimiento y Diseño.',
+      },
+      {
+        q: '¿Cómo definen el alcance y el costo de los proyectos?',
+        a: 'Tasamos por modalidad: Advisory Sprint (diagnóstico rápido), Pilot / MVP Build (probar valor real) o Implementation & Scale (producción y operación). Siempre que es posible trabajamos con alcance y precio cerrado, para que conozcas la inversión antes de comprometerte.',
+      },
+    ],
   },
   ctaBanner: {
     title: 'Construyamos algo juntos',
