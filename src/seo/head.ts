@@ -9,6 +9,8 @@ import {
   altLocale,
   homePath,
   ogLocale,
+  postPath,
+  researchIndexPath,
 } from './site'
 
 export interface RouteHeadInput {
@@ -19,6 +21,8 @@ export interface RouteHeadInput {
   description: string
   ogType?: 'website' | 'article'
   extraScripts?: Record<string, unknown>[]
+  feedUrl?: string
+  feedTitle?: string
 }
 
 /**
@@ -36,12 +40,20 @@ export function useRouteHead(input: MaybeRefOrGetter<RouteHeadInput>) {
     const enUrl = d.locale === 'en' ? canonical : altUrl
     const ogType = d.ogType ?? 'website'
 
-    const link = [
+    const link: Array<Record<string, string>> = [
       { rel: 'canonical', href: canonical },
       { rel: 'alternate', hreflang: 'en', href: enUrl },
       { rel: 'alternate', hreflang: 'es', href: d.locale === 'es' ? canonical : altUrl },
       { rel: 'alternate', hreflang: 'x-default', href: enUrl },
     ]
+    if (d.feedUrl) {
+      link.push({
+        rel: 'alternate',
+        type: 'application/atom+xml',
+        title: d.feedTitle ?? 'Agentic-AMR Research',
+        href: d.feedUrl,
+      })
+    }
 
     const meta = [
       { name: 'description', content: d.description },
@@ -190,6 +202,42 @@ export function faqJsonLd(locale: Locale, items: ReadonlyArray<FaqItem>) {
   }
 }
 
+export interface ResearchIndexPost {
+  id: string
+  title: string
+  description: string
+  datePublished: string
+  authorName: string
+}
+
+export function researchIndexJsonLd(
+  locale: Locale,
+  posts: ReadonlyArray<ResearchIndexPost>,
+  name: string,
+  description: string,
+) {
+  const indexUrl = absoluteUrl(researchIndexPath(locale))
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': `${indexUrl}#blog`,
+    url: indexUrl,
+    name,
+    description,
+    inLanguage: locale,
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    blogPost: posts.map((p) => ({
+      '@type': 'BlogPosting',
+      '@id': `${absoluteUrl(postPath(locale, p.id))}#post`,
+      url: absoluteUrl(postPath(locale, p.id)),
+      headline: p.title,
+      description: p.description,
+      datePublished: p.datePublished,
+      author: { '@type': 'Person', name: p.authorName },
+    })),
+  }
+}
+
 export function postJsonLd(args: {
   locale: Locale
   postId: string
@@ -222,4 +270,4 @@ export function postJsonLd(args: {
   }
 }
 
-export { homePath }
+export { homePath, researchIndexPath }

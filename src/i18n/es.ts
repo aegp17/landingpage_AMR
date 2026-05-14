@@ -244,9 +244,17 @@ export default {
     close: 'Cerrar',
     reference: 'Referencia',
     back: 'Volver al inicio',
+    seeAll: 'Ver toda la investigación',
     ctaTitle: '¿Quieres aplicar esto a tu negocio?',
     ctaSubtitle: 'Cuéntanos tu reto y te ayudamos a definir una solución clara y viable.',
     ctaButton: 'Hablemos',
+    indexTitle: 'Investigación',
+    indexSubtitle:
+      'Notas largas, experimentos e investigación aplicada de nuestro equipo. Actualizadas a medida que publicamos nuevo trabajo.',
+    indexDescription:
+      'Investigación aplicada, notas técnicas y casos de estudio sobre IA, arquitectura de software y transformación digital del equipo Agentic-AMR.',
+    indexEmpty: 'Aún no hay entradas — vuelve pronto.',
+    subscribe: 'Suscribirse vía Atom feed',
   },
   faq: {
     title: 'Preguntas frecuentes',
