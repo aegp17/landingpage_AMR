@@ -6,9 +6,9 @@ import TeamCard from '../ui/TeamCard.vue'
 const { t } = useI18n()
 
 const teamProfiles = [
-  { image: './marxjhony.jpeg', linkedin: 'https://www.linkedin.com/in/marxjhonyjerez/' },
-  { image: './angel.jpg', linkedin: 'https://www.linkedin.com/in/angeleduardogil/' },
-  { image: './ricardo.jpeg', linkedin: 'https://www.linkedin.com/in/ricardojdsg/' },
+  { image: '/marxjhony.jpeg', linkedin: 'https://www.linkedin.com/in/marxjhonyjerez/' },
+  { image: '/angel.jpg', linkedin: 'https://www.linkedin.com/in/angeleduardogil/' },
+  { image: '/ricardo.jpeg', linkedin: 'https://www.linkedin.com/in/ricardojdsg/' },
 ]
 </script>
 
