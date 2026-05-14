@@ -54,7 +54,13 @@ void localeFromPath
 <template>
   <header class="app-header">
     <div class="header-inner">
-      <router-link class="logo" :to="homeHref">Agentic<span>-AMR</span></router-link>
+      <router-link class="logo" :to="homeHref" aria-label="Agentic-AMR home">
+        <picture class="logo-mark">
+          <source srcset="/logo.webp" type="image/webp" />
+          <img src="/logo.png" alt="" width="36" height="36" decoding="async" />
+        </picture>
+        <span class="logo-text">Agentic<span class="logo-accent">-AMR</span></span>
+      </router-link>
 
       <nav class="nav-desktop" aria-label="Main navigation">
         <a :href="anchorHref('services')" @click="scrollTo('services', $event)">{{ t.nav.services }}</a>
@@ -112,16 +118,53 @@ void localeFromPath
 }
 
 .logo {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   text-decoration: none;
+  color: #0f172a;
   letter-spacing: -0.02em;
+  line-height: 1;
 }
 
-.logo span {
+.logo-mark {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.logo-mark img {
+  display: block;
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.logo:hover .logo-mark img {
+  transform: scale(1.04);
+}
+
+.logo-text {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.logo-accent {
   color: #6366f1;
   font-weight: 800;
+}
+
+@media (max-width: 480px) {
+  .logo {
+    gap: 0.4rem;
+  }
+  .logo-mark img {
+    width: 30px;
+    height: 30px;
+  }
+  .logo-text {
+    font-size: 1rem;
+  }
 }
 
 .nav-desktop {
