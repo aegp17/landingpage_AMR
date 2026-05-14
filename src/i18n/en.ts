@@ -244,9 +244,17 @@ export default {
     close: 'Close',
     reference: 'Reference',
     back: 'Back to home',
+    seeAll: 'See all research',
     ctaTitle: 'Want to apply this to your business?',
     ctaSubtitle: "Tell us about your challenge and we'll help you scope a clear, viable solution.",
     ctaButton: "Let's talk",
+    indexTitle: 'Research',
+    indexSubtitle:
+      'Long-form notes, experiments, and applied research from our team. Updated regularly as we ship new work.',
+    indexDescription:
+      'Applied research, technical notes, and case studies on AI, software architecture, and digital transformation from the Agentic-AMR team.',
+    indexEmpty: 'No entries yet — check back soon.',
+    subscribe: 'Subscribe via Atom feed',
   },
   faq: {
     title: 'Frequently asked questions',

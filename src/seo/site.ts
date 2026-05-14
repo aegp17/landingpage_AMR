@@ -11,8 +11,16 @@ export function homePath(locale: Locale): string {
   return `/${locale}/`
 }
 
+export function researchIndexPath(locale: Locale): string {
+  return `/${locale}/research/`
+}
+
 export function postPath(locale: Locale, slug: string): string {
   return `/${locale}/research/${slug}/`
+}
+
+export function feedPath(locale: Locale): string {
+  return `/${locale}/feed.xml`
 }
 
 export function absoluteUrl(path: string): string {
@@ -35,6 +43,7 @@ export function allRoutePaths(): string[] {
   const paths: string[] = []
   for (const locale of LOCALES) {
     paths.push(homePath(locale))
+    paths.push(researchIndexPath(locale))
     for (const post of posts) {
       paths.push(postPath(locale, post.id))
     }

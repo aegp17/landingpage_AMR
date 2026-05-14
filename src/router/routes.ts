@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import Home from '../pages/Home.vue'
+import ResearchIndex from '../pages/ResearchIndex.vue'
 import ResearchPost from '../pages/ResearchPost.vue'
 import NotFound from '../pages/NotFound.vue'
 import { allRoutePaths } from '../seo/site'
@@ -27,6 +28,18 @@ export const routes: RouteRecordRaw[] = [
     path: '/es/',
     name: 'home-es',
     component: Home,
+    meta: { locale: 'es' },
+  },
+  {
+    path: '/en/research/',
+    name: 'research-index-en',
+    component: ResearchIndex,
+    meta: { locale: 'en' },
+  },
+  {
+    path: '/es/research/',
+    name: 'research-index-es',
+    component: ResearchIndex,
     meta: { locale: 'es' },
   },
   {

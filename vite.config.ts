@@ -9,12 +9,28 @@ const LOCALES = ['en', 'es'] as const
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-function listPostIds(): string[] {
+interface PostRecord {
+  id: string
+  date: string
+  title: { en: string; es: string }
+  excerpt: { en: string; es: string }
+  author: string
+}
+
+function readPosts(): PostRecord[] {
   const dir = join(__dirname, 'src', 'research', 'posts')
-  return readdirSync(dir)
-    .filter((f) => f.endsWith('.json'))
-    .map((f) => f.replace(/\.json$/, ''))
-    .sort()
+  const out: PostRecord[] = []
+  for (const file of readdirSync(dir)) {
+    if (!file.endsWith('.json')) continue
+    const id = file.replace(/\.json$/, '')
+    const raw = JSON.parse(readFileSync(join(dir, file), 'utf8')) as Omit<PostRecord, 'id'>
+    out.push({ id, ...raw })
+  }
+  return out.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.id < b.id ? 1 : -1))
+}
+
+function listPostIds(): string[] {
+  return readPosts().map((p) => p.id)
 }
 
 function buildRoutes(): string[] {
@@ -22,11 +38,79 @@ function buildRoutes(): string[] {
   const out: string[] = []
   for (const locale of LOCALES) {
     out.push(`/${locale}/`)
+    out.push(`/${locale}/research/`)
     for (const id of ids) {
       out.push(`/${locale}/research/${id}/`)
     }
   }
   return out
+}
+
+function readAuthors(): Record<string, { name: string }> {
+  const path = join(__dirname, 'src', 'research', 'authors.ts')
+  const src = readFileSync(path, 'utf8')
+  const out: Record<string, { name: string }> = {}
+  // Match `key: { name: '...', ... }` pairs in the authors export.
+  const blockRe = /(\w+):\s*\{\s*name:\s*'([^']+)'/g
+  let m: RegExpExecArray | null
+  while ((m = blockRe.exec(src)) !== null) {
+    out[m[1]] = { name: m[2] }
+  }
+  return out
+}
+
+function xmlEscape(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function buildAtomFeed(locale: 'en' | 'es', posts: PostRecord[], authors: Record<string, { name: string }>): string {
+  const feedUrl = `${SITE_URL}/${locale}/feed.xml`
+  const indexUrl = `${SITE_URL}/${locale}/research/`
+  const feedTitle = locale === 'es' ? 'Investigación · Agentic-AMR' : 'Research · Agentic-AMR'
+  const feedSubtitle =
+    locale === 'es'
+      ? 'Investigación aplicada, notas técnicas y casos de estudio del equipo Agentic-AMR.'
+      : 'Applied research, technical notes, and case studies from the Agentic-AMR team.'
+  const updated = posts.length
+    ? new Date(posts[0].date + 'T00:00:00Z').toISOString()
+    : new Date().toISOString()
+
+  const entries = posts
+    .map((p) => {
+      const postUrl = `${SITE_URL}/${locale}/research/${p.id}/`
+      const authorName = authors[p.author]?.name ?? 'Agentic-AMR Consultants'
+      const published = new Date(p.date + 'T00:00:00Z').toISOString()
+      return (
+        `  <entry>\n` +
+        `    <title>${xmlEscape(p.title[locale])}</title>\n` +
+        `    <link href="${postUrl}" rel="alternate" type="text/html" />\n` +
+        `    <id>${postUrl}</id>\n` +
+        `    <updated>${published}</updated>\n` +
+        `    <published>${published}</published>\n` +
+        `    <author><name>${xmlEscape(authorName)}</name></author>\n` +
+        `    <summary>${xmlEscape(p.excerpt[locale])}</summary>\n` +
+        `  </entry>`
+      )
+    })
+    .join('\n')
+
+  return (
+    `<?xml version="1.0" encoding="utf-8"?>\n` +
+    `<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="${locale}">\n` +
+    `  <title>${xmlEscape(feedTitle)}</title>\n` +
+    `  <subtitle>${xmlEscape(feedSubtitle)}</subtitle>\n` +
+    `  <link href="${indexUrl}" rel="alternate" type="text/html" />\n` +
+    `  <link href="${feedUrl}" rel="self" type="application/atom+xml" />\n` +
+    `  <id>${feedUrl}</id>\n` +
+    `  <updated>${updated}</updated>\n` +
+    `  <author><name>Agentic-AMR Consultants</name></author>\n` +
+    (entries ? entries + '\n' : '') +
+    `</feed>\n`
+  )
 }
 
 function buildSitemap(routes: string[]): string {
@@ -88,6 +172,17 @@ export default defineConfig({
       writeFileSync(join(__dirname, 'dist', 'sitemap.xml'), xml, 'utf8')
       // eslint-disable-next-line no-console
       console.log(`[vite-ssg] wrote dist/sitemap.xml with ${routes.length} URLs`)
+
+      // Emit per-locale Atom feeds at dist/{locale}/feed.xml.
+      const posts = readPosts()
+      const authors = readAuthors()
+      for (const locale of LOCALES) {
+        const feed = buildAtomFeed(locale, posts, authors)
+        const feedDir = join(__dirname, 'dist', locale)
+        writeFileSync(join(feedDir, 'feed.xml'), feed, 'utf8')
+        // eslint-disable-next-line no-console
+        console.log(`[vite-ssg] wrote dist/${locale}/feed.xml with ${posts.length} entries`)
+      }
 
       // dist/index.html is the SPA shell vite-ssg leaves untouched for `/`.
       // Inject a meta-refresh + canonical so crawlers (and JS-disabled users)
