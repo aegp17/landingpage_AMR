@@ -1,45 +1,38 @@
-import { createApp } from 'vue'
+import { ViteSSG } from 'vite-ssg'
 import './style.css'
 import App from './App.vue'
-import { posts, authors } from './research'
+import { routes, ssgRoutes } from './router/routes'
 
-const SITE_URL = 'https://agentic-amr.com'
+// vite-ssg owns app/router/head setup. It will iterate `routes` and prerender
+// every entry in `includedRoutes` at build time.
+export const createApp = ViteSSG(
+  App,
+  {
+    routes,
+    // History mode (default). vite-ssg crawls these paths and writes them as
+    // dist/<path>/index.html. Catch-all + redirects are intentionally excluded.
+    base: '/',
+  },
+  ({ router, isClient }) => {
+    if (!isClient) return
 
-const storedLocale = localStorage.getItem('locale')
-if (storedLocale === 'es') {
-  document.documentElement.lang = 'es'
-}
-
-function injectArticleSchema() {
-  for (const post of posts) {
-    const author = authors[post.author]
-    if (!author) continue
-    const ld = {
-      '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
-      headline: post.title.en,
-      alternativeHeadline: post.title.es,
-      description: post.excerpt.en,
-      datePublished: post.date,
-      dateModified: post.date,
-      inLanguage: ['en', 'es'],
-      mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/#research` },
-      author: {
-        '@type': 'Person',
-        name: author.name,
-        jobTitle: author.role.en,
-      },
-      publisher: { '@id': `${SITE_URL}/#organization` },
-      url: `${SITE_URL}/#research`,
+    // UX hint: if the user is on `/` (which will redirect to `/en/`) and they
+    // previously chose Spanish, send them to `/es/` instead. This only runs on
+    // the client so it never affects what gets prerendered.
+    try {
+      const stored = localStorage.getItem('locale')
+      router.beforeEach((to, _from, next) => {
+        if (to.path === '/' && stored === 'es') {
+          next('/es/')
+        } else {
+          next()
+        }
+      })
+    } catch {
+      /* localStorage unavailable — ignore */
     }
-    const script = document.createElement('script')
-    script.type = 'application/ld+json'
-    script.dataset.postId = post.id
-    script.textContent = JSON.stringify(ld)
-    document.head.appendChild(script)
-  }
-}
+  },
+)
 
-injectArticleSchema()
-
-createApp(App).mount('#app')
+// Surface the SSG include list so vite.config.ts can pass it through.
+export { ssgRoutes }

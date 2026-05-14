@@ -1,26 +1,16 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from '../../i18n'
 import { posts, authors } from '../../research'
 import type { Post } from '../../research'
 import SectionTitle from '../ui/SectionTitle.vue'
 import ResearchCard from '../ui/ResearchCard.vue'
-
-const ResearchModal = defineAsyncComponent(() => import('../ui/ResearchModal.vue'))
+import { postPath } from '../../seo/site'
 
 const { t, locale } = useI18n()
 
-const openPost = ref<Post | null>(null)
-
 function authorOf(post: Post) {
   return authors[post.author] ?? authors[Object.keys(authors)[0]]
-}
-
-function goToContact() {
-  openPost.value = null
-  requestAnimationFrame(() => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-  })
 }
 
 const sortedPosts = computed(() => posts)
@@ -34,30 +24,16 @@ const sortedPosts = computed(() => posts)
         <ResearchCard
           v-for="post in sortedPosts"
           :key="post.id"
+          :to="postPath(locale, post.id)"
           :title="post.title[locale]"
           :excerpt="post.excerpt[locale]"
           :date="post.date"
           :author="authorOf(post)"
           :locale="locale"
           :read-more-label="t.research.readMore"
-          @open="openPost = post"
         />
       </div>
     </div>
-
-    <ResearchModal
-      v-if="openPost"
-      :post="openPost"
-      :author="authorOf(openPost)"
-      :locale="locale"
-      :close-label="t.research.close"
-      :reference-label="t.research.reference"
-      :cta-title="t.research.ctaTitle"
-      :cta-subtitle="t.research.ctaSubtitle"
-      :cta-button="t.research.ctaButton"
-      @close="openPost = null"
-      @contact="goToContact"
-    />
   </section>
 </template>
 

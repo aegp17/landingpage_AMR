@@ -1,35 +1,75 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useI18n } from '../../i18n'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useI18n, localeFromPath } from '../../i18n'
 
-const { t, locale, toggleLocale } = useI18n()
+const { t, locale, setLocale } = useI18n()
+const route = useRoute()
+const router = useRouter()
 const mobileOpen = ref(false)
 
-function scrollTo(id: string) {
+const isHome = computed(() => {
+  const p = route.path
+  return p === `/${locale.value}/` || p === `/${locale.value}`
+})
+
+const homeHref = computed(() => `/${locale.value}/`)
+
+function scrollTo(id: string, e?: Event) {
   mobileOpen.value = false
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  if (isHome.value) {
+    // Same-page anchor: do the smooth scroll ourselves.
+    e?.preventDefault()
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  } else {
+    // Navigate to the home page first; the browser will jump to the anchor.
+    router.push(`${homeHref.value}#${id}`)
+  }
 }
+
+function switchLocale() {
+  const target = locale.value === 'en' ? 'es' : 'en'
+  const current = route.path
+  let next: string
+  if (current.startsWith('/en/')) next = '/es/' + current.slice('/en/'.length)
+  else if (current.startsWith('/es/')) next = '/en/' + current.slice('/es/'.length)
+  else if (current === '/en' || current === '/es' || current === '/') next = `/${target}/`
+  else next = `/${target}/`
+  // Persist user choice for the next visit to `/`.
+  setLocale(target)
+  router.push(next)
+}
+
+// Nav anchors use href so they remain crawlable; the click handler intercepts
+// the smooth-scroll behavior client-side.
+function anchorHref(id: string): string {
+  return isHome.value ? `#${id}` : `${homeHref.value}#${id}`
+}
+
+// localeFromPath is referenced indirectly to keep the import tree stable for
+// SSG. It's exposed via useI18n so we don't need to import it directly here.
+void localeFromPath
 </script>
 
 <template>
   <header class="app-header">
     <div class="header-inner">
-      <a class="logo" href="#" @click.prevent="scrollTo('hero')">Agentic<span>-AMR</span></a>
+      <router-link class="logo" :to="homeHref">Agentic<span>-AMR</span></router-link>
 
       <nav class="nav-desktop" aria-label="Main navigation">
-        <a href="#services" @click.prevent="scrollTo('services')">{{ t.nav.services }}</a>
-        <a href="#process" @click.prevent="scrollTo('process')">{{ t.nav.process }}</a>
-        <a href="#team" @click.prevent="scrollTo('team')">{{ t.nav.team }}</a>
-        <a href="#skills" @click.prevent="scrollTo('skills')">{{ t.nav.skills }}</a>
-        <a href="#research" @click.prevent="scrollTo('research')">{{ t.nav.research }}</a>
-        <a href="#contact" @click.prevent="scrollTo('contact')">{{ t.nav.contact }}</a>
-        <button class="lang-toggle" @click="toggleLocale" :aria-label="locale === 'en' ? 'Cambiar a español' : 'Switch to English'">
+        <a :href="anchorHref('services')" @click="scrollTo('services', $event)">{{ t.nav.services }}</a>
+        <a :href="anchorHref('process')" @click="scrollTo('process', $event)">{{ t.nav.process }}</a>
+        <a :href="anchorHref('team')" @click="scrollTo('team', $event)">{{ t.nav.team }}</a>
+        <a :href="anchorHref('skills')" @click="scrollTo('skills', $event)">{{ t.nav.skills }}</a>
+        <a :href="anchorHref('research')" @click="scrollTo('research', $event)">{{ t.nav.research }}</a>
+        <a :href="anchorHref('contact')" @click="scrollTo('contact', $event)">{{ t.nav.contact }}</a>
+        <button class="lang-toggle" @click="switchLocale" :aria-label="locale === 'en' ? 'Cambiar a español' : 'Switch to English'">
           {{ locale === 'en' ? 'ES' : 'EN' }}
         </button>
       </nav>
 
       <div class="mobile-controls">
-        <button class="lang-toggle" @click="toggleLocale">
+        <button class="lang-toggle" @click="switchLocale">
           {{ locale === 'en' ? 'ES' : 'EN' }}
         </button>
         <button class="hamburger" @click="mobileOpen = !mobileOpen" aria-label="Menu">
@@ -39,12 +79,12 @@ function scrollTo(id: string) {
     </div>
 
     <nav class="nav-mobile" :class="{ open: mobileOpen }" aria-label="Mobile navigation">
-      <a href="#services" @click.prevent="scrollTo('services')">{{ t.nav.services }}</a>
-      <a href="#process" @click.prevent="scrollTo('process')">{{ t.nav.process }}</a>
-      <a href="#team" @click.prevent="scrollTo('team')">{{ t.nav.team }}</a>
-      <a href="#skills" @click.prevent="scrollTo('skills')">{{ t.nav.skills }}</a>
-      <a href="#research" @click.prevent="scrollTo('research')">{{ t.nav.research }}</a>
-      <a href="#contact" @click.prevent="scrollTo('contact')">{{ t.nav.contact }}</a>
+      <a :href="anchorHref('services')" @click="scrollTo('services', $event)">{{ t.nav.services }}</a>
+      <a :href="anchorHref('process')" @click="scrollTo('process', $event)">{{ t.nav.process }}</a>
+      <a :href="anchorHref('team')" @click="scrollTo('team', $event)">{{ t.nav.team }}</a>
+      <a :href="anchorHref('skills')" @click="scrollTo('skills', $event)">{{ t.nav.skills }}</a>
+      <a :href="anchorHref('research')" @click="scrollTo('research', $event)">{{ t.nav.research }}</a>
+      <a :href="anchorHref('contact')" @click="scrollTo('contact', $event)">{{ t.nav.contact }}</a>
     </nav>
   </header>
 </template>

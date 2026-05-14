@@ -2,6 +2,7 @@
 import type { AuthorMeta, Locale } from '../../research'
 
 defineProps<{
+  to: string
   title: string
   excerpt: string
   date: string
@@ -9,8 +10,6 @@ defineProps<{
   locale: Locale
   readMoreLabel: string
 }>()
-
-defineEmits<{ open: [] }>()
 
 function formatDate(iso: string, locale: Locale): string {
   const d = new Date(iso + 'T00:00:00')
@@ -23,7 +22,7 @@ function formatDate(iso: string, locale: Locale): string {
 </script>
 
 <template>
-  <article class="research-card" @click="$emit('open')">
+  <router-link :to="to" class="research-card">
     <div class="meta">
       <img :src="author.image" :alt="author.name" class="avatar" width="40" height="40" loading="lazy" />
       <div class="byline">
@@ -34,7 +33,7 @@ function formatDate(iso: string, locale: Locale): string {
     <h3>{{ title }}</h3>
     <p class="excerpt">{{ excerpt }}</p>
     <span class="read-more">{{ readMoreLabel }} →</span>
-  </article>
+  </router-link>
 </template>
 
 <style scoped>
@@ -49,6 +48,8 @@ function formatDate(iso: string, locale: Locale): string {
   flex-direction: column;
   gap: 0.85rem;
   text-align: left;
+  text-decoration: none;
+  color: inherit;
 }
 
 .research-card:hover {

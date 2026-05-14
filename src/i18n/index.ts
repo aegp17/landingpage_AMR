@@ -1,29 +1,48 @@
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import en from './en'
 import es from './es'
 
-type Locale = 'en' | 'es'
+export type Locale = 'en' | 'es'
 
 const translations = { en, es } as const
 
-const currentLocale = ref<Locale>(
-  (localStorage.getItem('locale') as Locale) || 'en'
-)
+const isBrowser = typeof window !== 'undefined'
 
+function localeFromPath(path: string | undefined | null): Locale {
+  if (!path) return 'en'
+  if (path === '/es' || path.startsWith('/es/')) return 'es'
+  return 'en'
+}
+
+/**
+ * Reactive locale derived from the current route. Falls back to `/en/` for the
+ * root path so SSG output stays deterministic. `localStorage` is still read on
+ * the client purely as a UX hint when the user lands on `/`.
+ */
 export function useI18n() {
-  const locale = computed(() => currentLocale.value)
+  const route = useRoute()
 
-  const t = computed(() => translations[currentLocale.value])
+  const locale = computed<Locale>(() => localeFromPath(route?.path))
+
+  const t = computed(() => translations[locale.value])
 
   function setLocale(l: Locale) {
-    currentLocale.value = l
-    localStorage.setItem('locale', l)
-    document.documentElement.lang = l
+    if (isBrowser) {
+      try {
+        localStorage.setItem('locale', l)
+      } catch {
+        /* ignore (private mode, etc.) */
+      }
+      document.documentElement.lang = l
+    }
   }
 
   function toggleLocale() {
-    setLocale(currentLocale.value === 'en' ? 'es' : 'en')
+    setLocale(locale.value === 'en' ? 'es' : 'en')
   }
 
   return { locale, t, setLocale, toggleLocale }
 }
+
+export { localeFromPath }

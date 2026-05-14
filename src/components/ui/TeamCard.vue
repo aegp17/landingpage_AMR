@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{
+import { computed } from 'vue'
+
+const props = defineProps<{
   name: string
   role: string
   description: string
@@ -7,12 +9,19 @@ defineProps<{
   image: string
   linkedin?: string
 }>()
+
+// Derive the WebP path by swapping .jpg/.jpeg extensions. Falls back to the
+// original `image` (the <img> below) if no extension match is found.
+const webpSrc = computed(() => props.image.replace(/\.(jpe?g)(\?.*)?$/i, '.webp$2'))
 </script>
 
 <template>
   <div class="team-card">
     <div class="avatar">
-      <img :src="image" :alt="name" width="180" height="180" loading="lazy" />
+      <picture>
+        <source :srcset="webpSrc" type="image/webp" />
+        <img :src="image" :alt="name" width="180" height="180" loading="lazy" />
+      </picture>
     </div>
     <h3>{{ name }}</h3>
     <p class="role">{{ role }}</p>
@@ -62,6 +71,12 @@ defineProps<{
   margin: 0 auto 1.25rem;
   background: rgba(99, 102, 241, 0.06);
   border: 3px solid rgba(99, 102, 241, 0.25);
+}
+
+.avatar picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .avatar img {

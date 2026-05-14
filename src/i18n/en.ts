@@ -243,9 +243,40 @@ export default {
     readMore: 'Read more',
     close: 'Close',
     reference: 'Reference',
+    back: 'Back to home',
     ctaTitle: 'Want to apply this to your business?',
     ctaSubtitle: "Tell us about your challenge and we'll help you scope a clear, viable solution.",
     ctaButton: "Let's talk",
+  },
+  faq: {
+    title: 'Frequently asked questions',
+    subtitle: 'Quick answers to what most clients ask before we start working together.',
+    items: [
+      {
+        q: 'How do we know if an AI investment is worth it for our business?',
+        a: 'That is exactly what our Discover phase is built for: we quantify expected value, operational savings, financial impact, and risk reduction in a Business Value Case before any build commitment. You leave that stage with a clear go / no-go and a prioritized roadmap — not a sales pitch.',
+      },
+      {
+        q: "What's a typical timeline for a pilot or MVP?",
+        a: 'A Pilot / MVP Build typically runs 4 – 8 weeks, executed in short sprints with frequent demos and a multidimensional validation against technical, operational, financial, and adoption metrics. If you need clarity first, an Advisory Sprint takes only 1 – 2 weeks.',
+      },
+      {
+        q: 'How do you handle data privacy, security, and model risk?',
+        a: 'Governance is a cross-cutting layer applied in every phase, not a final checkbox. We cover data privacy, access control and encryption, bias and robustness evaluation, human-in-the-loop on critical decisions, explainability, prompt-injection protection, drift monitoring, and auditable compliance documentation.',
+      },
+      {
+        q: 'Do you work with companies outside Spain or Latin America?',
+        a: "Yes — we operate remote-first and work with clients worldwide. Our team is based across Spain and Latin America and we run engagements in English and Spanish, adapting to your team's timezone and meeting cadence.",
+      },
+      {
+        q: 'Which industries have you worked with?',
+        a: 'We have delivered work across energy, healthcare, finance, marketing, retail, manufacturing, education, logistics, and sports. The framework is industry-agnostic; what changes is the domain knowledge we bring in for the Discover and Design phases.',
+      },
+      {
+        q: 'How do you scope and price engagements?',
+        a: 'We price per modality: Advisory Sprint (fast diagnosis), Pilot / MVP Build (prove real value), or Implementation & Scale (production and operation). Wherever possible we work with fixed scope and fixed fee so you know the investment upfront before committing.',
+      },
+    ],
   },
   ctaBanner: {
     title: "Let's build something together",

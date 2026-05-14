@@ -1,27 +1,29 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
 import AppHeader from './components/layout/AppHeader.vue'
 import AppFooter from './components/layout/AppFooter.vue'
-import HeroSection from './components/sections/HeroSection.vue'
-import ServicesSection from './components/sections/ServicesSection.vue'
-import ProcessSection from './components/sections/ProcessSection.vue'
-import TeamSection from './components/sections/TeamSection.vue'
-import SkillsSection from './components/sections/SkillsSection.vue'
-import ResearchSection from './components/sections/ResearchSection.vue'
-import CtaBanner from './components/sections/CtaBanner.vue'
-import ContactSection from './components/sections/ContactSection.vue'
+import { localeFromPath } from './i18n'
+
+const route = useRoute()
+
+// Keep <html lang> in sync on the client. useHead already does this per-route,
+// but on the very first paint (before the page-level useHead runs) we'd flash
+// the wrong value if the static HTML didn't already match. vite-ssg renders the
+// correct lang per route, so this is mostly a safety net for client nav.
+if (typeof document !== 'undefined') {
+  watch(
+    () => route.path,
+    (p) => {
+      document.documentElement.lang = localeFromPath(p)
+    },
+    { immediate: true },
+  )
+}
 </script>
 
 <template>
   <AppHeader />
-  <main>
-    <HeroSection />
-    <ServicesSection />
-    <ProcessSection />
-    <TeamSection />
-    <SkillsSection />
-    <ResearchSection />
-    <CtaBanner />
-    <ContactSection />
-  </main>
+  <router-view />
   <AppFooter />
 </template>
