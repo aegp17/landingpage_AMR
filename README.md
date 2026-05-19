@@ -148,13 +148,12 @@ Al cambiar de servidor o dominio, revisa estos archivos:
 | `public/robots.txt` | URL del sitemap |
 | `public/sitemap.xml` | `<loc>` URL |
 | `public/CNAME` | dominio personalizado de GitHub Pages |
-| `src/components/ui/ContactForm.vue` | Hash de FormSubmit (ver nota abajo) |
+| `src/components/ui/ContactForm.vue` | Access key de Web3Forms (ver nota abajo) |
 
 ## Formulario de contacto
 
-El formulario usa [FormSubmit.co](https://formsubmit.co). El endpoint actual usa un hash placeholder. Para activarlo:
+El formulario usa [Web3Forms](https://web3forms.com). El `access_key` está embebido en `ContactForm.vue` (es público por diseño y va vinculado al email destino registrado en Web3Forms). Para rotarlo:
 
-1. Cambia temporalmente el hash por tu email real en `ContactForm.vue`.
-2. Envía un formulario de prueba.
-3. Confirma tu email con el link que recibes de FormSubmit.
-4. FormSubmit te dará un hash — reemplázalo en el código para no exponer tu email en el JS.
+1. Genera una nueva access key en https://web3forms.com con el email destino.
+2. Reemplaza el valor de `access_key` en `ContactForm.vue`.
+3. Actualiza la `connect-src` en `index.html` si Web3Forms cambia su dominio (`api.web3forms.com`).
