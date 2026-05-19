@@ -395,7 +395,8 @@ function scrollToContact() {
 
 /* Governance band */
 .governance {
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+  background: linear-gradient(135deg, #f5f3ff 0%, #eef2ff 100%);
+  border: 1px solid rgba(99, 102, 241, 0.16);
   border-radius: 20px;
   padding: 2.75rem 2.5rem;
   margin-bottom: 4rem;
@@ -411,7 +412,7 @@ function scrollToContact() {
   width: 400px;
   height: 400px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.10) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -427,21 +428,21 @@ function scrollToContact() {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #a5b4fc;
+  color: #6366f1;
   margin-bottom: 0.85rem;
 }
 
 .governance-head h3 {
   font-size: 1.55rem;
   font-weight: 700;
-  color: #fff;
+  color: #0f172a;
   letter-spacing: -0.015em;
   margin: 0 0 0.5rem;
 }
 
 .governance-head p {
   font-size: 0.98rem;
-  color: rgba(226, 232, 240, 0.78);
+  color: #475569;
   margin: 0;
   max-width: 560px;
   margin: 0 auto;
@@ -460,38 +461,38 @@ function scrollToContact() {
   gap: 0.85rem;
   padding: 1rem 1.1rem;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: background 0.25s, border-color 0.25s, transform 0.25s;
+  background: #ffffff;
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
 }
 
 .pillar:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(165, 180, 252, 0.3);
+  border-color: rgba(99, 102, 241, 0.3);
   transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.10);
 }
 
 .pillar-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #a5b4fc 100%);
   margin-top: 0.45rem;
   flex-shrink: 0;
-  box-shadow: 0 0 12px rgba(165, 180, 252, 0.5);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.35);
 }
 
 .pillar h4 {
   font-size: 0.92rem;
   font-weight: 600;
-  color: #fff;
+  color: #0f172a;
   margin: 0 0 0.2rem;
   letter-spacing: -0.005em;
 }
 
 .pillar p {
   font-size: 0.82rem;
-  color: rgba(226, 232, 240, 0.72);
+  color: #475569;
   margin: 0;
   line-height: 1.5;
 }
