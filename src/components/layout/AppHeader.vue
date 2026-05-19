@@ -27,6 +27,14 @@ function scrollTo(id: string, e?: Event) {
   }
 }
 
+function onLogoClick(e: MouseEvent) {
+  mobileOpen.value = false
+  if (isHome.value) {
+    e.preventDefault()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
+
 function switchLocale() {
   const target = locale.value === 'en' ? 'es' : 'en'
   const current = route.path
@@ -54,7 +62,7 @@ void localeFromPath
 <template>
   <header class="app-header">
     <div class="header-inner">
-      <router-link class="logo" :to="homeHref" aria-label="Agentic-AMR home">
+      <router-link class="logo" :to="homeHref" aria-label="Agentic-AMR home" @click="onLogoClick">
         <picture class="logo-mark">
           <source srcset="/logo.webp" type="image/webp" />
           <img src="/logo.png" alt="" width="36" height="36" decoding="async" />
