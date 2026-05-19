@@ -32,8 +32,8 @@ async function handleSubmit() {
         email: form.value.email,
         company: form.value.company,
         message: form.value.message,
-        subject: 'Ramyx Lab — Nuevo contacto desde la web',
-        from_name: 'Ramyx Lab Website',
+        subject: 'Nuevo lead para agentic-AMR 🚀',
+        from_name: 'agentic-AMR Website',
         botcheck: '',
       }),
     })
