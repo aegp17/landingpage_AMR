@@ -27,7 +27,7 @@ Node 20 (matches CI in `.github/workflows/deploy.yml`). No test runner or linter
 
 **i18n** (`src/i18n/`): a custom `useI18n` composable in `src/i18n/index.ts` (not `src/composables/`) with `en.ts` and `es.ts` dictionaries. Locale is persisted in `localStorage` and also written to `document.documentElement.lang`. All user-facing copy must come from the dictionaries via `t.section.key` — do not hardcode strings in components.
 
-**Contact form** (`src/components/ui/ContactForm.vue`): submits JSON to `https://formsubmit.co/ajax/<hash>`. The hash in the repo is a placeholder — to activate against a real inbox, follow the activation steps in `README.md` ("Formulario de contacto").
+**Contact form** (`src/components/ui/ContactForm.vue`): submits JSON to `https://api.web3forms.com/submit` with an `access_key` field. The access key is public by design (Web3Forms binds it to the destination email server-side). If the key or endpoint changes, also update `connect-src` in `index.html`'s CSP. See `README.md` ("Formulario de contacto") for rotation steps.
 
 **SEO**: meta tags, hreflang, CSP, and JSON-LD (`Organization`, `WebSite`) are in `index.html`. `src/main.ts` additionally injects a `BlogPosting` JSON-LD `<script>` for each research post at boot, so adding a post automatically adds its structured data. `public/robots.txt` is intentionally restrictive — only Googlebot and Bingbot are allowed; AI scrapers and `User-agent: *` are explicitly disallowed. Do not "fix" that. The `noscript` block in `index.html` carries a static summary of services/team/research for non-JS crawlers — keep it in sync with major content changes.
 

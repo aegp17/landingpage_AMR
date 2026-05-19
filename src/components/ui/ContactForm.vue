@@ -20,24 +20,27 @@ async function handleSubmit() {
   status.value = 'idle'
 
   try {
-    const response = await fetch('https://formsubmit.co/ajax/b47c1e2a6f8d3e5a9c0b4d7f1e3a5c8d', {
+    const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
       body: JSON.stringify({
+        access_key: 'a76bd4cc-bc79-471e-ab08-e1fe04f2cacf',
         name: form.value.name,
         email: form.value.email,
         company: form.value.company,
         message: form.value.message,
-        _subject: 'Ramyx Lab — Nuevo contacto desde la web',
-        _honey: '',
-        _captcha: 'true',
+        subject: 'Ramyx Lab — Nuevo contacto desde la web',
+        from_name: 'Ramyx Lab Website',
+        botcheck: '',
       }),
     })
 
-    if (response.ok) {
+    const data = await response.json().catch(() => null)
+
+    if (response.ok && data?.success) {
       status.value = 'success'
       form.value = { name: '', email: '', company: '', message: '' }
     } else {
