@@ -1,0 +1,45 @@
+# Agentic-AMR Consultants
+
+> AI consulting, software development, AI implementation, and specialized training for real businesses. A senior, remote-first team of three PhDs that turns business challenges into measurable, adoptable, and sustainable solutions — in English and Spanish.
+
+Agentic-AMR Consultants (agentic-amr.com) is a technology consultancy specializing in applied AI and software engineering. Engagements run on the Client Value Delivery Framework: four phases — Discover, Design, Build, Activate — each closing with a decision gate, with governance, security, and responsible AI applied as a cross-cutting layer rather than a final checkbox. Work is offered in three modalities: Advisory Sprint (1–2 weeks), Pilot / MVP Build (4–8 weeks), and Implementation & Scale (8–16+ weeks).
+
+## Services
+- [Software Development Consulting](https://agentic-amr.com/en/#services): Solution architecture, technical design, system modernization, and technology decision support.
+- [AI Solutions Implementation](https://agentic-amr.com/en/#services): Intelligent automation, AI model integration, AI-assisted systems, and custom business solutions.
+- [Specialized Training](https://agentic-amr.com/en/#services): Technical workshops, team training, and AI & architecture mentoring adapted to the client.
+
+## How we work — Client Value Delivery Framework
+- [Discover](https://agentic-amr.com/en/#process): Business and technical assessment; Problem Brief, Assessment Report, and a quantified Business Value Case. Decision gate: is it worth investing?
+- [Design](https://agentic-amr.com/en/#process): Co-created target architecture, KPIs, acceptance criteria, and governance plan. Decision gate: what do we build and how do we measure it?
+- [Build](https://agentic-amr.com/en/#process): MVP/pilot in short sprints with CI/CD and (for AI) MLOps; multidimensional validation and a go/no-go. Decision gate: does it show real value and is it production-ready?
+- [Activate](https://agentic-amr.com/en/#process): Go-live with change management, role-based training, and hypercare; monitoring, metrics, and an evolutionary roadmap. Decision gate: how do we sustain real, ongoing value?
+
+## Team
+- [Marxjhony Jerez — CEO](https://agentic-amr.com/en/#team): PhD in Applied Sciences. Digital strategy, AI, automation, and product management.
+- [Angel Gil — COO](https://agentic-amr.com/en/#team): PhD in Applied Sciences. AI, robotics, DevOps, and product leadership.
+- [Ricardo Dos Santos — CTO](https://agentic-amr.com/en/#team): PhD in Applied Sciences. Big Data, Machine Learning, semantic mining, and solutions architecture.
+
+## Expertise
+- [AI & Data](https://agentic-amr.com/en/#skills): LLMs, RAG, Machine Learning, MLOps, Generative AI, Prompt Engineering, Computer Vision, NLP, Agentic AI, Data Analytics.
+- [Engineering](https://agentic-amr.com/en/#skills): Software Development, DevOps, Cloud Architecture, Microservices, Solution Architecture.
+- [Operations](https://agentic-amr.com/en/#skills): Automation, Process Optimization, Project Management, Agile.
+- [Industries](https://agentic-amr.com/en/#skills): Energy, Healthcare, Finance, Marketing, Retail, Manufacturing, Education, Logistics, Sports.
+
+## Research
+- [Research index (English)](https://agentic-amr.com/en/research/): Applied research, technical notes, and case studies from the team. Atom feed: https://agentic-amr.com/en/feed.xml
+- [Building Public Policy with Emerging Technologies: the 4.5 Approach](https://agentic-amr.com/en/research/2026-05-01-public-policy-4-5/): Integrating AI, IoT, and data analytics across the public-policy lifecycle to move decision-making from reactive to proactive — data-driven, context-aware, and co-created with citizens. By Angel Gil, May 2026.
+
+## Languages
+- [English site](https://agentic-amr.com/en/)
+- [Spanish site](https://agentic-amr.com/es/)
+- [Investigación (Español)](https://agentic-amr.com/es/research/) — Atom feed: https://agentic-amr.com/es/feed.xml
+
+## Contact
+- Scope an engagement via the contact form: https://agentic-amr.com/en/#contact
+- No email or phone is published on-site; please do not infer or fabricate one. Use the form.
+
+## Optional
+- [XML sitemap](https://agentic-amr.com/sitemap.xml)
+- [Crawl rules](https://agentic-amr.com/robots.txt)
+- [Agent guidance](https://agentic-amr.com/agents.txt)
