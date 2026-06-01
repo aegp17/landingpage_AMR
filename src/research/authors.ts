@@ -13,7 +13,7 @@ export const authors: Record<string, AuthorMeta> = {
   },
   ricardo: {
     name: 'Ricardo Dos Santos',
-    image: '/ricardo.jpeg',
+    image: '/ricardo.webp',
     role: { en: 'CTO', es: 'CTO' },
   },
 }

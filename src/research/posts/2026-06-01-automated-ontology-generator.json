@@ -1,0 +1,30 @@
+{
+  "date": "2026-06-01",
+  "author": "ricardo",
+  "title": {
+    "en": "Automated Ontology Generator System Based on Linked Data",
+    "es": "Sistema Generador Automático de Ontologías basado en Datos Enlazados"
+  },
+  "excerpt": {
+    "en": "AOGS autonomously creates and populates ontologies using Linked Data and the MEDAWEDE methodology. Validated in domains such as COVID-19 and Energy Management, it reaches precision, recall, and F-measure scores between 0.7 and 0.9, outperforming most existing systems.",
+    "es": "El AOGS crea y puebla ontologías de forma autónoma mediante Datos Enlazados y la metodología MEDAWEDE. Validado en dominios como COVID-19 y Gestión Energética, alcanza métricas de precisión, exhaustividad y medida F entre 0.7 y 0.9, superando a la mayoría de los sistemas existentes."
+  },
+  "body": {
+    "en": [
+      "The Automated Ontology Generator System (AOGS) is an innovative solution designed to create and populate ontologies autonomously using the Linked Data paradigm. By automating this process, the system dramatically reduces the time and effort traditionally required to build knowledge bases, freeing experts to focus on critical refinement and evaluation tasks. This tool is especially valuable for organizations that need to manage ontologies at scale and improve the integration of heterogeneous data for knowledge discovery.",
+      "At its technological core, AOGS is built on the MEDAWEDE methodology, which guides the process through stages of specification, modeling, generation, linking, and publication. The system stands out for its ability to perform semantic similarity searches and ontology alignment through weighting rules that evaluate the relationship between concepts based on perfect or partial matches. It also leverages the DBpedia Spotlight service to automatically enrich the ontology with external resource identifiers, ensuring an interconnected and global knowledge base.",
+      "The effectiveness of this proposal has been validated through case studies in highly relevant domains such as COVID-19 and Energy Management. In these applications, the system demonstrated its ability to extract and align hundreds of concepts from diverse sources while maintaining a consistent hierarchical structure verified by specialized tools. AOGS is not only robust but also versatile, showing potential applications in areas ranging from natural language processing and biomedicine to the Internet of Things (IoT).",
+      "In terms of quality, the system delivers exceptional results, with precision, recall, and F-measure metrics ranging between 0.7 and 0.9. Comparisons with other works in the technical literature reveal that AOGS significantly outperforms most existing systems in terms of performance and degree of automation. In conclusion, AOGS represents a fundamental step toward intelligent automation, providing a scalable architecture that guarantees precision and efficiency in the creation of digital knowledge assets."
+    ],
+    "es": [
+      "El Sistema Generador Automático de Ontologías (AOGS) es una solución innovadora diseñada para crear y poblar ontologías de forma autónoma utilizando el paradigma de Datos Enlazados (Linked Data). Al automatizar este proceso, el sistema reduce drásticamente el tiempo y el esfuerzo tradicionalmente requeridos para construir bases de conocimiento, permitiendo que los expertos se concentren en tareas críticas de refinamiento y evaluación. Esta herramienta es especialmente valiosa para organizaciones que necesitan gestionar ontologías a gran escala y mejorar la integración de datos heterogéneos para el descubrimiento de conocimiento.",
+      "El corazón tecnológico del AOGS se basa en la metodología MEDAWEDE, la cual guía el proceso a través de etapas de especificación, modelado, generación, vinculación y publicación. El sistema destaca por su capacidad de realizar búsquedas de similitud semántica y alineación ontológica mediante reglas de ponderación que evalúan la relación entre conceptos basándose en coincidencias perfectas o parciales. Además, utiliza el servicio DBpedia Spotlight para enriquecer automáticamente la ontología con identificadores de recursos externos, garantizando una base de conocimiento interconectada y global.",
+      "La eficacia de esta propuesta ha sido validada mediante casos de estudio en dominios de alta relevancia como el COVID-19 y la Gestión Energética. En estas aplicaciones, el sistema demostró su capacidad para extraer y alinear cientos de conceptos de fuentes diversas, manteniendo una estructura jerárquica consistente y verificada por herramientas especializadas. El AOGS no solo es robusto, sino también versátil, mostrando aplicaciones potenciales en áreas que van desde el procesamiento de lenguaje natural y la biomedicina hasta el Internet de las Cosas (IoT).",
+      "En términos de calidad, el sistema ofrece resultados excepcionales con métricas de precisión, exhaustividad y medida F (F-measure) que se sitúan entre 0.7 y 0.9. Las comparaciones con otros trabajos de la literatura técnica revelan que el AOGS supera significativamente a la mayoría de los sistemas existentes en términos de rendimiento y grado de automatización. En conclusión, AOGS muestra un avance fundamental hacia la automatización inteligente, proporcionando una arquitectura escalable que garantiza precisión y eficiencia en la creación de activos de conocimiento digital."
+    ]
+  },
+  "reference": {
+    "en": "R. Dos Santos, E. Puerto, and J. Aguilar, “Automated Ontology Generator System Based on Linked Data,” in 2023 XLIX Latin American Computing Conference (CLEI). IEEE, pp. 1–10, La Paz, Bolivia, 2023. https://doi.org/10.1109/CLEI60451.2023.10346110",
+    "es": "R. Dos Santos, E. Puerto y J. Aguilar, “Automated Ontology Generator System Based on Linked Data,” en 2023 XLIX Conferencia Latinoamericana en Informática (CLEI). IEEE, pp. 1–10, Ciudad de La Paz, Bolivia, 2023. https://doi.org/10.1109/CLEI60451.2023.10346110"
+  }
+}
