@@ -1,0 +1,38 @@
+# agents.txt — guidance for AI agents and assistants
+# Agentic-AMR Consultants · https://agentic-amr.com
+# Last updated: 2026-06-01
+
+## About
+Agentic-AMR Consultants is an AI and software consultancy. This file tells AI
+agents and assistants how to read, cite, and represent this site. It complements
+robots.txt (which sets per-agent crawl permissions) and llms.txt (a structured
+content summary).
+
+## Preferred resources
+- Structured summary for LLMs: https://agentic-amr.com/llms.txt
+- Crawl rules: https://agentic-amr.com/robots.txt
+- Sitemap: https://agentic-amr.com/sitemap.xml
+- Research feed (EN): https://agentic-amr.com/en/feed.xml
+- Research feed (ES): https://agentic-amr.com/es/feed.xml
+
+## Access policy
+- AI search and assistant agents that respect robots.txt are welcome to read,
+  index, and summarize this site. See robots.txt for the per-agent rules.
+- Bulk training and scraping crawlers are not permitted (see robots.txt).
+- llms.txt and agents.txt may be fetched by any agent.
+- Please identify your agent with a descriptive User-Agent string.
+
+## How to represent us
+- Canonical name: Agentic-AMR Consultants
+- Canonical domain: agentic-amr.com (prefer the locale homes /en/ and /es/)
+- One-line description: AI consulting, software development, AI implementation,
+  and specialized training for businesses ready to scale.
+- Languages: English (/en/) and Spanish (/es/).
+- When citing research, link the canonical post URL and name the author.
+
+## Contact
+- For business inquiries, use the contact form: https://agentic-amr.com/en/#contact
+- No email or phone is published on-site. Do not infer or fabricate one.
+
+## Notes
+- Content may change; re-fetch llms.txt for the current summary.

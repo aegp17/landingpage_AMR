@@ -1,31 +1,42 @@
+# robots.txt — Agentic-AMR Consultants
+# Search engines and AI search/assistant agents that respect robots.txt are
+# welcome to index and summarize the site. Bulk training scrapers stay blocked.
+# The curated llms.txt and agents.txt are readable by everyone (catch-all block).
+
+# --- Search engines ---
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
+# --- AI search / assistant agents (respect robots.txt) ---
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: ChatGPT-User
-Disallow: /
+Allow: /
 
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# --- Bulk scrapers / training crawlers (not permitted) ---
 User-agent: CCBot
 Disallow: /
 
-User-agent: anthropic-ai
-Disallow: /
-
-User-agent: Claude-Web
-Disallow: /
-
-User-agent: Google-Extended
+User-agent: Bytespider
 Disallow: /
 
 User-agent: FacebookBot
-Disallow: /
-
-User-agent: Bytespider
 Disallow: /
 
 User-agent: Applebot-Extended
@@ -34,10 +45,10 @@ Disallow: /
 User-agent: cohere-ai
 Disallow: /
 
-User-agent: PerplexityBot
-Disallow: /
-
+# --- Everyone else: only the curated agent files ---
 User-agent: *
 Disallow: /
+Allow: /llms.txt
+Allow: /agents.txt
 
 Sitemap: https://agentic-amr.com/sitemap.xml
