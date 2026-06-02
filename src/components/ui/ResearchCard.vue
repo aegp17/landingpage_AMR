@@ -1,15 +1,20 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { joinAuthorNames } from '../../research'
 import type { AuthorMeta, Locale } from '../../research'
 
-defineProps<{
+const props = defineProps<{
   to: string
   title: string
   excerpt: string
   date: string
-  author: AuthorMeta
+  authors: AuthorMeta[]
   locale: Locale
   readMoreLabel: string
 }>()
+
+const authorNames = computed(() => joinAuthorNames(props.authors.map((a) => a.name), props.locale))
+const authorRoles = computed(() => props.authors.map((a) => a.role[props.locale]).join(' · '))
 
 function formatDate(iso: string, locale: Locale): string {
   const d = new Date(iso + 'T00:00:00')
@@ -24,10 +29,21 @@ function formatDate(iso: string, locale: Locale): string {
 <template>
   <router-link :to="to" class="research-card">
     <div class="meta">
-      <img :src="author.image" :alt="author.name" class="avatar" width="40" height="40" loading="lazy" />
+      <div class="avatars">
+        <img
+          v-for="(author, i) in authors"
+          :key="i"
+          :src="author.image"
+          :alt="author.name"
+          class="avatar"
+          width="40"
+          height="40"
+          loading="lazy"
+        />
+      </div>
       <div class="byline">
-        <span class="name">{{ author.name }}</span>
-        <span class="role">{{ author.role[locale] }} · {{ formatDate(date, locale) }}</span>
+        <span class="name">{{ authorNames }}</span>
+        <span class="role">{{ authorRoles }} · {{ formatDate(date, locale) }}</span>
       </div>
     </div>
     <h3>{{ title }}</h3>
@@ -64,13 +80,24 @@ function formatDate(iso: string, locale: Locale): string {
   gap: 0.75rem;
 }
 
+.avatars {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(99, 102, 241, 0.25);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1.5px rgba(99, 102, 241, 0.3);
   flex-shrink: 0;
+}
+
+.avatars .avatar:not(:first-child) {
+  margin-left: -12px;
 }
 
 .byline {

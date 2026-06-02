@@ -207,7 +207,12 @@ export interface ResearchIndexPost {
   title: string
   description: string
   datePublished: string
-  authorName: string
+  authorNames: string[]
+}
+
+function personOrPeople(names: string[]) {
+  const people = names.map((name) => ({ '@type': 'Person', name }))
+  return people.length === 1 ? people[0] : people
 }
 
 export function researchIndexJsonLd(
@@ -233,7 +238,7 @@ export function researchIndexJsonLd(
       headline: p.title,
       description: p.description,
       datePublished: p.datePublished,
-      author: { '@type': 'Person', name: p.authorName },
+      author: personOrPeople(p.authorNames),
     })),
   }
 }
@@ -246,9 +251,13 @@ export function postJsonLd(args: {
   title: string
   description: string
   datePublished: string
-  authorName: string
-  authorRole: string
+  authors: ReadonlyArray<{ name: string; role: string }>
 }) {
+  const people = args.authors.map((a) => ({
+    '@type': 'Person',
+    name: a.name,
+    jobTitle: a.role,
+  }))
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -261,11 +270,7 @@ export function postJsonLd(args: {
     mainEntityOfPage: { '@type': 'WebPage', '@id': args.postUrl },
     url: args.postUrl,
     image: OG_IMAGE,
-    author: {
-      '@type': 'Person',
-      name: args.authorName,
-      jobTitle: args.authorRole,
-    },
+    author: people.length === 1 ? people[0] : people,
     publisher: { '@id': `${SITE_URL}/#organization` },
   }
 }

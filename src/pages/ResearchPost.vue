@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from '../i18n'
-import { posts, authors } from '../research'
+import { posts, authorsOf, joinAuthorNames } from '../research'
 import type { Post } from '../research'
 import { useRouteHead, postJsonLd } from '../seo/head'
 import { homePath, postPath, absoluteUrl } from '../seo/site'
@@ -18,11 +18,13 @@ const slug = computed(() => {
 
 const post = computed<Post | undefined>(() => posts.find((p) => p.id === slug.value))
 
-const author = computed(() => {
+const postAuthors = computed(() => {
   const p = post.value
-  if (!p) return null
-  return authors[p.author] ?? null
+  if (!p) return []
+  return authorsOf(p)
 })
+
+const authorNames = computed(() => joinAuthorNames(postAuthors.value.map((a) => a.name), locale.value))
 
 function formatDate(iso: string, l: 'en' | 'es'): string {
   const d = new Date(iso + 'T00:00:00')
@@ -36,8 +38,8 @@ function formatDate(iso: string, l: 'en' | 'es'): string {
 useRouteHead(
   computed(() => {
     const p = post.value
-    const a = author.value
-    if (!p || !a) {
+    const pa = postAuthors.value
+    if (!p || !pa.length) {
       return {
         locale: locale.value,
         path: route.path || homePath(locale.value),
@@ -68,8 +70,7 @@ useRouteHead(
           title: p.title[locale.value],
           description: p.excerpt[locale.value],
           datePublished: p.date,
-          authorName: a.name,
-          authorRole: a.role[locale.value],
+          authors: pa.map((a) => ({ name: a.name, role: a.role[locale.value] })),
         }),
       ],
     }
@@ -78,23 +79,29 @@ useRouteHead(
 </script>
 
 <template>
-  <NotFound v-if="!post || !author" />
+  <NotFound v-if="!post || !postAuthors.length" />
   <main v-else class="research-post">
     <article class="container">
       <router-link :to="homePath(locale)" class="back-link">← {{ t.research.back }}</router-link>
       <header class="post-header">
         <div class="byline">
-          <img
-            :src="author.image"
-            :alt="author.name"
-            class="avatar"
-            width="56"
-            height="56"
-            loading="lazy"
-          />
+          <div class="avatars">
+            <img
+              v-for="(author, i) in postAuthors"
+              :key="i"
+              :src="author.image"
+              :alt="author.name"
+              class="avatar"
+              width="56"
+              height="56"
+              loading="lazy"
+            />
+          </div>
           <div>
-            <div class="name">{{ author.name }}</div>
-            <div class="role">{{ author.role[locale] }} · {{ formatDate(post.date, locale) }}</div>
+            <div class="name">{{ authorNames }}</div>
+            <div class="role">
+              {{ postAuthors.map((a) => a.role[locale]).join(' · ') }} · {{ formatDate(post.date, locale) }}
+            </div>
           </div>
         </div>
         <h1>{{ post.title[locale] }}</h1>
@@ -161,12 +168,23 @@ useRouteHead(
   margin-bottom: 1.25rem;
 }
 
+.avatars {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .avatar {
   width: 56px;
   height: 56px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(99, 102, 241, 0.25);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+
+.avatars .avatar:not(:first-child) {
+  margin-left: -16px;
 }
 
 .name {

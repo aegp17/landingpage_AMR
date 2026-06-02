@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from '../i18n'
-import { posts, authors } from '../research'
-import type { Post } from '../research'
+import { posts, authorsOf } from '../research'
 import ResearchCard from '../components/ui/ResearchCard.vue'
 import { useRouteHead, researchIndexJsonLd } from '../seo/head'
 import { researchIndexPath, feedPath, absoluteUrl } from '../seo/site'
 
 const { t, locale } = useI18n()
-
-function authorOf(post: Post) {
-  return authors[post.author] ?? authors[Object.keys(authors)[0]]
-}
 
 const sortedPosts = computed(() => posts)
 
@@ -34,7 +29,7 @@ useRouteHead(
           title: p.title[locale.value],
           description: p.excerpt[locale.value],
           datePublished: p.date,
-          authorName: authorOf(p).name,
+          authorNames: authorsOf(p).map((a) => a.name),
         })),
         t.value.research.indexTitle,
         t.value.research.indexDescription,
@@ -65,7 +60,7 @@ useRouteHead(
           :title="post.title[locale]"
           :excerpt="post.excerpt[locale]"
           :date="post.date"
-          :author="authorOf(post)"
+          :authors="authorsOf(post)"
           :locale="locale"
           :read-more-label="t.research.readMore"
         />

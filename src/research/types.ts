@@ -8,7 +8,10 @@ export interface AuthorMeta {
 
 export interface PostFile {
   date: string
-  author: string
+  /** Legacy single-author key. Still supported; `authors` takes precedence. */
+  author?: string
+  /** One or more author keys (from `authors.ts`). Use for multi-author posts. */
+  authors?: string[]
   title: Record<Locale, string>
   excerpt: Record<Locale, string>
   body: Record<Locale, string[]>
