@@ -273,8 +273,8 @@ export default {
         a: 'Governance is a cross-cutting layer applied in every phase, not a final checkbox. We cover data privacy, access control and encryption, bias and robustness evaluation, human-in-the-loop on critical decisions, explainability, prompt-injection protection, drift monitoring, and auditable compliance documentation.',
       },
       {
-        q: 'Do you work with companies outside Spain or Latin America?',
-        a: "Yes — we operate remote-first and work with clients worldwide. Our team is based across Spain and Latin America and we run engagements in English and Spanish, adapting to your team's timezone and meeting cadence.",
+        q: 'Do you work with companies outside the US or Latin America?',
+        a: "Yes — we operate remote-first and work with clients worldwide. Our team is based across the US and Latin America and we run engagements in English and Spanish, adapting to your team's timezone and meeting cadence.",
       },
       {
         q: 'Which industries have you worked with?',

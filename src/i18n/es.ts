@@ -273,8 +273,8 @@ export default {
         a: 'La gobernanza es una capa transversal aplicada en todas las fases, no un paso final. Cubrimos privacidad de datos, control de acceso y cifrado, evaluación de sesgo y robustez, human-in-the-loop en decisiones críticas, explicabilidad, protección contra inyección de prompts, monitoreo de drift y documentación auditable para compliance.',
       },
       {
-        q: '¿Trabajan con empresas fuera de España o Latinoamérica?',
-        a: 'Sí — operamos en modalidad remota y trabajamos con clientes en cualquier parte del mundo. Nuestro equipo está distribuido entre España y Latinoamérica y ejecutamos proyectos en español e inglés, adaptándonos a la zona horaria y al ritmo de reuniones de tu equipo.',
+        q: '¿Trabajan con empresas fuera de EE. UU. o Latinoamérica?',
+        a: 'Sí — operamos en modalidad remota y trabajamos con clientes en cualquier parte del mundo. Nuestro equipo está distribuido entre EE. UU. y Latinoamérica y ejecutamos proyectos en español e inglés, adaptándonos a la zona horaria y al ritmo de reuniones de tu equipo.',
       },
       {
         q: '¿En qué industrias tienen experiencia?',
