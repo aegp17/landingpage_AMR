@@ -14,7 +14,14 @@ interface PostRecord {
   date: string
   title: { en: string; es: string }
   excerpt: { en: string; es: string }
-  author: string
+  author?: string
+  authors?: string[]
+}
+
+function authorKeysOf(p: Pick<PostRecord, 'author' | 'authors'>): string[] {
+  if (p.authors?.length) return p.authors
+  if (p.author) return [p.author]
+  return []
 }
 
 function readPosts(): PostRecord[] {
@@ -82,7 +89,13 @@ function buildAtomFeed(locale: 'en' | 'es', posts: PostRecord[], authors: Record
   const entries = posts
     .map((p) => {
       const postUrl = `${SITE_URL}/${locale}/research/${p.id}/`
-      const authorName = authors[p.author]?.name ?? 'Agentic-AMR Consultants'
+      const authorNames = authorKeysOf(p)
+        .map((key) => authors[key]?.name)
+        .filter((name): name is string => Boolean(name))
+      const resolvedNames = authorNames.length ? authorNames : ['Agentic-AMR Consultants']
+      const authorEls = resolvedNames
+        .map((name) => `    <author><name>${xmlEscape(name)}</name></author>`)
+        .join('\n')
       const published = new Date(p.date + 'T00:00:00Z').toISOString()
       return (
         `  <entry>\n` +
@@ -91,7 +104,7 @@ function buildAtomFeed(locale: 'en' | 'es', posts: PostRecord[], authors: Record
         `    <id>${postUrl}</id>\n` +
         `    <updated>${published}</updated>\n` +
         `    <published>${published}</published>\n` +
-        `    <author><name>${xmlEscape(authorName)}</name></author>\n` +
+        `${authorEls}\n` +
         `    <summary>${xmlEscape(p.excerpt[locale])}</summary>\n` +
         `  </entry>`
       )

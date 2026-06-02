@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from '../../i18n'
-import { posts, authors } from '../../research'
-import type { Post } from '../../research'
+import { posts, authorsOf } from '../../research'
 import SectionTitle from '../ui/SectionTitle.vue'
 import ResearchCard from '../ui/ResearchCard.vue'
 import { postPath, researchIndexPath } from '../../seo/site'
 
 const { t, locale } = useI18n()
-
-function authorOf(post: Post) {
-  return authors[post.author] ?? authors[Object.keys(authors)[0]]
-}
 
 const sortedPosts = computed(() => posts.slice(0, 3))
 </script>
@@ -28,7 +23,7 @@ const sortedPosts = computed(() => posts.slice(0, 3))
           :title="post.title[locale]"
           :excerpt="post.excerpt[locale]"
           :date="post.date"
-          :author="authorOf(post)"
+          :authors="authorsOf(post)"
           :locale="locale"
           :read-more-label="t.research.readMore"
         />
