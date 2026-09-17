@@ -27,6 +27,11 @@ jobs:
       - run: npm install
       - run: npm run build
 
+      # Private apps live outside the landing page code (apps/) and are copied
+      # verbatim into the published site. They are not linked from anywhere.
+      - name: Add private apps
+        run: cp -R apps/hearth/site dist/hearth-ac5490
+
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
