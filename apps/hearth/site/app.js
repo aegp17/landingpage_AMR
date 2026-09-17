@@ -6,6 +6,7 @@ import {
   dayKey,
   dayLabel,
   defaultState,
+  formatBuild,
   formatClock,
   formatDuration,
   formatTime,
@@ -24,6 +25,7 @@ import {
   toBackup,
   toLocalInputValue,
 } from './core.js'
+import { BUILD } from './version.js'
 
 const STORAGE_KEY = 'hearth.v1'
 const HISTORY_PAGE = 30
@@ -68,6 +70,10 @@ const el = {
   exportBtn: $('exportBtn'),
   importInput: $('importInput'),
   clearBtn: $('clearBtn'),
+  aboutBtn: $('aboutBtn'),
+  aboutRow: $('aboutRow'),
+  aboutDialog: $('aboutDialog'),
+  aboutVersion: $('aboutVersion'),
 }
 
 let state = defaultState()
@@ -331,9 +337,12 @@ function openDialog(dialog) {
 function closeDialog(dialog) {
   if (typeof dialog.close === 'function') dialog.close()
   else dialog.removeAttribute('open')
+  applyPendingUpdate()
 }
 
 for (const dialog of document.querySelectorAll('dialog')) {
+  // Escape closes a dialog without going through closeDialog.
+  dialog.addEventListener('close', applyPendingUpdate)
   dialog.addEventListener('click', (event) => {
     if (event.target.closest('[data-close]')) return closeDialog(dialog)
     // A click on the backdrop lands on the <dialog> itself, outside its box.
@@ -399,6 +408,19 @@ function renderGoalOptions() {
 el.goalBtn.addEventListener('click', () => {
   renderGoalOptions()
   openDialog(el.goalDialog)
+})
+
+// About
+
+function openAbout() {
+  el.aboutVersion.textContent = formatBuild(BUILD)
+  openDialog(el.aboutDialog)
+}
+
+el.aboutBtn.addEventListener('click', openAbout)
+el.aboutRow.addEventListener('click', () => {
+  closeDialog(el.settingsDialog)
+  openAbout()
 })
 
 // Settings and backup
@@ -498,10 +520,77 @@ load()
 render()
 tick()
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {
-      /* the app works without offline support */
-    })
-  })
+// ---------------------------------------------------------------- updates
+//
+// Every deploy stamps a new build id into version.js and version.json. The app
+// compares its own id with the one on the server and, when they differ,
+// registers the worker for the new build, which downloads it and takes over.
+// The page then reloads itself, unless a dialog is open.
+
+const UPDATED_FLAG = 'hearth.updatedFrom'
+const UPDATE_CHECK_MS = 30 * 60 * 1000
+const isStamped = (id) => typeof id === 'string' && /^[0-9a-f]{7,40}$/.test(id)
+let updatePending = false
+let reloading = false
+
+function applyPendingUpdate() {
+  if (!updatePending || reloading || document.querySelector('dialog[open]')) return
+  reloading = true
+  try {
+    sessionStorage.setItem(UPDATED_FLAG, BUILD.id)
+  } catch {
+    /* the toast after reloading is only a nicety */
+  }
+  location.reload()
 }
+
+function registerWorker(buildId) {
+  return navigator.serviceWorker.register(`./sw.js?v=${encodeURIComponent(buildId)}`)
+}
+
+async function checkForUpdate() {
+  if (!isStamped(BUILD.id) || !navigator.onLine) return
+  try {
+    const response = await fetch(`./version.json?t=${Date.now()}`, { cache: 'no-store' })
+    if (!response.ok) return
+    const remote = await response.json()
+    if (isStamped(remote.id) && remote.id !== BUILD.id) await registerWorker(remote.id)
+  } catch {
+    /* offline or mid-deploy: try again later */
+  }
+}
+
+function startUpdates() {
+  if (!('serviceWorker' in navigator)) return
+  let controlled = Boolean(navigator.serviceWorker.controller)
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    // The very first install also fires this; only a replacement needs a reload.
+    if (controlled) {
+      updatePending = true
+      applyPendingUpdate()
+    }
+    controlled = true
+  })
+  registerWorker(BUILD.id).catch(() => {
+    /* the app works without offline support */
+  })
+  checkForUpdate()
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') checkForUpdate()
+  })
+  setInterval(checkForUpdate, UPDATE_CHECK_MS)
+}
+
+function announceUpdate() {
+  let from = null
+  try {
+    from = sessionStorage.getItem(UPDATED_FLAG)
+    sessionStorage.removeItem(UPDATED_FLAG)
+  } catch {
+    return
+  }
+  if (from && from !== BUILD.id) toast(`Hearth updated to ${BUILD.id}.`)
+}
+
+announceUpdate()
+startUpdates()

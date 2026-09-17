@@ -14,11 +14,13 @@ site/          published as-is
   styles.css
   app.js       DOM, storage, dialogs
   core.js      pure logic (time math, stats, backup format), no DOM
-  sw.js        offline cache
+  version.js   build id and date, stamped at deploy
+  version.json the same, read by the app to notice a new deploy
+  sw.js        offline cache and updates
   manifest.webmanifest
   icons/
 test/          node:test suite for core.js
-scripts/       build-icons.mjs, renders the PNG icons from icons/icon.svg
+scripts/       stamp-build.mjs (run by the deploy workflow) and build-icons.mjs
 ```
 
 ## Working on it
@@ -31,7 +33,16 @@ node apps/hearth/scripts/build-icons.mjs     # after editing icons/icon.svg
 
 Every path in the app is relative (`./`), so it works from any folder name.
 
-**Service worker:** files are served from cache and refreshed in the background, so an edit shows up on the second launch after deploying. When you **add or remove** a file, list it in `ASSETS` in `sw.js` and bump `VERSION`.
+## Updates
+
+Pushing a change to `main` is enough: installed copies update themselves.
+
+1. The deploy workflow runs `scripts/stamp-build.mjs`, which writes the short commit sha and date into `version.js` and `version.json`. It fails the deploy if the placeholders are missing, because an unstamped app never updates.
+2. The app compares its build id with `version.json` (fetched with `no-store`) when it opens, when it comes back to the foreground, and every 30 minutes.
+3. On a new id it registers `sw.js?v=<new id>`. Because the URL is new, the browser installs it right away, even though Cloudflare tells browsers to keep `.js` files for 4 hours. The worker downloads every file with `?v=<new id>` and `cache: 'reload'`, which skips both the CDN and the browser cache, and refuses to install if `version.js` isn't the expected build.
+4. The new worker takes over and the page reloads itself, waiting for any open dialog to close, then shows "Hearth was updated". The About dialog shows the version.
+
+When you add a file, list it in `ASSETS` in `sw.js`. Running locally the placeholders stay in place, the About dialog says "Development build" and no update check runs. After editing files, reload twice or unregister the worker in DevTools.
 
 ## Data
 
