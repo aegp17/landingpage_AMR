@@ -229,3 +229,13 @@ export function mergeMeals(state, imported) {
   const meals = sortUnique([...before, ...imported.meals.map((m) => m.at)]).map((at) => ({ at }))
   return { state: { ...state, meals }, added }
 }
+
+// "Version 1a2b3c4 · Sep 17, 2026", or a plain label when running unstamped.
+export function formatBuild(build) {
+  if (!build || !/^[0-9a-f]{7,40}$/.test(build.id)) return 'Development build'
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(build.date || '')
+  if (!match) return `Version ${build.id}`
+  const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
+  const label = new Intl.DateTimeFormat(LOCALE, { month: 'short', day: 'numeric', year: 'numeric' }).format(date)
+  return `Version ${build.id} · ${label}`
+}

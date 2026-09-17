@@ -32,7 +32,7 @@
           </svg>
           <span>Hearth</span>
         </div>
-        <button class="icon-btn" id="settingsBtn" type="button" aria-label="Settings and backup">
+        <button class="icon-btn" id="settingsBtn" type="button" aria-label="Settings">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>
         </button>
       </header>
@@ -98,7 +98,10 @@
         <button class="link-btn" id="moreBtn" type="button" hidden>Show older meals</button>
       </section>
 
-      <footer class="foot">Your logs stay on this device.</footer>
+      <footer class="foot">
+        <span>Your logs stay on this device.</span>
+        <button class="link-btn foot-link" id="aboutBtn" type="button" aria-haspopup="dialog">About Hearth</button>
+      </footer>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite">
@@ -132,7 +135,7 @@
     </dialog>
 
     <dialog id="settingsDialog" aria-labelledby="settingsTitle">
-      <h2 id="settingsTitle" tabindex="-1" autofocus>Your data</h2>
+      <h2 id="settingsTitle" tabindex="-1" autofocus>Settings</h2>
       <p class="dialog-hint" id="settingsSummary"></p>
       <div class="settings-list">
         <button type="button" class="row-btn" id="exportBtn">
@@ -148,7 +151,32 @@
           <strong>Erase everything</strong>
           <span>Deletes every meal on this device.</span>
         </button>
+        <button type="button" class="row-btn" id="aboutRow" aria-haspopup="dialog">
+          <strong>About Hearth</strong>
+          <span>Version and who made it.</span>
+        </button>
       </div>
+      <div class="dialog-actions">
+        <button type="button" class="ghost" data-close>Close</button>
+      </div>
+    </dialog>
+
+    <dialog id="aboutDialog" aria-labelledby="aboutTitle">
+      <div class="about-head">
+        <img class="about-icon" src="./icons/icon.svg" alt="" width="60" height="60" />
+        <div>
+          <h2 id="aboutTitle" tabindex="-1" autofocus>Hearth</h2>
+          <p class="dialog-hint">A cozy intermittent fasting timer.</p>
+        </div>
+      </div>
+      <p class="about-credit">
+        by <a href="https://www.instagram.com/aegp17/" target="_blank" rel="noopener noreferrer">@aegp17</a>
+      </p>
+      <ul class="about-facts">
+        <li>Your meals never leave this device. No account, no sign-up.</li>
+        <li>Updates install on their own when you open the app.</li>
+      </ul>
+      <p class="about-version" id="aboutVersion">Development build</p>
       <div class="dialog-actions">
         <button type="button" class="ghost" data-close>Close</button>
       </div>

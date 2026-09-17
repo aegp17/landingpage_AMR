@@ -196,3 +196,10 @@ test('parseBackup rejects foreign or damaged files without importing anything', 
     /1 unreadable entry/,
   )
 })
+
+test('formatBuild', () => {
+  assert.equal(core.formatBuild({ id: 'a1b2c3d', date: '2026-09-17' }), 'Version a1b2c3d · Sep 17, 2026')
+  assert.equal(core.formatBuild({ id: 'a1b2c3d', date: '__BUILD_DATE__' }), 'Version a1b2c3d')
+  assert.equal(core.formatBuild({ id: '__BUILD_ID__', date: '__BUILD_DATE__' }), 'Development build')
+  assert.equal(core.formatBuild(undefined), 'Development build')
+})
