@@ -31,6 +31,12 @@ Node 20 (matches CI in `.github/workflows/deploy.yml`). No test runner or linter
 
 **SEO**: meta tags, hreflang, CSP, and JSON-LD (`Organization`, `WebSite`) are in `index.html`. `src/main.ts` additionally injects a `BlogPosting` JSON-LD `<script>` for each research post at boot, so adding a post automatically adds its structured data. `public/robots.txt` is intentionally restrictive — only Googlebot and Bingbot are allowed; AI scrapers and `User-agent: *` are explicitly disallowed. Do not "fix" that. The `noscript` block in `index.html` carries a static summary of services/team/research for non-JS crawlers — keep it in sync with major content changes.
 
+## Private apps (`apps/`)
+
+`apps/` holds standalone apps that share the domain but **not** the code of the landing page. Each is plain HTML/CSS/JS with no build step, no Vue and no dependencies, and is copied verbatim into `dist/` by a step in `.github/workflows/deploy.yml` (so a local `npm run build` does not include them). They are deliberately unlisted: never link them from the site, `sitemap.xml`, `llms.txt`/`agents.txt`, or `robots.txt` (a `Disallow` line there would publish the path). Each page carries its own `noindex` meta. The landing page rules above (i18n dictionaries, Vue components) do not apply to them.
+
+- `apps/hearth/` — intermittent fasting timer PWA, published at `/hearth-ac5490/`. See `apps/hearth/README.md`.
+
 ## Deployment notes
 
 - Production canonical domain is `agentic-amr.com` (custom domain on GitHub Pages, see `public/CNAME`). The domain is hardcoded in three places that must stay in sync if it ever changes: `SITE_URL` in `src/main.ts` (used for BlogPosting JSON-LD), the canonical/og:url/hreflang/JSON-LD URLs in `index.html`, and `public/robots.txt` + `public/sitemap.xml`.
