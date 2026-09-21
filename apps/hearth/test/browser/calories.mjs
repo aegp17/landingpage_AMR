@@ -71,6 +71,50 @@ const over = await budget()
 check('going over says so', over.label === 'Over by' && over.value === '440', JSON.stringify(over))
 check('and the card flags it', await page.evaluate(() => document.getElementById('caloriesTab').classList.contains('over')))
 
+// ------------------------------------------------------------ a meal built from foods
+await page.click('#addFoodBtn')
+check('the picker suggests common foods before you type', (await page.textContent('#foodHint')) === 'Common foods' && (await page.$$('#foodResults .food-result')).length > 0)
+check('the meal is named by the clock', ['Breakfast', 'Lunch', 'Dinner', 'Snack'].includes(await page.inputValue('#entryLabel')), await page.inputValue('#entryLabel'))
+
+await page.fill('#foodSearch', 'arroz')
+const firstResult = await page.textContent('#foodResults .food-result:first-child .food-result-name strong')
+check('searching in Spanish finds the food', firstResult === 'White rice, cooked', firstResult)
+check('and shows what 100 g is worth', (await page.textContent('#foodResults .food-result:first-child .food-result-name span')) === '130 kcal per 100 g')
+const chip = await page.textContent('#foodResults .food-result:first-child .portion-chip')
+check('with a household portion ready to tap', chip === '1 cup · 205 kcal', chip)
+await page.click('#foodResults .food-result:first-child .portion-chip')
+check('tapping it adds the item', (await page.$$('#foodItems .food-item')).length === 1)
+check('the grams come from the portion', (await page.inputValue('#foodItems .food-item input')) === '158')
+check('the total follows the items', (await page.textContent('#foodTotal')) === 'Total 205 kcal')
+check('and the manual field steps aside', !(await page.isVisible('#manualField')))
+
+await page.fill('#foodSearch', 'pollo')
+await page.click('#foodResults .food-result:first-child .food-result-name')
+check('a second food joins the meal', (await page.$$('#foodItems .food-item')).length === 2)
+const gramsBoxes = await page.$$('#foodItems .food-item input')
+await gramsBoxes[1].fill('120')
+await page.waitForTimeout(150)
+check('editing grams recalculates that item', (await page.textContent('#foodItems .food-item:nth-child(2) .food-item-kcal')) === '198 kcal')
+check('and the total', (await page.textContent('#foodTotal')) === 'Total 403 kcal', await page.textContent('#foodTotal'))
+check('the button says what it will add', (await page.textContent('#entrySave')) === 'Add 403 kcal')
+
+const foodBefore = Number((await budget()).food.replace(/,/g, ''))
+await page.fill('#entryLabel', 'Almuerzo')
+await page.click('#entryForm button[type=submit]')
+const meal = (await calories()).entries.at(-1)
+check('the meal is saved with its items', meal.items.length === 2 && meal.kcal === 403, JSON.stringify(meal.items))
+check('and the day counts it', Number((await budget()).food.replace(/,/g, '')) === foodBefore + 403, JSON.stringify(await budget()))
+check('the row lists what was in it', (await page.textContent('#entryList')).includes('White rice, cooked 158 g') && (await page.textContent('#entryList')).includes('Almuerzo'))
+
+// The foods you use come back first next time.
+await page.click('#addFoodBtn')
+check('recent foods are offered', (await page.textContent('#foodHint')) === 'Recent' && (await page.textContent('#foodResults')).includes('White rice'))
+await page.click('#entryDialog [data-close]')
+
+// Clean up so the checks below keep their own arithmetic.
+await page.click('#entryList .meal-delete >> nth=0')
+await page.waitForTimeout(100)
+
 // ------------------------------------------------------------ undo and validation
 const beforeDelete = (await calories()).entries.length
 await page.click('#entryList .meal-delete >> nth=0')

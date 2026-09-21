@@ -63,6 +63,18 @@ export function normalizeProfile(raw) {
   return validateProfile(profile).ok ? profile : null
 }
 
+export const ITEM_LIMITS = { grams: { min: 1, max: 5000 } }
+
+function isValidItem(item) {
+  return (
+    item &&
+    typeof item.foodId === 'string' &&
+    typeof item.name === 'string' &&
+    isNumber(item.grams, ITEM_LIMITS.grams) &&
+    isNumber(item.kcal, { min: 0, max: LIMITS.entryKcal.max })
+  )
+}
+
 function isValidEntry(entry) {
   return (
     entry &&
@@ -71,23 +83,41 @@ function isValidEntry(entry) {
     Number.isInteger(entry.at) &&
     entry.at > 0 &&
     (entry.kind === 'food' || entry.kind === 'exercise') &&
-    isNumber(entry.kcal, LIMITS.entryKcal)
+    isNumber(entry.kcal, LIMITS.entryKcal) &&
+    (entry.items === undefined || (Array.isArray(entry.items) && entry.items.every(isValidItem)))
   )
+}
+
+// Repair first, then validate: a meal with one damaged item keeps the rest,
+// instead of the whole meal disappearing.
+function repairEntry(raw) {
+  if (!raw || typeof raw !== 'object') return null
+  const items = Array.isArray(raw.items) ? raw.items.filter(isValidItem).map((i) => ({ foodId: i.foodId, name: String(i.name).slice(0, 60), grams: Math.round(i.grams), kcal: Math.round(i.kcal) })) : []
+  return {
+    id: raw.id,
+    at: raw.at,
+    kind: raw.kind,
+    // With items, their sum is the truth: a stored total can never drift from them.
+    kcal: items.length ? itemsTotal(items) : Math.round(raw.kcal),
+    label: typeof raw.label === 'string' ? raw.label.slice(0, 60) : '',
+    ...(items.length ? { items } : {}),
+  }
 }
 
 export function normalizeCalorieState(raw) {
   const base = defaultCalorieState()
   if (!raw || typeof raw !== 'object') return base
-  const entries = Array.isArray(raw.entries) ? raw.entries.filter(isValidEntry) : []
   const seen = new Set()
+  const entries = (Array.isArray(raw.entries) ? raw.entries : [])
+    .map(repairEntry)
+    .filter((entry) => entry && isValidEntry(entry))
+    .filter((entry) => (seen.has(entry.id) ? false : seen.add(entry.id)))
+    .sort((a, b) => a.at - b.at)
   return {
     version: CALORIE_STATE_VERSION,
     profile: normalizeProfile(raw.profile),
     targetOverride: isNumber(raw.targetOverride, { min: 800, max: 10000 }) ? Math.round(raw.targetOverride) : null,
-    entries: entries
-      .filter((e) => (seen.has(e.id) ? false : seen.add(e.id)))
-      .map((e) => ({ id: e.id, at: e.at, kind: e.kind, kcal: Math.round(e.kcal), label: typeof e.label === 'string' ? e.label.slice(0, 60) : '' }))
-      .sort((a, b) => a.at - b.at),
+    entries,
   }
 }
 
@@ -188,4 +218,81 @@ export function daySummaries(state, now, limit = 7) {
 
 export function formatKcal(value) {
   return new Intl.NumberFormat('en-US').format(Math.round(value))
+}
+
+// ---------------------------------------------------------------- foods
+
+// Accents and case should never stand between someone and their food: "piña",
+// "pina" and "PINA" all have to find the same thing.
+export function normalizeText(text) {
+  return String(text)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+// Name matches first, then aliases; a word that starts a name beats one buried
+// in the middle, so "rice" offers rice before "fried rice"-style entries.
+export function searchFoods(foods, query, limit = 8) {
+  const needle = normalizeText(query)
+  if (!needle) return []
+  const scored = []
+  for (const food of foods) {
+    const name = normalizeText(food.name)
+    const aliases = (food.aliases || []).map(normalizeText)
+    // An exact word beats a prefix, and a prefix beats a match buried inside:
+    // typing "arroz" must offer plain rice before "arroz integral".
+    let score = null
+    if (name === needle) score = 0
+    else if (aliases.includes(needle)) score = 1
+    else if (name.startsWith(needle)) score = 2
+    else if (aliases.some((a) => a.startsWith(needle))) score = 3
+    else if (name.split(' ').some((word) => word.startsWith(needle))) score = 4
+    else if (name.includes(needle) || aliases.some((a) => a.includes(needle))) score = 5
+    if (score != null) scored.push({ food, score })
+  }
+  return scored
+    .sort((a, b) => a.score - b.score || a.food.name.localeCompare(b.food.name))
+    .slice(0, limit)
+    .map((hit) => hit.food)
+}
+
+export function foodKcal(food, grams) {
+  return Math.round((food.kcal100 * grams) / 100)
+}
+
+export function makeItem(food, grams) {
+  return { foodId: food.id, name: food.name, grams: Math.round(grams), kcal: foodKcal(food, grams) }
+}
+
+export function itemsTotal(items) {
+  return items.reduce((total, item) => total + item.kcal, 0)
+}
+
+// A sensible default name for the meal being logged.
+export function mealNameFor(date) {
+  const hour = date.getHours()
+  if (hour >= 4 && hour < 11) return 'Breakfast'
+  if (hour >= 11 && hour < 16) return 'Lunch'
+  if (hour >= 16 && hour < 22) return 'Dinner'
+  return 'Snack'
+}
+
+// The foods someone actually logs, newest first, for one tap next time.
+export function recentFoods(entries, foods, limit = 6) {
+  const byId = new Map(foods.map((food) => [food.id, food]))
+  const seen = new Set()
+  const out = []
+  for (let i = entries.length - 1; i >= 0 && out.length < limit; i--) {
+    for (const item of entries[i].items || []) {
+      if (seen.has(item.foodId) || !byId.has(item.foodId)) continue
+      seen.add(item.foodId)
+      out.push(byId.get(item.foodId))
+      if (out.length === limit) break
+    }
+  }
+  return out
 }

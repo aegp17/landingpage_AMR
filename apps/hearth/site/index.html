@@ -239,13 +239,25 @@
     <dialog id="entryDialog" aria-labelledby="entryTitle">
       <form id="entryForm" method="dialog" novalidate>
         <h2 id="entryTitle" tabindex="-1">Add food</h2>
-        <p class="dialog-hint" id="entryHint">What you ate, in calories.</p>
-        <label class="field">
-          <span>Calories</span>
-          <input type="number" id="entryKcal" inputmode="numeric" min="1" max="10000" step="1" required />
+        <p class="dialog-hint" id="entryHint">Search what you ate, or type the calories.</p>
+
+        <div class="food-picker" id="foodPicker">
+          <label class="field">
+            <span>Add foods</span>
+            <input type="search" id="foodSearch" placeholder="rice, pollo, banana…" autocomplete="off" enterkeyhint="done" />
+          </label>
+          <p class="field-hint" id="foodHint"></p>
+          <div class="food-results" id="foodResults"></div>
+          <div class="food-items" id="foodItems"></div>
+          <p class="food-total" id="foodTotal" hidden></p>
+        </div>
+
+        <label class="field" id="manualField">
+          <span id="kcalLabel">Calories</span>
+          <input type="number" id="entryKcal" inputmode="numeric" min="1" max="10000" step="1" />
         </label>
         <label class="field">
-          <span>What was it? (optional)</span>
+          <span id="entryLabelCaption">What was it? (optional)</span>
           <input type="text" id="entryLabel" maxlength="60" autocomplete="off" />
         </label>
         <p class="form-error" id="entryError" role="alert"></p>

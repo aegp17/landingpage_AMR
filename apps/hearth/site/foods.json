@@ -1,0 +1,1853 @@
+{
+ "source": {
+  "name": "USDA FoodData Central, SR Legacy",
+  "dataset": "FoodData_Central_sr_legacy_food_csv_2018-04",
+  "url": "https://fdc.nal.usda.gov/download-datasets.html",
+  "note": "Energy in kcal per 100 g of the edible portion. Public domain."
+ },
+ "built": "2026-09-21",
+ "foods": [
+  {
+   "id": "white-rice",
+   "name": "White rice, cooked",
+   "category": "grains",
+   "aliases": [
+    "arroz",
+    "arroz blanco"
+   ],
+   "kcal100": 130,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 158
+    }
+   ],
+   "fdcId": 168935,
+   "usda": "Rice, white, long-grain, regular, cooked, unenriched, with salt"
+  },
+  {
+   "id": "brown-rice",
+   "name": "Brown rice, cooked",
+   "category": "grains",
+   "aliases": [
+    "arroz integral"
+   ],
+   "kcal100": 123,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 202
+    }
+   ],
+   "fdcId": 169704,
+   "usda": "Rice, brown, long-grain, cooked (Includes foods for USDA's Food Distribution Program)"
+  },
+  {
+   "id": "pasta",
+   "name": "Pasta, cooked",
+   "category": "grains",
+   "aliases": [
+    "fideo",
+    "tallarin",
+    "pasta",
+    "spaghetti"
+   ],
+   "kcal100": 158,
+   "portions": [
+    {
+     "label": "1 cup spaghetti",
+     "grams": 124
+    },
+    {
+     "label": "1 cup elbows",
+     "grams": 120
+    },
+    {
+     "label": "1 cup penne",
+     "grams": 107
+    }
+   ],
+   "fdcId": 169737,
+   "usda": "Pasta, cooked, enriched, without added salt"
+  },
+  {
+   "id": "quinoa",
+   "name": "Quinoa, cooked",
+   "category": "grains",
+   "aliases": [
+    "quinua",
+    "quinoa"
+   ],
+   "kcal100": 120,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 185
+    }
+   ],
+   "fdcId": 168917,
+   "usda": "Quinoa, cooked"
+  },
+  {
+   "id": "oats",
+   "name": "Oats, dry",
+   "category": "grains",
+   "aliases": [
+    "avena"
+   ],
+   "kcal100": 379,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 81
+    },
+    {
+     "label": "0.33 cup",
+     "grams": 27
+    }
+   ],
+   "fdcId": 173904,
+   "usda": "Cereals, oats, regular and quick, not fortified, dry"
+  },
+  {
+   "id": "corn-flakes",
+   "name": "Corn flakes",
+   "category": "grains",
+   "aliases": [
+    "hojuelas de maiz",
+    "cereal"
+   ],
+   "kcal100": 384,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 28
+    }
+   ],
+   "fdcId": 174648,
+   "usda": "Cereals ready-to-eat, RALSTON Corn Flakes"
+  },
+  {
+   "id": "white-bread",
+   "name": "White bread",
+   "category": "grains",
+   "aliases": [
+    "pan",
+    "pan blanco"
+   ],
+   "kcal100": 266,
+   "portions": [
+    {
+     "label": "1 cup crumbs",
+     "grams": 45
+    },
+    {
+     "label": "1 cup cubes",
+     "grams": 35
+    },
+    {
+     "label": "1 slice",
+     "grams": 29
+    }
+   ],
+   "fdcId": 174924,
+   "usda": "Bread, white, commercially prepared (includes soft bread crumbs)"
+  },
+  {
+   "id": "wheat-bread",
+   "name": "Whole-wheat bread",
+   "category": "grains",
+   "aliases": [
+    "pan integral"
+   ],
+   "kcal100": 252,
+   "portions": [
+    {
+     "label": "1 slice",
+     "grams": 32
+    },
+    {
+     "label": "1 oz",
+     "grams": 28
+    }
+   ],
+   "fdcId": 172688,
+   "usda": "Bread, whole-wheat, commercially prepared"
+  },
+  {
+   "id": "burger-bun",
+   "name": "Hamburger bun",
+   "category": "grains",
+   "aliases": [
+    "pan de hamburguesa"
+   ],
+   "kcal100": 279,
+   "portions": [
+    {
+     "label": "1 roll 1 serving",
+     "grams": 44
+    },
+    {
+     "label": "1 oz",
+     "grams": 28
+    }
+   ],
+   "fdcId": 172796,
+   "usda": "Rolls, hamburger or hotdog, plain"
+  },
+  {
+   "id": "corn-tortilla",
+   "name": "Corn tortilla",
+   "category": "grains",
+   "aliases": [
+    "tortilla de maiz"
+   ],
+   "kcal100": 218,
+   "portions": [
+    {
+     "label": "1 tortilla",
+     "grams": 24
+    },
+    {
+     "label": "1 oz",
+     "grams": 28
+    }
+   ],
+   "fdcId": 175036,
+   "usda": "Tortillas, ready-to-bake or -fry, corn"
+  },
+  {
+   "id": "flour-tortilla",
+   "name": "Flour tortilla",
+   "category": "grains",
+   "aliases": [
+    "tortilla de harina"
+   ],
+   "kcal100": 306,
+   "portions": [
+    {
+     "label": "1 tortilla",
+     "grams": 48
+    },
+    {
+     "label": "1 tortilla medium",
+     "grams": 30
+    },
+    {
+     "label": "1 oz",
+     "grams": 28
+    }
+   ],
+   "fdcId": 175037,
+   "usda": "Tortillas, ready-to-bake or -fry, flour, refrigerated"
+  },
+  {
+   "id": "chicken-breast",
+   "name": "Chicken breast, roasted",
+   "category": "protein",
+   "aliases": [
+    "pollo",
+    "pechuga"
+   ],
+   "kcal100": 165,
+   "portions": [
+    {
+     "label": "1 cup chopped",
+     "grams": 140
+    },
+    {
+     "label": "0.5 breast bone",
+     "grams": 86
+    },
+    {
+     "label": "1 unit",
+     "grams": 52
+    }
+   ],
+   "fdcId": 171477,
+   "usda": "Chicken, broilers or fryers, breast, meat only, cooked, roasted"
+  },
+  {
+   "id": "chicken-thigh",
+   "name": "Chicken thigh, roasted",
+   "category": "protein",
+   "aliases": [
+    "muslo de pollo",
+    "presa"
+   ],
+   "kcal100": 179,
+   "portions": [
+    {
+     "label": "1 thigh without skin",
+     "grams": 116
+    },
+    {
+     "label": "1 thigh with skin",
+     "grams": 137
+    },
+    {
+     "label": "3 oz",
+     "grams": 85
+    }
+   ],
+   "fdcId": 172388,
+   "usda": "Chicken, broilers or fryers, thigh, meat only, cooked, roasted"
+  },
+  {
+   "id": "ground-beef",
+   "name": "Ground beef, cooked",
+   "category": "protein",
+   "aliases": [
+    "carne molida",
+    "res"
+   ],
+   "kcal100": 246,
+   "portions": [
+    {
+     "label": "3 oz",
+     "grams": 85
+    }
+   ],
+   "fdcId": 171798,
+   "usda": "Beef, ground, 80% lean meat / 20% fat, patty, cooked, pan-broiled"
+  },
+  {
+   "id": "beef-steak",
+   "name": "Beef steak, lean",
+   "category": "protein",
+   "aliases": [
+    "bistec",
+    "carne",
+    "churrasco"
+   ],
+   "kcal100": 162,
+   "portions": [
+    {
+     "label": "3 oz",
+     "grams": 85
+    }
+   ],
+   "fdcId": 168649,
+   "usda": "Beef, round, top round steak, boneless, separable lean only, trimmed to 0\" fat, all grades, cooked, grilled"
+  },
+  {
+   "id": "pork-chop",
+   "name": "Pork chop, broiled",
+   "category": "protein",
+   "aliases": [
+    "chuleta",
+    "cerdo",
+    "chancho"
+   ],
+   "kcal100": 180,
+   "portions": [
+    {
+     "label": "3 oz",
+     "grams": 85
+    }
+   ],
+   "fdcId": 168240,
+   "usda": "Pork, fresh, loin, center loin (chops), bone-in, separable lean only, cooked, broiled"
+  },
+  {
+   "id": "tilapia",
+   "name": "Tilapia, cooked",
+   "category": "protein",
+   "aliases": [
+    "tilapia",
+    "pescado"
+   ],
+   "kcal100": 128,
+   "portions": [
+    {
+     "label": "1 fillet",
+     "grams": 87
+    }
+   ],
+   "fdcId": 175177,
+   "usda": "Fish, tilapia, cooked, dry heat"
+  },
+  {
+   "id": "cod",
+   "name": "White fish (cod), cooked",
+   "category": "protein",
+   "aliases": [
+    "pescado blanco",
+    "corvina",
+    "bacalao"
+   ],
+   "kcal100": 105,
+   "portions": [
+    {
+     "label": "1 fillet",
+     "grams": 180
+    },
+    {
+     "label": "3 oz",
+     "grams": 85
+    }
+   ],
+   "fdcId": 171956,
+   "usda": "Fish, cod, Atlantic, cooked, dry heat"
+  },
+  {
+   "id": "salmon",
+   "name": "Salmon, cooked",
+   "category": "protein",
+   "aliases": [
+    "salmon"
+   ],
+   "kcal100": 206,
+   "portions": [
+    {
+     "label": "0.5 fillet",
+     "grams": 178
+    },
+    {
+     "label": "3 oz",
+     "grams": 85
+    }
+   ],
+   "fdcId": 175168,
+   "usda": "Fish, salmon, Atlantic, farmed, cooked, dry heat"
+  },
+  {
+   "id": "canned-tuna",
+   "name": "Canned tuna in water",
+   "category": "protein",
+   "aliases": [
+    "atun",
+    "atun en lata"
+   ],
+   "kcal100": 86,
+   "portions": [
+    {
+     "label": "1 cup solid",
+     "grams": 154
+    },
+    {
+     "label": "1 can",
+     "grams": 165
+    },
+    {
+     "label": "1 can drained",
+     "grams": 315
+    }
+   ],
+   "fdcId": 173709,
+   "usda": "Fish, tuna, light, canned in water, drained solids (Includes foods for USDA's Food Distribution Program)"
+  },
+  {
+   "id": "shrimp",
+   "name": "Shrimp, cooked",
+   "category": "protein",
+   "aliases": [
+    "camaron",
+    "camarones"
+   ],
+   "kcal100": 119,
+   "portions": [
+    {
+     "label": "4 large",
+     "grams": 22
+    },
+    {
+     "label": "3 oz",
+     "grams": 85
+    }
+   ],
+   "fdcId": 171971,
+   "usda": "Crustaceans, shrimp, mixed species, cooked, moist heat (may contain additives to retain moisture)"
+  },
+  {
+   "id": "boiled-egg",
+   "name": "Egg, hard-boiled",
+   "category": "protein",
+   "aliases": [
+    "huevo",
+    "huevo cocido",
+    "huevo duro"
+   ],
+   "kcal100": 155,
+   "portions": [
+    {
+     "label": "1 cup chopped",
+     "grams": 136
+    },
+    {
+     "label": "1 large",
+     "grams": 50
+    },
+    {
+     "label": "1 tbsp",
+     "grams": 9
+    }
+   ],
+   "fdcId": 173424,
+   "usda": "Egg, whole, cooked, hard-boiled"
+  },
+  {
+   "id": "fried-egg",
+   "name": "Egg, fried",
+   "category": "protein",
+   "aliases": [
+    "huevo frito"
+   ],
+   "kcal100": 196,
+   "portions": [
+    {
+     "label": "1 large",
+     "grams": 46
+    }
+   ],
+   "fdcId": 173423,
+   "usda": "Egg, whole, cooked, fried"
+  },
+  {
+   "id": "whole-milk",
+   "name": "Whole milk",
+   "category": "dairy",
+   "aliases": [
+    "leche",
+    "leche entera"
+   ],
+   "kcal100": 61,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 244
+    },
+    {
+     "label": "1 tbsp",
+     "grams": 15
+    }
+   ],
+   "fdcId": 171265,
+   "usda": "Milk, whole, 3.25% milkfat, with added vitamin D"
+  },
+  {
+   "id": "milk-2",
+   "name": "Milk, 2%",
+   "category": "dairy",
+   "aliases": [
+    "leche semidescremada"
+   ],
+   "kcal100": 50,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 244
+    }
+   ],
+   "fdcId": 171267,
+   "usda": "Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D"
+  },
+  {
+   "id": "skim-milk",
+   "name": "Skim milk",
+   "category": "dairy",
+   "aliases": [
+    "leche descremada"
+   ],
+   "kcal100": 34,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 245
+    }
+   ],
+   "fdcId": 171269,
+   "usda": "Milk, nonfat, fluid, with added vitamin A and vitamin D (fat free or skim)"
+  },
+  {
+   "id": "plain-yogurt",
+   "name": "Plain yogurt",
+   "category": "dairy",
+   "aliases": [
+    "yogur",
+    "yogurt"
+   ],
+   "kcal100": 61,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 245
+    },
+    {
+     "label": "1 container",
+     "grams": 170
+    },
+    {
+     "label": "0.5 container",
+     "grams": 113
+    }
+   ],
+   "fdcId": 171284,
+   "usda": "Yogurt, plain, whole milk"
+  },
+  {
+   "id": "greek-yogurt",
+   "name": "Greek yogurt, nonfat",
+   "category": "dairy",
+   "aliases": [
+    "yogur griego"
+   ],
+   "kcal100": 59,
+   "portions": [
+    {
+     "label": "1 container",
+     "grams": 170
+    }
+   ],
+   "fdcId": 170894,
+   "usda": "Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)"
+  },
+  {
+   "id": "queso-fresco",
+   "name": "Queso fresco",
+   "category": "dairy",
+   "aliases": [
+    "queso fresco",
+    "queso"
+   ],
+   "kcal100": 299,
+   "portions": [
+    {
+     "label": "1 cup crumbled",
+     "grams": 122
+    }
+   ],
+   "fdcId": 172223,
+   "usda": "Cheese, fresh, queso fresco"
+  },
+  {
+   "id": "mozzarella",
+   "name": "Mozzarella",
+   "category": "dairy",
+   "aliases": [
+    "mozzarella"
+   ],
+   "kcal100": 299,
+   "portions": [
+    {
+     "label": "1 cup shredded",
+     "grams": 112
+    },
+    {
+     "label": "1 oz",
+     "grams": 28
+    }
+   ],
+   "fdcId": 170845,
+   "usda": "Cheese, mozzarella, whole milk"
+  },
+  {
+   "id": "cheddar",
+   "name": "Cheddar",
+   "category": "dairy",
+   "aliases": [
+    "cheddar"
+   ],
+   "kcal100": 410,
+   "portions": [
+    {
+     "label": "1 slice",
+     "grams": 19
+    }
+   ],
+   "fdcId": 170899,
+   "usda": "Cheese, cheddar, sharp, sliced"
+  },
+  {
+   "id": "butter",
+   "name": "Butter",
+   "category": "fats",
+   "aliases": [
+    "mantequilla"
+   ],
+   "kcal100": 717,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 227
+    },
+    {
+     "label": "1 tbsp",
+     "grams": 14
+    }
+   ],
+   "fdcId": 173410,
+   "usda": "Butter, salted"
+  },
+  {
+   "id": "black-beans",
+   "name": "Black beans, cooked",
+   "category": "legumes",
+   "aliases": [
+    "frejol negro",
+    "frijol negro",
+    "porotos"
+   ],
+   "kcal100": 132,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 172
+    }
+   ],
+   "fdcId": 173735,
+   "usda": "Beans, black, mature seeds, cooked, boiled, without salt"
+  },
+  {
+   "id": "kidney-beans",
+   "name": "Red beans, cooked",
+   "category": "legumes",
+   "aliases": [
+    "frejol",
+    "frijol rojo",
+    "menestra"
+   ],
+   "kcal100": 127,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 177
+    },
+    {
+     "label": "1 tbsp",
+     "grams": 11
+    }
+   ],
+   "fdcId": 175194,
+   "usda": "Beans, kidney, red, mature seeds, cooked, boiled, without salt"
+  },
+  {
+   "id": "lentils",
+   "name": "Lentils, cooked",
+   "category": "legumes",
+   "aliases": [
+    "lenteja",
+    "lentejas"
+   ],
+   "kcal100": 116,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 198
+    },
+    {
+     "label": "1 tbsp",
+     "grams": 12
+    }
+   ],
+   "fdcId": 172421,
+   "usda": "Lentils, mature seeds, cooked, boiled, without salt"
+  },
+  {
+   "id": "chickpeas",
+   "name": "Chickpeas, cooked",
+   "category": "legumes",
+   "aliases": [
+    "garbanzo"
+   ],
+   "kcal100": 164,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 164
+    }
+   ],
+   "fdcId": 173757,
+   "usda": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt"
+  },
+  {
+   "id": "boiled-potato",
+   "name": "Potato, boiled",
+   "category": "vegetables",
+   "aliases": [
+    "papa",
+    "papa cocida"
+   ],
+   "kcal100": 86,
+   "portions": [
+    {
+     "label": "0.5 cup",
+     "grams": 78
+    },
+    {
+     "label": "1 large",
+     "grams": 300
+    },
+    {
+     "label": "1 medium",
+     "grams": 167
+    }
+   ],
+   "fdcId": 170440,
+   "usda": "Potatoes, boiled, cooked without skin, flesh, without salt"
+  },
+  {
+   "id": "french-fries",
+   "name": "French fries",
+   "category": "vegetables",
+   "aliases": [
+    "papas fritas"
+   ],
+   "kcal100": 312,
+   "portions": [
+    {
+     "label": "1 serving small",
+     "grams": 71
+    },
+    {
+     "label": "1 serving medium",
+     "grams": 117
+    },
+    {
+     "label": "1 serving large",
+     "grams": 154
+    }
+   ],
+   "fdcId": 170698,
+   "usda": "Fast foods, potato, french fried in vegetable oil"
+  },
+  {
+   "id": "sweet-potato",
+   "name": "Sweet potato, baked",
+   "category": "vegetables",
+   "aliases": [
+    "camote",
+    "batata"
+   ],
+   "kcal100": 90,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 200
+    },
+    {
+     "label": "1 large",
+     "grams": 180
+    },
+    {
+     "label": "1 medium",
+     "grams": 114
+    }
+   ],
+   "fdcId": 168483,
+   "usda": "Sweet potato, cooked, baked in skin, flesh, without salt"
+  },
+  {
+   "id": "cassava",
+   "name": "Cassava (yuca), raw",
+   "category": "vegetables",
+   "aliases": [
+    "yuca"
+   ],
+   "kcal100": 160,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 206
+    }
+   ],
+   "fdcId": 169985,
+   "usda": "Cassava, raw"
+  },
+  {
+   "id": "green-plantain",
+   "name": "Green plantain, boiled",
+   "category": "vegetables",
+   "aliases": [
+    "verde",
+    "platano verde",
+    "bolon"
+   ],
+   "kcal100": 121,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 137
+    }
+   ],
+   "fdcId": 168216,
+   "usda": "Plantains, green, boiled"
+  },
+  {
+   "id": "fried-plantain",
+   "name": "Green plantain, fried",
+   "category": "vegetables",
+   "aliases": [
+    "patacon",
+    "chifle",
+    "tostones"
+   ],
+   "kcal100": 309,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 118
+    }
+   ],
+   "fdcId": 168199,
+   "usda": "Plantains, green, fried"
+  },
+  {
+   "id": "ripe-plantain",
+   "name": "Ripe plantain, baked",
+   "category": "vegetables",
+   "aliases": [
+    "maduro",
+    "platano maduro"
+   ],
+   "kcal100": 155,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 139
+    },
+    {
+     "label": "10 slice",
+     "grams": 105
+    }
+   ],
+   "fdcId": 169131,
+   "usda": "Plantains, yellow, baked"
+  },
+  {
+   "id": "corn",
+   "name": "Sweet corn, boiled",
+   "category": "vegetables",
+   "aliases": [
+    "choclo",
+    "maiz"
+   ],
+   "kcal100": 96,
+   "portions": [
+    {
+     "label": "1 cup cut",
+     "grams": 149
+    },
+    {
+     "label": "1 ear small",
+     "grams": 89
+    },
+    {
+     "label": "1 ear medium",
+     "grams": 103
+    }
+   ],
+   "fdcId": 169999,
+   "usda": "Corn, sweet, yellow, cooked, boiled, drained, without salt"
+  },
+  {
+   "id": "tomato",
+   "name": "Tomato, raw",
+   "category": "vegetables",
+   "aliases": [
+    "tomate"
+   ],
+   "kcal100": 18,
+   "portions": [
+    {
+     "label": "1 cup cherry tomatoes",
+     "grams": 149
+    },
+    {
+     "label": "1 cup chopped",
+     "grams": 180
+    },
+    {
+     "label": "1 slice medium",
+     "grams": 20
+    }
+   ],
+   "fdcId": 170457,
+   "usda": "Tomatoes, red, ripe, raw, year round average"
+  },
+  {
+   "id": "lettuce",
+   "name": "Romaine lettuce",
+   "category": "vegetables",
+   "aliases": [
+    "lechuga"
+   ],
+   "kcal100": 17,
+   "portions": [
+    {
+     "label": "1 cup shredded",
+     "grams": 47
+    },
+    {
+     "label": "1 NLEA serving",
+     "grams": 85
+    }
+   ],
+   "fdcId": 169247,
+   "usda": "Lettuce, cos or romaine, raw"
+  },
+  {
+   "id": "broccoli",
+   "name": "Broccoli, raw",
+   "category": "vegetables",
+   "aliases": [
+    "brocoli"
+   ],
+   "kcal100": 34,
+   "portions": [
+    {
+     "label": "1 cup chopped",
+     "grams": 91
+    },
+    {
+     "label": "0.5 cup chopped",
+     "grams": 44
+    },
+    {
+     "label": "1 NLEA serving",
+     "grams": 148
+    }
+   ],
+   "fdcId": 170379,
+   "usda": "Broccoli, raw"
+  },
+  {
+   "id": "carrot",
+   "name": "Carrot, raw",
+   "category": "vegetables",
+   "aliases": [
+    "zanahoria"
+   ],
+   "kcal100": 41,
+   "portions": [
+    {
+     "label": "1 cup chopped",
+     "grams": 128
+    },
+    {
+     "label": "1 cup grated",
+     "grams": 110
+    },
+    {
+     "label": "1 cup strips",
+     "grams": 122
+    }
+   ],
+   "fdcId": 170393,
+   "usda": "Carrots, raw"
+  },
+  {
+   "id": "cucumber",
+   "name": "Cucumber",
+   "category": "vegetables",
+   "aliases": [
+    "pepino"
+   ],
+   "kcal100": 15,
+   "portions": [
+    {
+     "label": "0.5 cup slices",
+     "grams": 52
+    }
+   ],
+   "fdcId": 168409,
+   "usda": "Cucumber, with peel, raw"
+  },
+  {
+   "id": "onion",
+   "name": "Onion, raw",
+   "category": "vegetables",
+   "aliases": [
+    "cebolla"
+   ],
+   "kcal100": 40,
+   "portions": [
+    {
+     "label": "1 cup chopped",
+     "grams": 160
+    },
+    {
+     "label": "1 cup sliced",
+     "grams": 115
+    },
+    {
+     "label": "1 slice large",
+     "grams": 38
+    }
+   ],
+   "fdcId": 170000,
+   "usda": "Onions, raw"
+  },
+  {
+   "id": "bell-pepper",
+   "name": "Red bell pepper",
+   "category": "vegetables",
+   "aliases": [
+    "pimiento"
+   ],
+   "kcal100": 26,
+   "portions": [
+    {
+     "label": "1 cup chopped",
+     "grams": 149
+    },
+    {
+     "label": "1 cup sliced",
+     "grams": 92
+    },
+    {
+     "label": "1 large",
+     "grams": 164
+    }
+   ],
+   "fdcId": 170108,
+   "usda": "Peppers, sweet, red, raw"
+  },
+  {
+   "id": "spinach",
+   "name": "Spinach, raw",
+   "category": "vegetables",
+   "aliases": [
+    "espinaca"
+   ],
+   "kcal100": 23,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 30
+    },
+    {
+     "label": "1 package",
+     "grams": 284
+    }
+   ],
+   "fdcId": 168462,
+   "usda": "Spinach, raw"
+  },
+  {
+   "id": "avocado",
+   "name": "Avocado",
+   "category": "vegetables",
+   "aliases": [
+    "aguacate",
+    "palta"
+   ],
+   "kcal100": 160,
+   "portions": [
+    {
+     "label": "1 cup cubes",
+     "grams": 150
+    },
+    {
+     "label": "1 cup pureed",
+     "grams": 230
+    },
+    {
+     "label": "1 cup sliced",
+     "grams": 146
+    }
+   ],
+   "fdcId": 171705,
+   "usda": "Avocados, raw, all commercial varieties"
+  },
+  {
+   "id": "banana",
+   "name": "Banana",
+   "category": "fruit",
+   "aliases": [
+    "banana",
+    "guineo",
+    "platano"
+   ],
+   "kcal100": 89,
+   "portions": [
+    {
+     "label": "1 cup mashed",
+     "grams": 225
+    },
+    {
+     "label": "1 cup sliced",
+     "grams": 150
+    },
+    {
+     "label": "1 extra small",
+     "grams": 81
+    }
+   ],
+   "fdcId": 173944,
+   "usda": "Bananas, raw"
+  },
+  {
+   "id": "apple",
+   "name": "Apple",
+   "category": "fruit",
+   "aliases": [
+    "manzana"
+   ],
+   "kcal100": 52,
+   "portions": [
+    {
+     "label": "1 cup quartered",
+     "grams": 125
+    },
+    {
+     "label": "1 cup slices",
+     "grams": 109
+    },
+    {
+     "label": "1 large",
+     "grams": 223
+    }
+   ],
+   "fdcId": 171688,
+   "usda": "Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)"
+  },
+  {
+   "id": "orange",
+   "name": "Orange",
+   "category": "fruit",
+   "aliases": [
+    "naranja"
+   ],
+   "kcal100": 47,
+   "portions": [
+    {
+     "label": "1 cup sections",
+     "grams": 180
+    },
+    {
+     "label": "1 fruit",
+     "grams": 131
+    },
+    {
+     "label": "1 large",
+     "grams": 184
+    }
+   ],
+   "fdcId": 169097,
+   "usda": "Oranges, raw, all commercial varieties"
+  },
+  {
+   "id": "papaya",
+   "name": "Papaya",
+   "category": "fruit",
+   "aliases": [
+    "papaya"
+   ],
+   "kcal100": 43,
+   "portions": [
+    {
+     "label": "1 cup 1\" pieces",
+     "grams": 145
+    },
+    {
+     "label": "1 cup mashed",
+     "grams": 230
+    },
+    {
+     "label": "1 fruit small",
+     "grams": 157
+    }
+   ],
+   "fdcId": 169926,
+   "usda": "Papayas, raw"
+  },
+  {
+   "id": "pineapple",
+   "name": "Pineapple",
+   "category": "fruit",
+   "aliases": [
+    "piña",
+    "pina"
+   ],
+   "kcal100": 50,
+   "portions": [
+    {
+     "label": "1 cup chunks",
+     "grams": 165
+    },
+    {
+     "label": "1 slice",
+     "grams": 166
+    },
+    {
+     "label": "1 slice thin",
+     "grams": 56
+    }
+   ],
+   "fdcId": 169124,
+   "usda": "Pineapple, raw, all varieties"
+  },
+  {
+   "id": "mango",
+   "name": "Mango",
+   "category": "fruit",
+   "aliases": [
+    "mango"
+   ],
+   "kcal100": 60,
+   "portions": [
+    {
+     "label": "1 cup pieces",
+     "grams": 165
+    },
+    {
+     "label": "1 fruit without refuse",
+     "grams": 336
+    }
+   ],
+   "fdcId": 169910,
+   "usda": "Mangos, raw"
+  },
+  {
+   "id": "strawberry",
+   "name": "Strawberries",
+   "category": "fruit",
+   "aliases": [
+    "frutilla",
+    "fresa"
+   ],
+   "kcal100": 32,
+   "portions": [
+    {
+     "label": "1 cup halves",
+     "grams": 152
+    },
+    {
+     "label": "1 cup pureed",
+     "grams": 232
+    },
+    {
+     "label": "1 cup sliced",
+     "grams": 166
+    }
+   ],
+   "fdcId": 167762,
+   "usda": "Strawberries, raw"
+  },
+  {
+   "id": "watermelon",
+   "name": "Watermelon",
+   "category": "fruit",
+   "aliases": [
+    "sandia"
+   ],
+   "kcal100": 30,
+   "portions": [
+    {
+     "label": "1 cup balls",
+     "grams": 154
+    },
+    {
+     "label": "1 cup diced",
+     "grams": 152
+    },
+    {
+     "label": "1 NLEA serving",
+     "grams": 280
+    }
+   ],
+   "fdcId": 167765,
+   "usda": "Watermelon, raw"
+  },
+  {
+   "id": "grapes",
+   "name": "Grapes",
+   "category": "fruit",
+   "aliases": [
+    "uva",
+    "uvas"
+   ],
+   "kcal100": 69,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 151
+    },
+    {
+     "label": "1 NLEA serving",
+     "grams": 126
+    }
+   ],
+   "fdcId": 174683,
+   "usda": "Grapes, red or green (European type, such as Thompson seedless), raw"
+  },
+  {
+   "id": "olive-oil",
+   "name": "Olive oil",
+   "category": "fats",
+   "aliases": [
+    "aceite de oliva"
+   ],
+   "kcal100": 884,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 216
+    },
+    {
+     "label": "1 tablespoon",
+     "grams": 14
+    },
+    {
+     "label": "1 tsp",
+     "grams": 5
+    }
+   ],
+   "fdcId": 171413,
+   "usda": "Oil, olive, salad or cooking"
+  },
+  {
+   "id": "vegetable-oil",
+   "name": "Vegetable oil",
+   "category": "fats",
+   "aliases": [
+    "aceite"
+   ],
+   "kcal100": 884,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 218
+    },
+    {
+     "label": "1 tbsp",
+     "grams": 14
+    },
+    {
+     "label": "1 tsp",
+     "grams": 5
+    }
+   ],
+   "fdcId": 171411,
+   "usda": "Oil, soybean, salad or cooking"
+  },
+  {
+   "id": "mayonnaise",
+   "name": "Mayonnaise",
+   "category": "fats",
+   "aliases": [
+    "mayonesa"
+   ],
+   "kcal100": 680,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 220
+    },
+    {
+     "label": "1 tbsp",
+     "grams": 14
+    }
+   ],
+   "fdcId": 171009,
+   "usda": "Salad dressing, mayonnaise, regular"
+  },
+  {
+   "id": "peanut-butter",
+   "name": "Peanut butter",
+   "category": "fats",
+   "aliases": [
+    "mantequilla de mani"
+   ],
+   "kcal100": 598,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 258
+    },
+    {
+     "label": "2 tbsp",
+     "grams": 32
+    }
+   ],
+   "fdcId": 172470,
+   "usda": "Peanut butter, smooth style, without salt"
+  },
+  {
+   "id": "peanuts",
+   "name": "Peanuts, roasted",
+   "category": "fats",
+   "aliases": [
+    "mani"
+   ],
+   "kcal100": 587,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 146
+    },
+    {
+     "label": "1 oz",
+     "grams": 28
+    }
+   ],
+   "fdcId": 173806,
+   "usda": "Peanuts, all types, dry-roasted, without salt"
+  },
+  {
+   "id": "almonds",
+   "name": "Almonds",
+   "category": "fats",
+   "aliases": [
+    "almendra",
+    "almendras"
+   ],
+   "kcal100": 598,
+   "portions": [
+    {
+     "label": "1 cup whole kernels",
+     "grams": 138
+    },
+    {
+     "label": "1 oz",
+     "grams": 28
+    }
+   ],
+   "fdcId": 170158,
+   "usda": "Nuts, almonds, dry roasted, without salt added"
+  },
+  {
+   "id": "walnuts",
+   "name": "Walnuts",
+   "category": "fats",
+   "aliases": [
+    "nuez",
+    "nueces"
+   ],
+   "kcal100": 654,
+   "portions": [
+    {
+     "label": "1 cup chopped",
+     "grams": 117
+    },
+    {
+     "label": "1 cup ground",
+     "grams": 80
+    },
+    {
+     "label": "1 cup in shell",
+     "grams": 28
+    }
+   ],
+   "fdcId": 170187,
+   "usda": "Nuts, walnuts, english"
+  },
+  {
+   "id": "sugar",
+   "name": "Sugar",
+   "category": "sweets",
+   "aliases": [
+    "azucar"
+   ],
+   "kcal100": 387,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 200
+    }
+   ],
+   "fdcId": 169655,
+   "usda": "Sugars, granulated"
+  },
+  {
+   "id": "honey",
+   "name": "Honey",
+   "category": "sweets",
+   "aliases": [
+    "miel"
+   ],
+   "kcal100": 304,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 339
+    },
+    {
+     "label": "1 tbsp",
+     "grams": 21
+    }
+   ],
+   "fdcId": 169640,
+   "usda": "Honey"
+  },
+  {
+   "id": "dark-chocolate",
+   "name": "Dark chocolate",
+   "category": "sweets",
+   "aliases": [
+    "chocolate negro"
+   ],
+   "kcal100": 550,
+   "portions": [
+    {
+     "label": "1 oz",
+     "grams": 28
+    },
+    {
+     "label": "1 bar",
+     "grams": 127
+    }
+   ],
+   "fdcId": 170274,
+   "usda": "Candies, chocolate, dark, NFS (45-59% cacao solids 90%; 60-69% cacao solids 5%; 70-85% cacao solids 5%)"
+  },
+  {
+   "id": "milk-chocolate",
+   "name": "Milk chocolate",
+   "category": "sweets",
+   "aliases": [
+    "chocolate"
+   ],
+   "kcal100": 535,
+   "portions": [
+    {
+     "label": "1 cup chips",
+     "grams": 168
+    },
+    {
+     "label": "1 bar miniature",
+     "grams": 7
+    },
+    {
+     "label": "1 bar",
+     "grams": 44
+    }
+   ],
+   "fdcId": 167587,
+   "usda": "Candies, milk chocolate"
+  },
+  {
+   "id": "ice-cream",
+   "name": "Vanilla ice cream",
+   "category": "sweets",
+   "aliases": [
+    "helado"
+   ],
+   "kcal100": 207,
+   "portions": [
+    {
+     "label": "1 serving 1/2 cup",
+     "grams": 66
+    }
+   ],
+   "fdcId": 167575,
+   "usda": "Ice creams, vanilla"
+  },
+  {
+   "id": "cookies",
+   "name": "Chocolate chip cookies",
+   "category": "sweets",
+   "aliases": [
+    "galletas"
+   ],
+   "kcal100": 492,
+   "portions": [
+    {
+     "label": "1 cookie",
+     "grams": 13
+    },
+    {
+     "label": "1 cookie Pepperidge Farm",
+     "grams": 12
+    },
+    {
+     "label": "1 cookie big",
+     "grams": 40
+    }
+   ],
+   "fdcId": 172716,
+   "usda": "Cookies, chocolate chip, commercially prepared, regular, higher fat, enriched"
+  },
+  {
+   "id": "potato-chips",
+   "name": "Potato chips",
+   "category": "snacks",
+   "aliases": [
+    "papas fritas de funda",
+    "chips"
+   ],
+   "kcal100": 532,
+   "portions": [
+    {
+     "label": "1 oz",
+     "grams": 28
+    }
+   ],
+   "fdcId": 169677,
+   "usda": "Snacks, potato chips, plain, salted"
+  },
+  {
+   "id": "popcorn",
+   "name": "Popcorn, air-popped",
+   "category": "snacks",
+   "aliases": [
+    "canguil",
+    "palomitas"
+   ],
+   "kcal100": 387,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 8
+    },
+    {
+     "label": "1 oz",
+     "grams": 28
+    }
+   ],
+   "fdcId": 167959,
+   "usda": "Snacks, popcorn, air-popped"
+  },
+  {
+   "id": "cola",
+   "name": "Cola",
+   "category": "drinks",
+   "aliases": [
+    "cola",
+    "gaseosa"
+   ],
+   "kcal100": 42,
+   "portions": [
+    {
+     "label": "1 can or bottle",
+     "grams": 370
+    }
+   ],
+   "fdcId": 174852,
+   "usda": "Beverages, carbonated, cola, regular"
+  },
+  {
+   "id": "orange-juice",
+   "name": "Orange juice",
+   "category": "drinks",
+   "aliases": [
+    "jugo de naranja"
+   ],
+   "kcal100": 45,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 248
+    },
+    {
+     "label": "1 fruit yields",
+     "grams": 86
+    }
+   ],
+   "fdcId": 169098,
+   "usda": "Orange juice, raw (Includes foods for USDA's Food Distribution Program)"
+  },
+  {
+   "id": "coffee",
+   "name": "Black coffee",
+   "category": "drinks",
+   "aliases": [
+    "cafe"
+   ],
+   "kcal100": 1,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 237
+    }
+   ],
+   "fdcId": 171890,
+   "usda": "Beverages, coffee, brewed, prepared with tap water"
+  },
+  {
+   "id": "tea",
+   "name": "Black tea",
+   "category": "drinks",
+   "aliases": [
+    "te"
+   ],
+   "kcal100": 1,
+   "portions": [
+    {
+     "label": "1 cup",
+     "grams": 237
+    }
+   ],
+   "fdcId": 173227,
+   "usda": "Beverages, tea, black, brewed, prepared with tap water"
+  },
+  {
+   "id": "beer",
+   "name": "Beer",
+   "category": "drinks",
+   "aliases": [
+    "cerveza"
+   ],
+   "kcal100": 43,
+   "portions": [
+    {
+     "label": "1 can",
+     "grams": 356
+    }
+   ],
+   "fdcId": 168746,
+   "usda": "Alcoholic beverage, beer, regular, all"
+  },
+  {
+   "id": "red-wine",
+   "name": "Red wine",
+   "category": "drinks",
+   "aliases": [
+    "vino",
+    "vino tinto"
+   ],
+   "kcal100": 85,
+   "portions": [
+    {
+     "label": "1 serving",
+     "grams": 147
+    }
+   ],
+   "fdcId": 173190,
+   "usda": "Alcoholic beverage, wine, table, red"
+  },
+  {
+   "id": "pizza",
+   "name": "Cheese pizza",
+   "category": "prepared",
+   "aliases": [
+    "pizza"
+   ],
+   "kcal100": 268,
+   "portions": [
+    {
+     "label": "1 serving",
+     "grams": 81
+    },
+    {
+     "label": "1 package 15.1 oz",
+     "grams": 452
+    },
+    {
+     "label": "1 package 9.8 oz",
+     "grams": 293
+    }
+   ],
+   "fdcId": 170317,
+   "usda": "Pizza, cheese topping, regular crust, frozen, cooked"
+  },
+  {
+   "id": "hamburger",
+   "name": "Hamburger, plain",
+   "category": "prepared",
+   "aliases": [
+    "hamburguesa"
+   ],
+   "kcal100": 297,
+   "portions": [
+    {
+     "label": "1 sandwich",
+     "grams": 78
+    }
+   ],
+   "fdcId": 170693,
+   "usda": "Fast foods, hamburger; single, regular patty; plain"
+  }
+ ]
+}

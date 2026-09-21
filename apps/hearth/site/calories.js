@@ -8,13 +8,20 @@ import {
   dayBudget,
   daySummaries,
   defaultCalorieState,
+  foodKcal,
   emptyProfile,
   entriesOfDay,
   formatKcal,
+  ITEM_LIMITS,
+  itemsTotal,
   makeEntry,
+  makeItem,
+  mealNameFor,
   normalizeCalorieState,
   plan,
+  recentFoods,
   removeEntry,
+  searchFoods,
   setProfile,
   setTargetOverride,
   validateProfile,
@@ -60,7 +67,24 @@ const el = {
   planBox: $('planBox'),
   activityHint: $('activityHint'),
   numbersError: $('numbersError'),
+  foodPicker: $('foodPicker'),
+  foodSearch: $('foodSearch'),
+  foodHint: $('foodHint'),
+  foodResults: $('foodResults'),
+  foodItems: $('foodItems'),
+  foodTotal: $('foodTotal'),
+  manualField: $('manualField'),
+  kcalLabel: $('kcalLabel'),
+  entryLabelCaption: $('entryLabelCaption'),
 }
+
+// The food table, from USDA FoodData Central. Fetched once; the service worker
+// keeps a copy, so it is there offline too.
+let FOODS = []
+// What someone is putting together right now, before they save the meal.
+let draftItems = []
+// Shown when the search box is empty and nothing has been logged yet.
+const STARTERS = ['white-rice', 'chicken-breast', 'boiled-egg', 'banana', 'white-bread', 'coffee']
 
 let state = defaultCalorieState()
 let draftSex = 'female'
@@ -143,7 +167,8 @@ function renderEntries(now) {
     title.textContent = `${item.kind === 'exercise' ? '+' : ''}${formatKcal(item.kcal)} kcal`
     const sub = document.createElement('p')
     sub.className = 'meal-gap'
-    sub.textContent = item.label ? `${item.label} · ${formatTime(item.at)}` : formatTime(item.at)
+    const parts = [item.label, (item.items || []).map((i) => `${i.name} ${i.grams} g`).join(', '), formatTime(item.at)]
+    sub.textContent = parts.filter(Boolean).join(' · ')
     text.append(title, sub)
 
     const remove = document.createElement('button')
@@ -202,20 +227,177 @@ function crossIcon() {
   return svg
 }
 
+// ---------------------------------------------------------------- food picker
+
+async function loadFoods() {
+  try {
+    const response = await fetch('./foods.json')
+    if (!response.ok) throw new Error(String(response.status))
+    const data = await response.json()
+    FOODS = Array.isArray(data.foods) ? data.foods : []
+  } catch {
+    // Without the table you can still type calories by hand.
+    FOODS = []
+  }
+  renderResults()
+}
+
+function defaultGrams(food) {
+  return food.portions[0]?.grams || 100
+}
+
+function addDraftItem(food, grams) {
+  draftItems = [...draftItems, makeItem(food, grams)]
+  el.foodSearch.value = ''
+  renderResults()
+  renderDraft()
+}
+
+function renderResults() {
+  const query = el.foodSearch.value.trim()
+  const matches = query
+    ? searchFoods(FOODS, query)
+    : (() => {
+        const recent = recentFoods(state.entries, FOODS)
+        return recent.length ? recent : STARTERS.map((id) => FOODS.find((f) => f.id === id)).filter(Boolean)
+      })()
+
+  el.foodHint.textContent = FOODS.length === 0
+    ? 'The food table could not load. Type the calories instead.'
+    : query
+      ? matches.length === 0
+        ? 'Nothing found. Try another word, or type the calories below.'
+        : ''
+      : recentFoods(state.entries, FOODS).length
+        ? 'Recent'
+        : 'Common foods'
+
+  el.foodResults.replaceChildren(...matches.map(resultRow))
+}
+
+function resultRow(food) {
+  const row = document.createElement('div')
+  row.className = 'food-result'
+
+  const pick = document.createElement('button')
+  pick.type = 'button'
+  pick.className = 'food-result-name'
+  const name = document.createElement('strong')
+  name.textContent = food.name
+  const per = document.createElement('span')
+  per.textContent = `${formatKcal(food.kcal100)} kcal per 100 g`
+  pick.append(name, per)
+  pick.addEventListener('click', () => addDraftItem(food, defaultGrams(food)))
+  row.append(pick)
+
+  const portions = document.createElement('div')
+  portions.className = 'food-portions'
+  for (const portion of [...food.portions.slice(0, 2), { label: '100 g', grams: 100 }]) {
+    const chip = document.createElement('button')
+    chip.type = 'button'
+    chip.className = 'portion-chip'
+    chip.textContent = `${portion.label} · ${formatKcal(foodKcal(food, portion.grams))} kcal`
+    chip.setAttribute('aria-label', `Add ${portion.label} of ${food.name}, ${foodKcal(food, portion.grams)} calories`)
+    chip.addEventListener('click', () => addDraftItem(food, portion.grams))
+    portions.append(chip)
+  }
+  row.append(portions)
+  return row
+}
+
+function renderDraft() {
+  const rows = draftItems.map((item, index) => {
+    const row = document.createElement('div')
+    row.className = 'food-item'
+
+    const name = document.createElement('span')
+    name.className = 'food-item-name'
+    name.textContent = item.name
+
+    const grams = document.createElement('input')
+    grams.type = 'number'
+    grams.inputMode = 'numeric'
+    grams.min = String(ITEM_LIMITS.grams.min)
+    grams.max = String(ITEM_LIMITS.grams.max)
+    grams.value = String(item.grams)
+    grams.setAttribute('aria-label', `Grams of ${item.name}`)
+    grams.addEventListener('input', () => {
+      const value = Number(grams.value)
+      if (!Number.isFinite(value) || value < ITEM_LIMITS.grams.min || value > ITEM_LIMITS.grams.max) return
+      const food = FOODS.find((f) => f.id === item.foodId)
+      draftItems = draftItems.map((other, i) => (i === index ? makeItem(food, value) : other))
+      kcal.textContent = `${formatKcal(draftItems[index].kcal)} kcal`
+      renderTotal()
+    })
+
+    const unit = document.createElement('span')
+    unit.className = 'food-item-unit'
+    unit.textContent = 'g'
+
+    const kcal = document.createElement('span')
+    kcal.className = 'food-item-kcal'
+    kcal.textContent = `${formatKcal(item.kcal)} kcal`
+
+    const remove = document.createElement('button')
+    remove.type = 'button'
+    remove.className = 'meal-delete'
+    remove.setAttribute('aria-label', `Remove ${item.name}`)
+    remove.append(crossIcon())
+    remove.addEventListener('click', () => {
+      draftItems = draftItems.filter((_, i) => i !== index)
+      renderDraft()
+      renderResults()
+    })
+
+    row.append(name, grams, unit, kcal, remove)
+    return row
+  })
+  el.foodItems.replaceChildren(...rows)
+  renderTotal()
+}
+
+function renderTotal() {
+  const total = itemsTotal(draftItems)
+  el.foodTotal.hidden = draftItems.length === 0
+  el.foodTotal.textContent = `Total ${formatKcal(total)} kcal`
+  // With foods chosen, the total is the number; typing one by hand would fight it.
+  el.manualField.hidden = draftItems.length > 0
+  el.entrySave.textContent = draftItems.length ? `Add ${formatKcal(total)} kcal` : 'Add food'
+}
+
+el.foodSearch.addEventListener('input', renderResults)
+el.foodSearch.addEventListener('keydown', (event) => {
+  // Enter in a search box would submit the meal before anything is picked.
+  if (event.key === 'Enter') event.preventDefault()
+})
+
 // ---------------------------------------------------------------- entries
 
 function openEntry(kind) {
   entryKind = kind
-  el.entryTitle.textContent = kind === 'food' ? 'Add food' : 'Add exercise'
-  el.entryHint.textContent =
-    kind === 'food' ? 'What you ate, in calories.' : 'What you burned, from your watch or the machine. It goes back into the day.'
-  el.entryLabel.placeholder = kind === 'food' ? 'Lunch, coffee, a snack…' : 'Run, gym, walk…'
+  const food = kind === 'food'
+  draftItems = []
+  el.entryTitle.textContent = food ? 'Add food' : 'Add exercise'
+  el.entryHint.textContent = food
+    ? 'Search what you ate, or type the calories.'
+    : 'What you burned, from your watch or the machine. It goes back into the day.'
+  el.entryLabelCaption.textContent = food ? 'Name this meal (optional)' : 'What was it? (optional)'
+  el.entryLabel.placeholder = food ? 'Lunch, snack…' : 'Run, gym, walk…'
+  el.entryLabel.value = food ? mealNameFor(new Date()) : ''
   el.entryKcal.value = ''
-  el.entryLabel.value = ''
   el.entryError.textContent = ''
-  el.entrySave.textContent = kind === 'food' ? 'Add food' : 'Add exercise'
+  el.foodPicker.hidden = !food
+  el.foodSearch.value = ''
+  el.manualField.hidden = false
+  el.kcalLabel.textContent = food ? 'Or type the calories' : 'Calories'
+  el.entrySave.textContent = food ? 'Add food' : 'Add exercise'
+  if (food) {
+    renderResults()
+    renderDraft()
+  }
   openDialog(el.entryDialog)
-  el.entryKcal.focus()
+  if (food) el.foodSearch.focus()
+  else el.entryKcal.focus()
 }
 
 function deleteEntry(item) {
@@ -228,12 +410,15 @@ el.addExerciseBtn.addEventListener('click', () => openEntry('exercise'))
 
 el.entryForm.addEventListener('submit', (event) => {
   event.preventDefault()
-  const kcal = Number(el.entryKcal.value)
+  const items = entryKind === 'food' ? draftItems : []
+  const kcal = items.length ? itemsTotal(items) : Number(el.entryKcal.value)
   if (!Number.isFinite(kcal) || kcal < 1 || kcal > 10000) {
-    el.entryError.textContent = 'Enter a number between 1 and 10,000.'
+    el.entryError.textContent = items.length
+      ? 'That meal adds up to more than 10,000 kcal. Check the grams.'
+      : 'Pick a food above, or enter a number between 1 and 10,000.'
     return
   }
-  const entry = makeEntry({ at: Date.now(), kcal, kind: entryKind, label: el.entryLabel.value })
+  const entry = { ...makeEntry({ at: Date.now(), kcal, kind: entryKind, label: el.entryLabel.value }), ...(items.length ? { items } : {}) }
   closeDialog(el.entryDialog)
   update(addEntry(state, entry))
   const budget = dayBudget(state, Date.now())
@@ -406,3 +591,4 @@ for (const goal of WEEKLY_GOALS) {
 
 load()
 render()
+loadFoods()

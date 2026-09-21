@@ -15,6 +15,7 @@ const ASSETS = [
   './app.js',
   './core.js',
   './nutrition.js',
+  './foods.json',
   './ui.js',
   './calories.js',
   './version.js',
