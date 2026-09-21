@@ -2,6 +2,7 @@ import {
   GOALS,
   HOUR,
   addMeal,
+  buildIcs,
   computeStats,
   dayKey,
   dayLabel,
@@ -10,10 +11,14 @@ import {
   formatClock,
   formatDuration,
   formatTime,
+  goalNotification,
+  goalReachedAt,
   greetingFor,
   hasMealInMinute,
   historyGroups,
+  icsFileName,
   lastMealAt,
+  markNotified,
   mergeMeals,
   normalizeState,
   parseBackup,
@@ -21,6 +26,8 @@ import {
   progress,
   removeMeal,
   setGoal,
+  setReminder,
+  shouldNotifyGoal,
   stageFor,
   toBackup,
   toLocalInputValue,
@@ -70,6 +77,12 @@ const el = {
   exportBtn: $('exportBtn'),
   importInput: $('importInput'),
   clearBtn: $('clearBtn'),
+  remindersRow: $('remindersRow'),
+  remindersDialog: $('remindersDialog'),
+  remindToggle: $('remindToggle'),
+  remindStatus: $('remindStatus'),
+  calendarBtn: $('calendarBtn'),
+  calendarHint: $('calendarHint'),
   aboutBtn: $('aboutBtn'),
   aboutRow: $('aboutRow'),
   aboutDialog: $('aboutDialog'),
@@ -263,6 +276,7 @@ function crossIcon() {
 function tick() {
   const now = Date.now()
   renderLive(now)
+  if (shouldNotifyGoal(state, now)) fireGoalAlarm(now)
   const minute = Math.floor(now / 60000)
   if (minute !== lastMinute) {
     lastMinute = minute
@@ -271,6 +285,128 @@ function tick() {
   clearTimeout(tickTimer)
   tickTimer = setTimeout(tick, 1000 - (now % 1000) + 10)
 }
+
+// ---------------------------------------------------------------- reminders
+//
+// The alarm is a system notification, so it also arrives while Hearth sits in
+// the background. Nothing can wake a closed web app, which is what the calendar
+// event is for: the phone owns that alarm.
+
+const canNotify = 'Notification' in window && 'serviceWorker' in navigator
+const permission = () => (canNotify ? Notification.permission : 'unsupported')
+
+async function fireGoalAlarm(now) {
+  const last = lastMealAt(state.meals, now)
+  // Mark it first: whatever happens next, the alarm never repeats for this meal.
+  update(markNotified(state, last))
+  const { title, body } = goalNotification(state)
+  toast(title + '.')
+  navigator.vibrate?.([120, 60, 120])
+  if (permission() !== 'granted') return
+  try {
+    const registration = await navigator.serviceWorker.ready
+    await registration.showNotification(title, {
+      body,
+      tag: 'hearth-goal',
+      icon: './icons/icon-192.png',
+      badge: './icons/icon-192.png',
+      data: { url: location.href },
+    })
+  } catch {
+    /* the in-app toast already told them */
+  }
+}
+
+function renderReminders() {
+  const now = Date.now()
+  const perm = permission()
+  const on = state.remindAtGoal && perm === 'granted'
+  el.remindToggle.setAttribute('aria-checked', String(on))
+  el.remindStatus.textContent =
+    perm === 'unsupported'
+      ? "This browser can't show notifications. Use the calendar below."
+      : perm === 'denied'
+        ? 'Blocked. Allow notifications for this site in your browser settings.'
+        : on
+          ? 'On. Alerts while Hearth is open or in the background.'
+          : 'Off. Tap to turn the alarm on.'
+
+  const reachedAt = goalReachedAt(state, now)
+  const running = reachedAt != null && reachedAt > now
+  el.calendarBtn.disabled = !running
+  el.calendarHint.textContent =
+    reachedAt == null
+      ? 'Tap “I ate” first — a calendar alarm needs a fast in progress.'
+      : running
+        ? `Alarm at ${formatTime(reachedAt)}, ${dayLabel(reachedAt, now).toLowerCase()}. It rings even with Hearth closed.`
+        : 'You already reached this goal.'
+}
+
+el.remindersRow.addEventListener('click', () => {
+  closeDialog(el.settingsDialog)
+  renderReminders()
+  openDialog(el.remindersDialog)
+})
+
+el.remindToggle.addEventListener('click', async () => {
+  if (state.remindAtGoal) {
+    update(setReminder(state, false))
+    renderReminders()
+    return
+  }
+  if (!canNotify) {
+    toast("This browser can't show notifications.")
+    return
+  }
+  let granted = Notification.permission === 'granted'
+  if (!granted && Notification.permission !== 'denied') {
+    try {
+      granted = (await Notification.requestPermission()) === 'granted'
+    } catch {
+      granted = false
+    }
+  }
+  if (!granted) {
+    renderReminders()
+    toast(
+      Notification.permission === 'denied'
+        ? 'Notifications are blocked for this site. Allow them in your browser settings.'
+        : 'Allow notifications to hear the alarm.',
+    )
+    return
+  }
+  let next = setReminder(state, true)
+  // Turning it on mid-fast that already passed the goal must not alarm at once.
+  const now = Date.now()
+  if (shouldNotifyGoal(next, now)) next = markNotified(next, lastMealAt(next.meals, now))
+  update(next)
+  renderReminders()
+  toast(`Alarm on. You'll hear it at ${state.goalHours}h.`)
+})
+
+el.calendarBtn.addEventListener('click', async () => {
+  const now = Date.now()
+  if (goalReachedAt(state, now) == null) return
+  const name = icsFileName(state, now)
+  const file = new File([buildIcs(state, now)], name, { type: 'text/calendar' })
+  try {
+    if (navigator.canShare?.({ files: [file] })) {
+      await navigator.share({ files: [file], title: 'Fasting goal' })
+      return
+    }
+  } catch (error) {
+    if (error?.name === 'AbortError') return
+  }
+  const url = URL.createObjectURL(file)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = name
+  document.body.append(link)
+  link.click()
+  link.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 10000)
+  toast('Open the file to add the alarm to your calendar.')
+})
 
 // ---------------------------------------------------------------- toast
 

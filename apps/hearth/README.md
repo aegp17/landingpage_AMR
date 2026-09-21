@@ -26,12 +26,26 @@ scripts/       stamp-build.mjs (run by the deploy workflow) and build-icons.mjs
 ## Working on it
 
 ```bash
-node --test apps/hearth/test/*.test.mjs      # logic tests
+node --test apps/hearth/test/*.test.mjs           # logic tests
+node apps/hearth/test/browser/app.mjs             # flows in a real browser
+node apps/hearth/test/browser/update.mjs          # a deploy landing on an open app
+node apps/hearth/test/browser/reminders.mjs       # the alarm and the calendar file
 python3 -m http.server -d apps/hearth/site 8080   # then open http://localhost:8080/
-node apps/hearth/scripts/build-icons.mjs     # after editing icons/icon.svg
+node apps/hearth/scripts/build-icons.mjs          # after editing icons/icon.svg
 ```
 
+The browser suites drive Chromium through the Playwright install already on the machine (`PLAYWRIGHT_CORE` and `CHROMIUM` override the paths). Each one serves its own copy of the app on a random port and deletes it afterwards.
+
 Every path in the app is relative (`./`), so it works from any folder name.
+
+## Reminders
+
+Two separate things, because the web has no way to wake a closed app:
+
+- **The alarm** (`Alert me at my goal` in Settings → Reminders) is a system notification. It needs the browser's notification permission, and fires while Hearth is open or in the background, on a tick of the same one-second loop that drives the clock — no long `setTimeout` to be throttled. `notifiedFor` in the stored state holds the meal it already alarmed for, so it fires once per fast, survives a reload, and never goes off retroactively when you switch it on after the goal.
+- **The calendar event** (`Add this goal to my calendar`) hands the phone an `.ics` with a `VALARM` at the goal. That one rings with Hearth closed, and it is the only option on iOS.
+
+Anything better (a push notification to a closed app) needs a server to send it, which this app does not have.
 
 ## Updates
 

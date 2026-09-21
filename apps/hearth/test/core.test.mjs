@@ -203,3 +203,62 @@ test('formatBuild', () => {
   assert.equal(core.formatBuild({ id: '__BUILD_ID__', date: '__BUILD_DATE__' }), 'Development build')
   assert.equal(core.formatBuild(undefined), 'Development build')
 })
+
+test('a reminder fires once per meal, only after the goal', () => {
+  const now = at(2026, 9, 17, 12)
+  const base = core.setReminder(core.addMeal(core.defaultState(), now - 16 * HOUR), true)
+  assert.equal(core.shouldNotifyGoal(base, now), true)
+  assert.equal(core.shouldNotifyGoal(core.setReminder(base, false), now), false)
+  assert.equal(core.shouldNotifyGoal(base, now - MINUTE), false, 'one minute short of 16h')
+  assert.equal(core.shouldNotifyGoal(core.defaultState(), now), false, 'no meals')
+
+  const after = core.markNotified(base, now - 16 * HOUR)
+  assert.equal(core.shouldNotifyGoal(after, now), false, 'already alerted for this meal')
+  // Eating again starts a new fast, and a new alarm.
+  const eaten = core.addMeal(after, now)
+  assert.equal(core.shouldNotifyGoal(eaten, now + 16 * HOUR), true)
+  assert.equal(core.goalNotification(eaten).title, '16h fast complete')
+})
+
+test('normalizeState keeps the reminder flags and drops junk', () => {
+  const raw = { goalHours: 18, meals: [{ at: 100 }], remindAtGoal: 'yes', notifiedFor: 'nope' }
+  assert.deepEqual(core.normalizeState(raw), {
+    version: core.STATE_VERSION,
+    goalHours: 18,
+    meals: [{ at: 100 }],
+    remindAtGoal: false,
+    notifiedFor: null,
+  })
+  assert.equal(core.normalizeState({ ...raw, remindAtGoal: true, notifiedFor: 100 }).notifiedFor, 100)
+})
+
+test('goalReachedAt counts from the latest meal', () => {
+  const now = at(2026, 9, 17, 12)
+  const state = core.addMeal(core.setGoal(core.defaultState(), 18), now - 2 * HOUR)
+  assert.equal(core.goalReachedAt(state, now), now + 16 * HOUR)
+  assert.equal(core.goalReachedAt(core.defaultState(), now), null)
+})
+
+test('buildIcs describes an event that alarms at the goal', () => {
+  const now = at(2026, 9, 17, 12)
+  const state = core.addMeal(core.defaultState(), now - HOUR)
+  const ics = core.buildIcs(state, now)
+  const lines = ics.split('\r\n')
+  assert.equal(lines[0], 'BEGIN:VCALENDAR')
+  assert.equal(lines.at(-2), 'END:VCALENDAR')
+  assert.ok(ics.endsWith('\r\n'), 'ends with CRLF')
+
+  const start = lines.find((l) => l.startsWith('DTSTART:'))
+  assert.equal(start, `DTSTART:${new Date(now + 15 * HOUR).toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`)
+  assert.ok(lines.includes('TRIGGER:PT0S'), 'alarm at the event, not before')
+  assert.ok(lines.includes('SUMMARY:Fasting goal reached (16h)'))
+  assert.match(core.icsFileName(state, now), /^hearth-goal-\d{4}-\d{2}-\d{2}\.ics$/)
+  assert.throws(() => core.buildIcs(core.defaultState(), now), /No fast is running/)
+})
+
+test('buildIcs escapes text that would break the calendar file', () => {
+  const now = at(2026, 9, 17, 12)
+  const state = core.addMeal(core.defaultState(), now - HOUR)
+  const description = core.buildIcs(state, now).split('\r\n').find((l) => l.startsWith('DESCRIPTION:'))
+  assert.ok(!/(?<!\\)[;,]/.test(description.slice('DESCRIPTION:'.length)), description)
+})

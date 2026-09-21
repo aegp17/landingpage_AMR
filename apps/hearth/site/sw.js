@@ -68,3 +68,17 @@ self.addEventListener('fetch', (event) => {
     caches.open(CACHE).then(async (cache) => (await cache.match(key, { ignoreSearch: true })) || fetch(request)),
   )
 })
+
+// Tapping the goal alarm brings Hearth up instead of opening a second copy.
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+  const target = event.notification.data?.url || self.registration.scope
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
+      for (const client of clients) {
+        if (client.url.startsWith(self.registration.scope) && 'focus' in client) return client.focus()
+      }
+      return self.clients.openWindow(target)
+    }),
+  )
+})
