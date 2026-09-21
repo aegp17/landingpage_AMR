@@ -1,5 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import * as n from '../site/nutrition.js'
 
 const at = (y, mo, d, h = 0, mi = 0) => new Date(y, mo - 1, d, h, mi).getTime()
@@ -140,4 +141,98 @@ test('normalizeCalorieState repairs whatever comes back from storage', () => {
 test('formatKcal groups thousands', () => {
   assert.equal(n.formatKcal(1930), '1,930')
   assert.equal(n.formatKcal(780.4), '780')
+})
+
+// ---------------------------------------------------------------- foods
+
+const FOODS = JSON.parse(readFileSync(new URL('../site/foods.json', import.meta.url), 'utf8')).foods
+const food = (id) => FOODS.find((f) => f.id === id)
+
+test('the food database is whole and plausible', () => {
+  assert.ok(FOODS.length >= 80, `only ${FOODS.length} foods`)
+  const ids = new Set()
+  for (const f of FOODS) {
+    assert.ok(!ids.has(f.id), `duplicate id ${f.id}`)
+    ids.add(f.id)
+    assert.match(f.id, /^[a-z0-9-]+$/)
+    assert.ok(f.name && f.category && f.usda && f.fdcId, `${f.id} is missing fields`)
+    assert.ok(Number.isInteger(f.kcal100) && f.kcal100 >= 0 && f.kcal100 <= 900, `${f.id}: ${f.kcal100} kcal/100 g`)
+    for (const portion of f.portions) {
+      assert.ok(portion.label && Number.isInteger(portion.grams) && portion.grams >= 5 && portion.grams <= 500, `${f.id}: ${JSON.stringify(portion)}`)
+    }
+  }
+})
+
+test('the values match the USDA reference entries they come from', () => {
+  // Spot checks against SR Legacy, the source the file records.
+  assert.equal(food('white-rice').kcal100, 130)
+  assert.equal(food('chicken-breast').kcal100, 165)
+  assert.equal(food('boiled-egg').kcal100, 155)
+  assert.equal(food('banana').kcal100, 89)
+  assert.equal(food('avocado').kcal100, 160)
+  assert.equal(food('olive-oil').kcal100, 884)
+  assert.equal(food('black-beans').kcal100, 132)
+  assert.equal(food('fried-plantain').kcal100, 309)
+})
+
+test('search finds food by English name and by Spanish alias, accents or not', () => {
+  const ids = (q) => n.searchFoods(FOODS, q).map((f) => f.id)
+  assert.deepEqual(ids('rice').slice(0, 2).sort(), ['brown-rice', 'white-rice'])
+  assert.equal(ids('white rice')[0], 'white-rice')
+  assert.equal(ids('arroz')[0], 'white-rice', 'the exact alias wins over "arroz integral"')
+  assert.equal(ids('POLLO')[0], 'chicken-breast')
+  assert.equal(ids('piña')[0], 'pineapple')
+  assert.equal(ids('pina')[0], 'pineapple')
+  assert.ok(ids('huevo').includes('boiled-egg') && ids('huevo').includes('fried-egg'))
+  assert.ok(ids('verde').includes('green-plantain'))
+  assert.deepEqual(n.searchFoods(FOODS, '   '), [])
+  assert.deepEqual(n.searchFoods(FOODS, 'zzzz'), [])
+  assert.ok(n.searchFoods(FOODS, 'a', 5).length <= 5, 'honours the limit')
+})
+
+test('calories scale with grams', () => {
+  const rice = food('white-rice')
+  assert.equal(n.foodKcal(rice, 100), 130)
+  assert.equal(n.foodKcal(rice, 158), 205) // the 1 cup portion
+  assert.equal(n.foodKcal(rice, 0), 0)
+  assert.deepEqual(n.makeItem(rice, 150), { foodId: 'white-rice', name: rice.name, grams: 150, kcal: 195 })
+  assert.equal(n.itemsTotal([n.makeItem(rice, 150), n.makeItem(food('chicken-breast'), 120)]), 195 + 198)
+})
+
+test('a meal keeps its items, and its total is always their sum', () => {
+  const now = at(2026, 9, 21, 13)
+  const items = [n.makeItem(food('white-rice'), 150), n.makeItem(food('chicken-breast'), 120)]
+  const meal = { ...n.makeEntry({ at: now, kcal: n.itemsTotal(items), kind: 'food', label: 'Lunch' }), items }
+  const state = n.addEntry(n.defaultCalorieState(), meal)
+  assert.equal(n.dayBudget(n.setTargetOverride(state, 1700), now).food, 393)
+
+  // A stored total that disagrees with the items is repaired, not trusted.
+  const repaired = n.normalizeCalorieState({ entries: [{ ...meal, kcal: 9 }] })
+  assert.equal(repaired.entries[0].kcal, 393)
+  assert.equal(repaired.entries[0].items.length, 2)
+
+  // Junk items are dropped, and the total follows.
+  const cleaned = n.normalizeCalorieState({ entries: [{ ...meal, items: [items[0], { foodId: 'x' }] }] })
+  assert.equal(cleaned.entries[0].items.length, 1)
+  assert.equal(cleaned.entries[0].kcal, 195)
+})
+
+test('mealNameFor names the meal by the clock', () => {
+  assert.equal(n.mealNameFor(new Date(2026, 8, 21, 8)), 'Breakfast')
+  assert.equal(n.mealNameFor(new Date(2026, 8, 21, 13)), 'Lunch')
+  assert.equal(n.mealNameFor(new Date(2026, 8, 21, 19)), 'Dinner')
+  assert.equal(n.mealNameFor(new Date(2026, 8, 21, 23)), 'Snack')
+})
+
+test('recentFoods lists what you logged, newest first, without repeats', () => {
+  const day = at(2026, 9, 21, 8)
+  const entries = [
+    { items: [n.makeItem(food('white-rice'), 100), n.makeItem(food('banana'), 100)] },
+    { items: [n.makeItem(food('coffee'), 240)] },
+    { items: [n.makeItem(food('banana'), 120)] },
+    { at: day, kcal: 200, kind: 'food' },
+  ]
+  assert.deepEqual(n.recentFoods(entries, FOODS).map((f) => f.id), ['banana', 'coffee', 'white-rice'])
+  assert.equal(n.recentFoods(entries, FOODS, 2).length, 2)
+  assert.deepEqual(n.recentFoods([{ items: [{ foodId: 'gone', name: 'x', grams: 1, kcal: 1 }] }], FOODS), [])
 })
