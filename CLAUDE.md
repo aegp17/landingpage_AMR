@@ -35,7 +35,7 @@ Node 20 (matches CI in `.github/workflows/deploy.yml`). No test runner or linter
 
 `apps/` holds standalone apps that share the domain but **not** the code of the landing page. Each is plain HTML/CSS/JS with no build step, no Vue and no dependencies, and is copied verbatim into `dist/` by a step in `.github/workflows/deploy.yml` (so a local `npm run build` does not include them). They are deliberately unlisted: never link them from the site, `sitemap.xml`, `llms.txt`/`agents.txt`, or `robots.txt` (a `Disallow` line there would publish the path). Each page carries its own `noindex` meta. The landing page rules above (i18n dictionaries, Vue components) do not apply to them.
 
-- `apps/hearth/` — intermittent fasting timer PWA, published at `/hearth-ac5490/`. See `apps/hearth/README.md`.
+- `apps/hearth/` — intermittent fasting timer PWA with a calorie-deficit tab, published at `/hearth-ac5490/`. See `apps/hearth/README.md`.
 
 ## Deployment notes
 
