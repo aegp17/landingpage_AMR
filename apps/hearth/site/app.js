@@ -33,11 +33,12 @@ import {
   toLocalInputValue,
 } from './core.js'
 import { BUILD } from './version.js'
+import { anyDialogOpen, closeDialog, onDialogClosed, openDialog, toast } from './ui.js'
+import { calorieBackup, entryCount, eraseCalories, importCalories, render as renderCalories } from './calories.js'
 
 const STORAGE_KEY = 'hearth.v1'
 const HISTORY_PAGE = 30
 const DOUBLE_TAP_MS = 5000
-const TOAST_MS = 6000
 const SVG_NS = 'http://www.w3.org/2000/svg'
 
 const $ = (id) => document.getElementById(id)
@@ -408,32 +409,6 @@ el.calendarBtn.addEventListener('click', async () => {
   toast('Open the file to add the alarm to your calendar.')
 })
 
-// ---------------------------------------------------------------- toast
-
-let toastTimer = 0
-let toastHandler = null
-
-function toast(message, actionLabel, onAction) {
-  clearTimeout(toastTimer)
-  el.toastText.textContent = message
-  toastHandler = onAction || null
-  el.toastAction.hidden = !onAction
-  if (actionLabel) el.toastAction.textContent = actionLabel
-  el.toast.classList.add('show')
-  toastTimer = setTimeout(hideToast, TOAST_MS)
-}
-
-function hideToast() {
-  el.toast.classList.remove('show')
-  toastHandler = null
-}
-
-el.toastAction.addEventListener('click', () => {
-  const handler = toastHandler
-  hideToast()
-  if (handler) handler()
-})
-
 // ---------------------------------------------------------------- actions
 
 function logMealNow() {
@@ -465,29 +440,8 @@ function deleteMeal(at) {
 
 // ---------------------------------------------------------------- dialogs
 
-function openDialog(dialog) {
-  if (typeof dialog.showModal === 'function') dialog.showModal()
-  else dialog.setAttribute('open', '')
-}
-
-function closeDialog(dialog) {
-  if (typeof dialog.close === 'function') dialog.close()
-  else dialog.removeAttribute('open')
-  applyPendingUpdate()
-}
-
-for (const dialog of document.querySelectorAll('dialog')) {
-  // Escape closes a dialog without going through closeDialog.
-  dialog.addEventListener('close', applyPendingUpdate)
-  dialog.addEventListener('click', (event) => {
-    if (event.target.closest('[data-close]')) return closeDialog(dialog)
-    // A click on the backdrop lands on the <dialog> itself, outside its box.
-    if (event.target !== dialog) return
-    const r = dialog.getBoundingClientRect()
-    const inside = event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom
-    if (!inside) closeDialog(dialog)
-  })
-}
+// A pending update waits for whatever dialog is open to close.
+onDialogClosed(() => applyPendingUpdate())
 
 // Earlier meal
 
@@ -570,18 +524,21 @@ function disarmClear() {
 }
 
 el.settingsBtn.addEventListener('click', () => {
-  const count = state.meals.length
-  el.settingsSummary.textContent =
-    count === 0
-      ? 'Nothing logged yet. Everything you log stays in this browser, on this device.'
-      : `${count} ${count === 1 ? 'meal' : 'meals'} since ${dayLabel(state.meals[0].at, Date.now())}. They live only in this browser, so export a backup now and then.`
+  const meals = state.meals.length
+  const entries = entryCount()
+  const logged = [meals ? `${meals} ${meals === 1 ? 'meal' : 'meals'}` : '', entries ? `${entries} calorie ${entries === 1 ? 'entry' : 'entries'}` : '']
+    .filter(Boolean)
+    .join(' and ')
+  el.settingsSummary.textContent = logged
+    ? `${logged}. They live only in this browser, so export a backup now and then.`
+    : 'Nothing logged yet. Everything you log stays in this browser, on this device.'
   disarmClear()
   openDialog(el.settingsDialog)
 })
 
 el.exportBtn.addEventListener('click', async () => {
   const now = Date.now()
-  const json = JSON.stringify(toBackup(state, now), null, 2)
+  const json = JSON.stringify({ ...toBackup(state, now), calories: calorieBackup() }, null, 2)
   const name = `hearth-backup-${dayKey(now)}.json`
   const file = new File([json], name, { type: 'application/json' })
   try {
@@ -609,11 +566,17 @@ el.importInput.addEventListener('change', async () => {
   el.importInput.value = ''
   if (!file) return
   try {
-    const imported = parseBackup(await file.text())
+    const text = await file.text()
+    const imported = parseBackup(text)
     const { state: merged, added } = mergeMeals(state, imported)
     update(merged)
+    // Older backups have no calories section; importing one must not wipe it.
+    const addedEntries = importCalories(JSON.parse(text).calories)
     closeDialog(el.settingsDialog)
-    toast(added === 0 ? 'Those meals were already here.' : `Imported ${added} ${added === 1 ? 'meal' : 'meals'}.`)
+    const parts = []
+    if (added) parts.push(`${added} ${added === 1 ? 'meal' : 'meals'}`)
+    if (addedEntries) parts.push(`${addedEntries} calorie ${addedEntries === 1 ? 'entry' : 'entries'}`)
+    toast(parts.length ? `Imported ${parts.join(' and ')}.` : 'Everything in that file was already here.')
   } catch (error) {
     toast(error instanceof Error ? error.message : "Couldn't read that file.")
   }
@@ -627,11 +590,50 @@ el.clearBtn.addEventListener('click', () => {
     return
   }
   disarmClear()
-  const previous = state
-  update({ ...defaultState(), goalHours: state.goalHours })
+  const previousMeals = state
+  const previousCalories = calorieBackup()
+  update({ ...defaultState(), goalHours: state.goalHours, remindAtGoal: state.remindAtGoal })
+  eraseCalories()
   closeDialog(el.settingsDialog)
-  toast('All meals erased.', 'Undo', () => update(previous))
+  toast('Everything erased.', 'Undo', () => {
+    update(previousMeals)
+    importCalories(previousCalories)
+  })
 })
+
+// ---------------------------------------------------------------- tabs
+
+const TAB_KEY = 'hearth.tab'
+const TABS = [
+  { button: $('tabFasting'), panel: $('fastingTab'), name: 'fasting' },
+  { button: $('tabCalories'), panel: $('caloriesTab'), name: 'calories' },
+]
+
+function showTab(name) {
+  for (const tab of TABS) {
+    const active = tab.name === name
+    tab.button.setAttribute('aria-selected', String(active))
+    tab.panel.hidden = !active
+  }
+  if (name === 'calories') renderCalories()
+  try {
+    localStorage.setItem(TAB_KEY, name)
+  } catch {
+    /* remembering the tab is a nicety */
+  }
+}
+
+for (const tab of TABS) tab.button.addEventListener('click', () => showTab(tab.name))
+
+function restoreTab() {
+  let saved = null
+  try {
+    saved = localStorage.getItem(TAB_KEY)
+  } catch {
+    /* fall back to fasting */
+  }
+  showTab(TABS.some((tab) => tab.name === saved) ? saved : 'fasting')
+}
 
 // ---------------------------------------------------------------- boot
 
@@ -655,6 +657,7 @@ window.addEventListener('storage', (event) => {
 load()
 render()
 tick()
+restoreTab()
 
 // ---------------------------------------------------------------- updates
 //
@@ -670,7 +673,7 @@ let updatePending = false
 let reloading = false
 
 function applyPendingUpdate() {
-  if (!updatePending || reloading || document.querySelector('dialog[open]')) return
+  if (!updatePending || reloading || anyDialogOpen()) return
   reloading = true
   try {
     sessionStorage.setItem(UPDATED_FLAG, BUILD.id)

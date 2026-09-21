@@ -1,6 +1,6 @@
 # Hearth
 
-A cozy intermittent fasting timer. Private and unlisted: it is not linked from the landing page and asks search engines not to index it.
+A cozy intermittent fasting timer, with a calorie tab. Private and unlisted: it is not linked from the landing page and asks search engines not to index it.
 
 - **Published at:** `https://agentic-amr.com/hearth-ac5490/` (the folder name is set in `.github/workflows/deploy.yml`).
 - **Front end only:** plain HTML, CSS and ES modules, no build step and no dependencies. Nothing leaves the device. Meals live in `localStorage` under `hearth.v1`, on the device and browser where they were logged.
@@ -12,8 +12,11 @@ A cozy intermittent fasting timer. Private and unlisted: it is not linked from t
 site/          published as-is
   index.html
   styles.css
-  app.js       DOM, storage, dialogs
-  core.js      pure logic (time math, stats, backup format), no DOM
+  app.js       the Fasting tab, the tab bar, settings and updates
+  core.js      pure logic for fasting (time math, stats, backup format), no DOM
+  calories.js  the Calories tab: its own screen and its own storage key
+  nutrition.js pure logic for calories (BMR, targets, day budget), no DOM
+  ui.js        the toast and the dialog helpers, shared by both tabs
   version.js   build id and date, stamped at deploy
   version.json the same, read by the app to notice a new deploy
   sw.js        offline cache and updates
@@ -30,6 +33,7 @@ node --test apps/hearth/test/*.test.mjs           # logic tests
 node apps/hearth/test/browser/app.mjs             # flows in a real browser
 node apps/hearth/test/browser/update.mjs          # a deploy landing on an open app
 node apps/hearth/test/browser/reminders.mjs       # the alarm and the calendar file
+node apps/hearth/test/browser/calories.mjs        # the calorie tab, and the two tabs apart
 python3 -m http.server -d apps/hearth/site 8080   # then open http://localhost:8080/
 node apps/hearth/scripts/build-icons.mjs          # after editing icons/icon.svg
 ```
@@ -37,6 +41,14 @@ node apps/hearth/scripts/build-icons.mjs          # after editing icons/icon.svg
 The browser suites drive Chromium through the Playwright install already on the machine (`PLAYWRIGHT_CORE` and `CHROMIUM` override the paths). Each one serves its own copy of the app on a random port and deletes it afterwards.
 
 Every path in the app is relative (`./`), so it works from any folder name.
+
+## The two tabs
+
+They share the page, the backup and nothing else. Fasting keeps its state under `hearth.v1`, Calories under `hearth.calories.v1`, and each module owns its own DOM. The last tab you used is remembered in `hearth.tab`.
+
+**Calories.** You fill in sex, age, height, weight and how active you are; `nutrition.js` estimates what you burn in a day with Mifflin-St Jeor times an activity factor, subtracts the deficit your weekly goal implies (1 kg a week = 7,700 kcal = 1,100 kcal a day), and suggests a daily target. You can override it with your own number. Food spends the day's budget, exercise gives it back, and days roll over on the local calendar.
+
+Two rules the code keeps: the suggested target never goes below 1,200 kcal for women or 1,500 for men — it clamps and says so — and the dialog states in small print that these are estimates, not medical advice.
 
 ## Reminders
 
