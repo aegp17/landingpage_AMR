@@ -12,7 +12,7 @@ export const STATE_VERSION = 1
 const LOCALE = 'en-US'
 
 export function defaultState() {
-  return { version: STATE_VERSION, goalHours: DEFAULT_GOAL, meals: [] }
+  return { version: STATE_VERSION, goalHours: DEFAULT_GOAL, meals: [], remindAtGoal: false, notifiedFor: null }
 }
 
 function isValidTimestamp(value) {
@@ -32,7 +32,13 @@ export function normalizeState(raw) {
   const meals = Array.isArray(raw.meals)
     ? sortUnique(raw.meals.map((m) => m && m.at).filter(isValidTimestamp)).map((at) => ({ at }))
     : []
-  return { version: STATE_VERSION, goalHours, meals }
+  return {
+    version: STATE_VERSION,
+    goalHours,
+    meals,
+    remindAtGoal: raw.remindAtGoal === true,
+    notifiedFor: isValidTimestamp(raw.notifiedFor) ? raw.notifiedFor : null,
+  }
 }
 
 export function addMeal(state, at) {
@@ -238,4 +244,74 @@ export function formatBuild(build) {
   const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
   const label = new Intl.DateTimeFormat(LOCALE, { month: 'short', day: 'numeric', year: 'numeric' }).format(date)
   return `Version ${build.id} · ${label}`
+}
+
+// ---------------------------------------------------------------- reminders
+
+export function setReminder(state, on) {
+  return { ...state, remindAtGoal: on === true }
+}
+
+export function markNotified(state, mealAt) {
+  return { ...state, notifiedFor: mealAt }
+}
+
+// When the running fast reaches the goal. null when no fast is running.
+export function goalReachedAt(state, now) {
+  const last = lastMealAt(state.meals, now)
+  return last == null ? null : last + state.goalHours * HOUR
+}
+
+// The alarm fires once per meal, and only for a goal that has actually arrived.
+export function shouldNotifyGoal(state, now) {
+  if (!state.remindAtGoal) return false
+  const last = lastMealAt(state.meals, now)
+  if (last == null || state.notifiedFor === last) return false
+  return now >= last + state.goalHours * HOUR
+}
+
+export function goalNotification(state) {
+  return {
+    title: `${state.goalHours}h fast complete`,
+    body: 'Goal reached. Eat when you are ready, then tap “I ate”.',
+  }
+}
+
+const icsDate = (ts) => `${new Date(ts).toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`
+const icsEscape = (text) => text.replace(/([\\;,])/g, '\\$1').replace(/\n/g, '\\n')
+
+// A calendar event with an alarm at the goal, for the fast running right now.
+// The phone fires it even when Hearth is closed, which no web API can do.
+export function buildIcs(state, now) {
+  const reachedAt = goalReachedAt(state, now)
+  if (reachedAt == null) throw new Error('No fast is running')
+  const summary = `Fasting goal reached (${state.goalHours}h)`
+  const startedAt = reachedAt - state.goalHours * HOUR
+  const description = `Your ${state.goalHours}h fast, started at ${formatTime(startedAt)} on ${dayKey(startedAt)}, is complete.`
+  return [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Hearth//Fasting timer//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:hearth-${reachedAt}@agentic-amr.com`,
+    `DTSTAMP:${icsDate(now)}`,
+    `DTSTART:${icsDate(reachedAt)}`,
+    `DTEND:${icsDate(reachedAt + 15 * MINUTE)}`,
+    `SUMMARY:${icsEscape(summary)}`,
+    `DESCRIPTION:${icsEscape(description)}`,
+    'BEGIN:VALARM',
+    'ACTION:DISPLAY',
+    `DESCRIPTION:${icsEscape(summary)}`,
+    'TRIGGER:PT0S',
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR',
+    '',
+  ].join('\r\n')
+}
+
+export function icsFileName(state, now) {
+  return `hearth-goal-${dayKey(goalReachedAt(state, now))}.ics`
 }
