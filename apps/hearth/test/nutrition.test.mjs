@@ -195,7 +195,7 @@ test('calories scale with grams', () => {
   assert.equal(n.foodKcal(rice, 100), 130)
   assert.equal(n.foodKcal(rice, 158), 205) // the 1 cup portion
   assert.equal(n.foodKcal(rice, 0), 0)
-  assert.deepEqual(n.makeItem(rice, 150), { foodId: 'white-rice', name: rice.name, grams: 150, kcal: 195 })
+  assert.deepEqual(n.makeItem(rice, 150), { foodId: 'white-rice', name: rice.name, grams: 150, kcal: 195, protein: 4.1 })
   assert.equal(n.itemsTotal([n.makeItem(rice, 150), n.makeItem(food('chicken-breast'), 120)]), 195 + 198)
 })
 
@@ -235,4 +235,99 @@ test('recentFoods lists what you logged, newest first, without repeats', () => {
   assert.deepEqual(n.recentFoods(entries, FOODS).map((f) => f.id), ['banana', 'coffee', 'white-rice'])
   assert.equal(n.recentFoods(entries, FOODS, 2).length, 2)
   assert.deepEqual(n.recentFoods([{ items: [{ foodId: 'gone', name: 'x', grams: 1, kcal: 1 }] }], FOODS), [])
+})
+
+// ---------------------------------------------------------------- protein
+
+test('every food carries a protein value, and the big ones are right', () => {
+  for (const f of FOODS) {
+    assert.ok(typeof f.protein100 === 'number' && f.protein100 >= 0 && f.protein100 <= 90, `${f.id}: ${f.protein100} g/100 g`)
+  }
+  // Spot checks against SR Legacy.
+  assert.equal(food('chicken-breast').protein100, 31)
+  assert.equal(food('boiled-egg').protein100, 12.6)
+  assert.equal(food('white-rice').protein100, 2.7)
+  assert.equal(food('black-beans').protein100, 8.9)
+  assert.equal(food('canned-tuna').protein100, 19.4)
+  assert.equal(food('olive-oil').protein100, 0, 'oil has none')
+})
+
+test('protein scales with grams, with one decimal', () => {
+  assert.equal(n.foodProtein(food('chicken-breast'), 120), 37.2)
+  assert.equal(n.foodProtein(food('white-rice'), 158), 4.3)
+  assert.equal(n.foodProtein(food('olive-oil'), 20), 0)
+  assert.equal(n.makeItem(food('boiled-egg'), 50).protein, 6.3)
+  assert.equal(n.itemsProtein([n.makeItem(food('chicken-breast'), 120), n.makeItem(food('white-rice'), 158)]), 41.5)
+})
+
+test('formatGrams keeps the decimal only where it matters', () => {
+  assert.equal(n.formatGrams(36.4), '36 g')
+  assert.equal(n.formatGrams(4.32), '4.3 g')
+  assert.equal(n.formatGrams(10), '10 g')
+  assert.equal(n.formatGrams(0), '0 g')
+})
+
+test('the protein goal: your own number, or weight times grams per kilo', () => {
+  let state = n.defaultProteinState()
+  assert.equal(n.proteinTarget(state), null)
+  state = n.setProteinGoal(state, { weightKg: 82, perKg: 1.6 })
+  assert.equal(n.proteinTarget(state), 131)
+  state = n.setProteinGoal(state, { targetGrams: 150 })
+  assert.equal(n.proteinTarget(state), 150, 'a typed target wins')
+  assert.throws(() => n.setProteinGoal(state, { targetGrams: 5 }), RangeError)
+  assert.throws(() => n.setProteinGoal(state, { weightKg: 82, perKg: 3 }), RangeError)
+})
+
+test('a protein meal keeps its items and totals them', () => {
+  const now = at(2026, 9, 28, 13)
+  const items = [n.makeItem(food('chicken-breast'), 150), n.makeItem(food('white-rice'), 158)]
+  const meal = n.makeProteinEntry({ at: now, label: 'Almuerzo', items })
+  assert.equal(meal.protein, 50.8) // 46.5 + 4.3
+  let state = n.addProteinEntry(n.setProteinGoal(n.defaultProteinState(), { weightKg: 82, perKg: 1.6 }), meal)
+
+  const day = n.proteinDay(state, now)
+  assert.deepEqual({ total: day.total, target: day.target, remaining: day.remaining, over: day.over }, { total: 50.8, target: 131, remaining: 80.2, over: false })
+
+  // A hand-typed entry, with no foods behind it, is allowed too.
+  state = n.addProteinEntry(state, n.makeProteinEntry({ at: now + 1, protein: 30, label: 'Shake' }))
+  assert.equal(n.proteinDay(state, now).total, 80.8)
+
+  // Reaching the goal is the good outcome here, unlike calories.
+  const reached = n.addProteinEntry(state, n.makeProteinEntry({ at: now + 2, protein: 60 }))
+  const dayReached = n.proteinDay(reached, now)
+  assert.equal(dayReached.over, true)
+  assert.equal(dayReached.remaining, -9.8)
+})
+
+test('the protein log only counts today, and repairs what it reads back', () => {
+  const now = at(2026, 9, 28, 9)
+  const items = [n.makeItem(food('boiled-egg'), 100)]
+  const yesterday = n.makeProteinEntry({ at: at(2026, 9, 27, 20), items })
+  const today = n.makeProteinEntry({ at: now, items })
+  const stored = {
+    weightKg: 82,
+    perKg: 1.6,
+    entries: [yesterday, today, today, null, { id: 'x', at: now, protein: 0 }, { ...today, id: 'z', protein: 999, items: [items[0], { foodId: 'bad' }] }],
+  }
+  const state = n.normalizeProteinState(stored)
+  assert.equal(state.entries.length, 3, 'duplicates and junk dropped, the repairable kept')
+  assert.equal(state.entries.at(-1).protein, 12.6, 'a wrong stored total is rebuilt from the items')
+  assert.equal(n.proteinDay(state, now).total, 25.2, "yesterday's meal stays in yesterday")
+
+  const days = n.proteinDaySummaries(state, now)
+  assert.deepEqual(days.map((d) => d.label), ['Today', 'Yesterday'])
+  assert.deepEqual(days.map((d) => d.total), [25.2, 12.6])
+  assert.equal(days[0].difference, 25.2 - 131)
+  assert.deepEqual(n.normalizeProteinState(null), n.defaultProteinState())
+})
+
+test('removing a protein entry leaves the rest, and does not mutate', () => {
+  const now = at(2026, 9, 28, 13)
+  const first = n.makeProteinEntry({ at: now, protein: 30 })
+  const second = n.makeProteinEntry({ at: now + 1, protein: 20 })
+  const state = n.addProteinEntry(n.addProteinEntry(n.defaultProteinState(), first), second)
+  const after = n.removeProteinEntry(state, first.id)
+  assert.deepEqual(after.entries.map((e) => e.id), [second.id])
+  assert.equal(state.entries.length, 2, 'undo relies on the old state surviving')
+  assert.throws(() => n.addProteinEntry(state, { id: 'x', at: now, protein: 0 }), TypeError)
 })

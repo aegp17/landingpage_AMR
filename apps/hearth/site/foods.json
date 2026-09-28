@@ -3,9 +3,9 @@
   "name": "USDA FoodData Central, SR Legacy",
   "dataset": "FoodData_Central_sr_legacy_food_csv_2018-04",
   "url": "https://fdc.nal.usda.gov/download-datasets.html",
-  "note": "Energy in kcal per 100 g of the edible portion. Public domain."
+  "note": "Energy (kcal) and protein (g) per 100 g of the edible portion. Public domain."
  },
- "built": "2026-09-21",
+ "built": "2026-09-28",
  "foods": [
   {
    "id": "white-rice",
@@ -16,6 +16,7 @@
     "arroz blanco"
    ],
    "kcal100": 130,
+   "protein100": 2.7,
    "portions": [
     {
      "label": "1 cup",
@@ -33,6 +34,7 @@
     "arroz integral"
    ],
    "kcal100": 123,
+   "protein100": 2.7,
    "portions": [
     {
      "label": "1 cup",
@@ -53,6 +55,7 @@
     "spaghetti"
    ],
    "kcal100": 158,
+   "protein100": 5.8,
    "portions": [
     {
      "label": "1 cup spaghetti",
@@ -79,6 +82,7 @@
     "quinoa"
    ],
    "kcal100": 120,
+   "protein100": 4.4,
    "portions": [
     {
      "label": "1 cup",
@@ -96,6 +100,7 @@
     "avena"
    ],
    "kcal100": 379,
+   "protein100": 13.2,
    "portions": [
     {
      "label": "1 cup",
@@ -118,6 +123,7 @@
     "cereal"
    ],
    "kcal100": 384,
+   "protein100": 5.9,
    "portions": [
     {
      "label": "1 cup",
@@ -136,6 +142,7 @@
     "pan blanco"
    ],
    "kcal100": 266,
+   "protein100": 8.9,
    "portions": [
     {
      "label": "1 cup crumbs",
@@ -161,6 +168,7 @@
     "pan integral"
    ],
    "kcal100": 252,
+   "protein100": 12.5,
    "portions": [
     {
      "label": "1 slice",
@@ -182,6 +190,7 @@
     "pan de hamburguesa"
    ],
    "kcal100": 279,
+   "protein100": 9.8,
    "portions": [
     {
      "label": "1 roll 1 serving",
@@ -203,6 +212,7 @@
     "tortilla de maiz"
    ],
    "kcal100": 218,
+   "protein100": 5.7,
    "portions": [
     {
      "label": "1 tortilla",
@@ -224,6 +234,7 @@
     "tortilla de harina"
    ],
    "kcal100": 306,
+   "protein100": 8.2,
    "portions": [
     {
      "label": "1 tortilla",
@@ -250,6 +261,7 @@
     "pechuga"
    ],
    "kcal100": 165,
+   "protein100": 31,
    "portions": [
     {
      "label": "1 cup chopped",
@@ -276,6 +288,7 @@
     "presa"
    ],
    "kcal100": 179,
+   "protein100": 24.8,
    "portions": [
     {
      "label": "1 thigh without skin",
@@ -302,6 +315,7 @@
     "res"
    ],
    "kcal100": 246,
+   "protein100": 24,
    "portions": [
     {
      "label": "3 oz",
@@ -321,6 +335,7 @@
     "churrasco"
    ],
    "kcal100": 162,
+   "protein100": 30.1,
    "portions": [
     {
      "label": "3 oz",
@@ -340,6 +355,7 @@
     "chancho"
    ],
    "kcal100": 180,
+   "protein100": 26.8,
    "portions": [
     {
      "label": "3 oz",
@@ -358,6 +374,7 @@
     "pescado"
    ],
    "kcal100": 128,
+   "protein100": 26.2,
    "portions": [
     {
      "label": "1 fillet",
@@ -377,6 +394,7 @@
     "bacalao"
    ],
    "kcal100": 105,
+   "protein100": 22.8,
    "portions": [
     {
      "label": "1 fillet",
@@ -398,6 +416,7 @@
     "salmon"
    ],
    "kcal100": 206,
+   "protein100": 22.1,
    "portions": [
     {
      "label": "0.5 fillet",
@@ -420,6 +439,7 @@
     "atun en lata"
    ],
    "kcal100": 86,
+   "protein100": 19.4,
    "portions": [
     {
      "label": "1 cup solid",
@@ -446,6 +466,7 @@
     "camarones"
    ],
    "kcal100": 119,
+   "protein100": 22.8,
    "portions": [
     {
      "label": "4 large",
@@ -469,6 +490,7 @@
     "huevo duro"
    ],
    "kcal100": 155,
+   "protein100": 12.6,
    "portions": [
     {
      "label": "1 cup chopped",
@@ -494,6 +516,7 @@
     "huevo frito"
    ],
    "kcal100": 196,
+   "protein100": 13.6,
    "portions": [
     {
      "label": "1 large",
@@ -512,6 +535,7 @@
     "leche entera"
    ],
    "kcal100": 61,
+   "protein100": 3.2,
    "portions": [
     {
      "label": "1 cup",
@@ -533,6 +557,7 @@
     "leche semidescremada"
    ],
    "kcal100": 50,
+   "protein100": 3.3,
    "portions": [
     {
      "label": "1 cup",
@@ -550,6 +575,7 @@
     "leche descremada"
    ],
    "kcal100": 34,
+   "protein100": 3.4,
    "portions": [
     {
      "label": "1 cup",
@@ -568,6 +594,7 @@
     "yogurt"
    ],
    "kcal100": 61,
+   "protein100": 3.5,
    "portions": [
     {
      "label": "1 cup",
@@ -593,6 +620,7 @@
     "yogur griego"
    ],
    "kcal100": 59,
+   "protein100": 10.2,
    "portions": [
     {
      "label": "1 container",
@@ -611,6 +639,7 @@
     "queso"
    ],
    "kcal100": 299,
+   "protein100": 18.1,
    "portions": [
     {
      "label": "1 cup crumbled",
@@ -628,6 +657,7 @@
     "mozzarella"
    ],
    "kcal100": 299,
+   "protein100": 22.2,
    "portions": [
     {
      "label": "1 cup shredded",
@@ -649,6 +679,7 @@
     "cheddar"
    ],
    "kcal100": 410,
+   "protein100": 24.3,
    "portions": [
     {
      "label": "1 slice",
@@ -666,6 +697,7 @@
     "mantequilla"
    ],
    "kcal100": 717,
+   "protein100": 0.9,
    "portions": [
     {
      "label": "1 cup",
@@ -689,6 +721,7 @@
     "porotos"
    ],
    "kcal100": 132,
+   "protein100": 8.9,
    "portions": [
     {
      "label": "1 cup",
@@ -708,6 +741,7 @@
     "menestra"
    ],
    "kcal100": 127,
+   "protein100": 8.7,
    "portions": [
     {
      "label": "1 cup",
@@ -730,6 +764,7 @@
     "lentejas"
    ],
    "kcal100": 116,
+   "protein100": 9,
    "portions": [
     {
      "label": "1 cup",
@@ -751,6 +786,7 @@
     "garbanzo"
    ],
    "kcal100": 164,
+   "protein100": 8.9,
    "portions": [
     {
      "label": "1 cup",
@@ -769,6 +805,7 @@
     "papa cocida"
    ],
    "kcal100": 86,
+   "protein100": 1.7,
    "portions": [
     {
      "label": "0.5 cup",
@@ -794,6 +831,7 @@
     "papas fritas"
    ],
    "kcal100": 312,
+   "protein100": 3.4,
    "portions": [
     {
      "label": "1 serving small",
@@ -820,6 +858,7 @@
     "batata"
    ],
    "kcal100": 90,
+   "protein100": 2,
    "portions": [
     {
      "label": "1 cup",
@@ -845,6 +884,7 @@
     "yuca"
    ],
    "kcal100": 160,
+   "protein100": 1.4,
    "portions": [
     {
      "label": "1 cup",
@@ -864,6 +904,7 @@
     "bolon"
    ],
    "kcal100": 121,
+   "protein100": 1.1,
    "portions": [
     {
      "label": "1 cup",
@@ -883,6 +924,7 @@
     "tostones"
    ],
    "kcal100": 309,
+   "protein100": 1.5,
    "portions": [
     {
      "label": "1 cup",
@@ -901,6 +943,7 @@
     "platano maduro"
    ],
    "kcal100": 155,
+   "protein100": 1.5,
    "portions": [
     {
      "label": "1 cup",
@@ -923,6 +966,7 @@
     "maiz"
    ],
    "kcal100": 96,
+   "protein100": 3.4,
    "portions": [
     {
      "label": "1 cup cut",
@@ -948,6 +992,7 @@
     "tomate"
    ],
    "kcal100": 18,
+   "protein100": 0.9,
    "portions": [
     {
      "label": "1 cup cherry tomatoes",
@@ -973,6 +1018,7 @@
     "lechuga"
    ],
    "kcal100": 17,
+   "protein100": 1.2,
    "portions": [
     {
      "label": "1 cup shredded",
@@ -994,6 +1040,7 @@
     "brocoli"
    ],
    "kcal100": 34,
+   "protein100": 2.8,
    "portions": [
     {
      "label": "1 cup chopped",
@@ -1019,6 +1066,7 @@
     "zanahoria"
    ],
    "kcal100": 41,
+   "protein100": 0.9,
    "portions": [
     {
      "label": "1 cup chopped",
@@ -1044,6 +1092,7 @@
     "pepino"
    ],
    "kcal100": 15,
+   "protein100": 0.7,
    "portions": [
     {
      "label": "0.5 cup slices",
@@ -1061,6 +1110,7 @@
     "cebolla"
    ],
    "kcal100": 40,
+   "protein100": 1.1,
    "portions": [
     {
      "label": "1 cup chopped",
@@ -1086,6 +1136,7 @@
     "pimiento"
    ],
    "kcal100": 26,
+   "protein100": 1,
    "portions": [
     {
      "label": "1 cup chopped",
@@ -1111,6 +1162,7 @@
     "espinaca"
    ],
    "kcal100": 23,
+   "protein100": 2.9,
    "portions": [
     {
      "label": "1 cup",
@@ -1133,6 +1185,7 @@
     "palta"
    ],
    "kcal100": 160,
+   "protein100": 2,
    "portions": [
     {
      "label": "1 cup cubes",
@@ -1160,6 +1213,7 @@
     "platano"
    ],
    "kcal100": 89,
+   "protein100": 1.1,
    "portions": [
     {
      "label": "1 cup mashed",
@@ -1185,6 +1239,7 @@
     "manzana"
    ],
    "kcal100": 52,
+   "protein100": 0.3,
    "portions": [
     {
      "label": "1 cup quartered",
@@ -1210,6 +1265,7 @@
     "naranja"
    ],
    "kcal100": 47,
+   "protein100": 0.9,
    "portions": [
     {
      "label": "1 cup sections",
@@ -1235,6 +1291,7 @@
     "papaya"
    ],
    "kcal100": 43,
+   "protein100": 0.5,
    "portions": [
     {
      "label": "1 cup 1\" pieces",
@@ -1261,6 +1318,7 @@
     "pina"
    ],
    "kcal100": 50,
+   "protein100": 0.5,
    "portions": [
     {
      "label": "1 cup chunks",
@@ -1286,6 +1344,7 @@
     "mango"
    ],
    "kcal100": 60,
+   "protein100": 0.8,
    "portions": [
     {
      "label": "1 cup pieces",
@@ -1308,6 +1367,7 @@
     "fresa"
    ],
    "kcal100": 32,
+   "protein100": 0.7,
    "portions": [
     {
      "label": "1 cup halves",
@@ -1333,6 +1393,7 @@
     "sandia"
    ],
    "kcal100": 30,
+   "protein100": 0.6,
    "portions": [
     {
      "label": "1 cup balls",
@@ -1359,6 +1420,7 @@
     "uvas"
    ],
    "kcal100": 69,
+   "protein100": 0.7,
    "portions": [
     {
      "label": "1 cup",
@@ -1380,6 +1442,7 @@
     "aceite de oliva"
    ],
    "kcal100": 884,
+   "protein100": 0,
    "portions": [
     {
      "label": "1 cup",
@@ -1405,6 +1468,7 @@
     "aceite"
    ],
    "kcal100": 884,
+   "protein100": 0,
    "portions": [
     {
      "label": "1 cup",
@@ -1430,6 +1494,7 @@
     "mayonesa"
    ],
    "kcal100": 680,
+   "protein100": 1,
    "portions": [
     {
      "label": "1 cup",
@@ -1451,6 +1516,7 @@
     "mantequilla de mani"
    ],
    "kcal100": 598,
+   "protein100": 22.2,
    "portions": [
     {
      "label": "1 cup",
@@ -1472,6 +1538,7 @@
     "mani"
    ],
    "kcal100": 587,
+   "protein100": 24.4,
    "portions": [
     {
      "label": "1 cup",
@@ -1494,6 +1561,7 @@
     "almendras"
    ],
    "kcal100": 598,
+   "protein100": 21,
    "portions": [
     {
      "label": "1 cup whole kernels",
@@ -1516,6 +1584,7 @@
     "nueces"
    ],
    "kcal100": 654,
+   "protein100": 15.2,
    "portions": [
     {
      "label": "1 cup chopped",
@@ -1541,6 +1610,7 @@
     "azucar"
    ],
    "kcal100": 387,
+   "protein100": 0,
    "portions": [
     {
      "label": "1 cup",
@@ -1558,6 +1628,7 @@
     "miel"
    ],
    "kcal100": 304,
+   "protein100": 0.3,
    "portions": [
     {
      "label": "1 cup",
@@ -1579,6 +1650,7 @@
     "chocolate negro"
    ],
    "kcal100": 550,
+   "protein100": 5.1,
    "portions": [
     {
      "label": "1 oz",
@@ -1600,6 +1672,7 @@
     "chocolate"
    ],
    "kcal100": 535,
+   "protein100": 7.7,
    "portions": [
     {
      "label": "1 cup chips",
@@ -1625,6 +1698,7 @@
     "helado"
    ],
    "kcal100": 207,
+   "protein100": 3.5,
    "portions": [
     {
      "label": "1 serving 1/2 cup",
@@ -1642,6 +1716,7 @@
     "galletas"
    ],
    "kcal100": 492,
+   "protein100": 5.1,
    "portions": [
     {
      "label": "1 cookie",
@@ -1668,6 +1743,7 @@
     "chips"
    ],
    "kcal100": 532,
+   "protein100": 6.4,
    "portions": [
     {
      "label": "1 oz",
@@ -1686,6 +1762,7 @@
     "palomitas"
    ],
    "kcal100": 387,
+   "protein100": 12.9,
    "portions": [
     {
      "label": "1 cup",
@@ -1708,6 +1785,7 @@
     "gaseosa"
    ],
    "kcal100": 42,
+   "protein100": 0,
    "portions": [
     {
      "label": "1 can or bottle",
@@ -1725,6 +1803,7 @@
     "jugo de naranja"
    ],
    "kcal100": 45,
+   "protein100": 0.7,
    "portions": [
     {
      "label": "1 cup",
@@ -1746,6 +1825,7 @@
     "cafe"
    ],
    "kcal100": 1,
+   "protein100": 0.1,
    "portions": [
     {
      "label": "1 cup",
@@ -1763,6 +1843,7 @@
     "te"
    ],
    "kcal100": 1,
+   "protein100": 0,
    "portions": [
     {
      "label": "1 cup",
@@ -1780,6 +1861,7 @@
     "cerveza"
    ],
    "kcal100": 43,
+   "protein100": 0.5,
    "portions": [
     {
      "label": "1 can",
@@ -1798,6 +1880,7 @@
     "vino tinto"
    ],
    "kcal100": 85,
+   "protein100": 0.1,
    "portions": [
     {
      "label": "1 serving",
@@ -1815,6 +1898,7 @@
     "pizza"
    ],
    "kcal100": 268,
+   "protein100": 10.4,
    "portions": [
     {
      "label": "1 serving",
@@ -1840,6 +1924,7 @@
     "hamburguesa"
    ],
    "kcal100": 297,
+   "protein100": 16.5,
    "portions": [
     {
      "label": "1 sandwich",

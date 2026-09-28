@@ -36,6 +36,8 @@ export function defaultCalorieState() {
   return { version: CALORIE_STATE_VERSION, profile: null, targetOverride: null, entries: [] }
 }
 
+const round1 = (value) => Math.round(value * 10) / 10
+
 const isNumber = (value, { min, max }) => typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max
 
 // Field by field, so the form can point at what is wrong.
@@ -71,7 +73,9 @@ function isValidItem(item) {
     typeof item.foodId === 'string' &&
     typeof item.name === 'string' &&
     isNumber(item.grams, ITEM_LIMITS.grams) &&
-    isNumber(item.kcal, { min: 0, max: LIMITS.entryKcal.max })
+    isNumber(item.kcal, { min: 0, max: LIMITS.entryKcal.max }) &&
+    // Protein arrived later; items logged before it simply have none recorded.
+    (item.protein === undefined || isNumber(item.protein, { min: 0, max: 5000 }))
   )
 }
 
@@ -92,7 +96,15 @@ function isValidEntry(entry) {
 // instead of the whole meal disappearing.
 function repairEntry(raw) {
   if (!raw || typeof raw !== 'object') return null
-  const items = Array.isArray(raw.items) ? raw.items.filter(isValidItem).map((i) => ({ foodId: i.foodId, name: String(i.name).slice(0, 60), grams: Math.round(i.grams), kcal: Math.round(i.kcal) })) : []
+  const items = Array.isArray(raw.items)
+    ? raw.items.filter(isValidItem).map((i) => ({
+        foodId: i.foodId,
+        name: String(i.name).slice(0, 60),
+        grams: Math.round(i.grams),
+        kcal: Math.round(i.kcal),
+        ...(i.protein === undefined ? {} : { protein: round1(i.protein) }),
+      }))
+    : []
   return {
     id: raw.id,
     at: raw.at,
@@ -264,8 +276,30 @@ export function foodKcal(food, grams) {
   return Math.round((food.kcal100 * grams) / 100)
 }
 
+// One decimal: 2.7 g of protein in a plate of rice is not nothing once the day
+// is added up, and rounding each item to whole grams drifts.
+export function foodProtein(food, grams) {
+  return round1(((food.protein100 || 0) * grams) / 100)
+}
+
 export function makeItem(food, grams) {
-  return { foodId: food.id, name: food.name, grams: Math.round(grams), kcal: foodKcal(food, grams) }
+  return {
+    foodId: food.id,
+    name: food.name,
+    grams: Math.round(grams),
+    kcal: foodKcal(food, grams),
+    protein: foodProtein(food, grams),
+  }
+}
+
+export function itemsProtein(items) {
+  return round1(items.reduce((total, item) => total + (item.protein || 0), 0))
+}
+
+// "36 g", "4.3 g": the decimal only earns its place under ten grams.
+export function formatGrams(value) {
+  const grams = round1(value)
+  return `${grams >= 10 ? Math.round(grams) : grams} g`
 }
 
 export function itemsTotal(items) {
@@ -295,4 +329,139 @@ export function recentFoods(entries, foods, limit = 6) {
     }
   }
   return out
+}
+
+// ---------------------------------------------------------------- protein
+//
+// Its own log, kept apart from the calorie one: the two tabs are independent,
+// and a day of protein is not the same record as a day of calories.
+
+export const PROTEIN_STATE_VERSION = 1
+// Grams of protein per kilo of body weight, with what they are usually for.
+export const PROTEIN_PER_KG = [
+  { value: 0.8, label: 'Basic need', hint: 'What an adult needs to stay healthy' },
+  { value: 1.2, label: 'Active', hint: 'Regular training, staying at your weight' },
+  { value: 1.6, label: 'Building muscle', hint: 'Strength training, or losing fat' },
+  { value: 2.0, label: 'High', hint: 'Hard training with a calorie deficit' },
+]
+export const PROTEIN_LIMITS = { entryGrams: { min: 1, max: 500 }, target: { min: 20, max: 400 } }
+
+export function defaultProteinState() {
+  return { version: PROTEIN_STATE_VERSION, targetGrams: null, weightKg: null, perKg: null, entries: [] }
+}
+
+export function makeProteinEntry({ at, protein, label = '', items = [] }) {
+  return {
+    id: `${at}-${Math.random().toString(36).slice(2, 8)}`,
+    at,
+    protein: items.length ? itemsProtein(items) : round1(protein),
+    label: label.trim().slice(0, 60),
+    ...(items.length ? { items } : {}),
+  }
+}
+
+function isValidProteinEntry(entry) {
+  return (
+    entry &&
+    typeof entry.id === 'string' &&
+    Number.isInteger(entry.at) &&
+    entry.at > 0 &&
+    isNumber(entry.protein, PROTEIN_LIMITS.entryGrams) &&
+    (entry.items === undefined || (Array.isArray(entry.items) && entry.items.every(isValidItem)))
+  )
+}
+
+// Repair first, validate after: one damaged item must not cost the whole meal.
+function repairProteinEntry(raw) {
+  if (!raw || typeof raw !== 'object') return null
+  const items = Array.isArray(raw.items)
+    ? raw.items.filter(isValidItem).map((i) => ({
+        foodId: i.foodId,
+        name: String(i.name).slice(0, 60),
+        grams: Math.round(i.grams),
+        kcal: Math.round(i.kcal),
+        protein: round1(i.protein || 0),
+      }))
+    : []
+  return {
+    id: raw.id,
+    at: raw.at,
+    // With items, their sum is the truth.
+    protein: items.length ? itemsProtein(items) : round1(raw.protein),
+    label: typeof raw.label === 'string' ? raw.label.slice(0, 60) : '',
+    ...(items.length ? { items } : {}),
+  }
+}
+
+export function normalizeProteinState(raw) {
+  const base = defaultProteinState()
+  if (!raw || typeof raw !== 'object') return base
+  const seen = new Set()
+  const perKg = PROTEIN_PER_KG.some((option) => option.value === raw.perKg) ? raw.perKg : null
+  return {
+    version: PROTEIN_STATE_VERSION,
+    targetGrams: isNumber(raw.targetGrams, PROTEIN_LIMITS.target) ? Math.round(raw.targetGrams) : null,
+    weightKg: isNumber(raw.weightKg, LIMITS.weightKg) ? raw.weightKg : null,
+    perKg,
+    entries: (Array.isArray(raw.entries) ? raw.entries : [])
+      .map(repairProteinEntry)
+      .filter((entry) => entry && isValidProteinEntry(entry))
+      .filter((entry) => (seen.has(entry.id) ? false : seen.add(entry.id)))
+      .sort((a, b) => a.at - b.at),
+  }
+}
+
+export function addProteinEntry(state, entry) {
+  if (!isValidProteinEntry(entry)) throw new TypeError('Invalid protein entry')
+  return { ...state, entries: [...state.entries, entry].sort((a, b) => a.at - b.at) }
+}
+
+export function removeProteinEntry(state, id) {
+  return { ...state, entries: state.entries.filter((entry) => entry.id !== id) }
+}
+
+// Either a number of your own, or body weight times grams per kilo.
+export function setProteinGoal(state, { targetGrams = null, weightKg = null, perKg = null }) {
+  if (targetGrams != null && !isNumber(targetGrams, PROTEIN_LIMITS.target)) throw new RangeError('Target out of range')
+  if (weightKg != null && !isNumber(weightKg, LIMITS.weightKg)) throw new RangeError('Weight out of range')
+  if (perKg != null && !PROTEIN_PER_KG.some((option) => option.value === perKg)) throw new RangeError('Unsupported grams per kilo')
+  return { ...state, targetGrams: targetGrams == null ? null : Math.round(targetGrams), weightKg, perKg }
+}
+
+export function proteinTarget(state) {
+  if (state.targetGrams != null) return state.targetGrams
+  if (state.weightKg != null && state.perKg != null) return Math.round(state.weightKg * state.perKg)
+  return null
+}
+
+export function proteinDay(state, now) {
+  const today = entriesOfDay(state.entries, now)
+  const total = round1(today.reduce((sum, entry) => sum + entry.protein, 0))
+  const target = proteinTarget(state)
+  if (target == null) return { total, target: null, remaining: null, over: false, fraction: 0, count: today.length }
+  return {
+    total,
+    target,
+    remaining: round1(target - total),
+    over: total >= target,
+    fraction: target > 0 ? total / target : 0,
+    count: today.length,
+  }
+}
+
+// Newest first, one row per day that has entries.
+export function proteinDaySummaries(state, now, limit = 7) {
+  const target = proteinTarget(state)
+  const byDay = new Map()
+  for (const entry of state.entries) {
+    const key = dayKey(entry.at)
+    if (!byDay.has(key)) byDay.set(key, { key, at: entry.at, total: 0 })
+    const day = byDay.get(key)
+    day.total = round1(day.total + entry.protein)
+    day.at = Math.max(day.at, entry.at)
+  }
+  return [...byDay.values()]
+    .sort((a, b) => b.at - a.at)
+    .slice(0, limit)
+    .map((day) => ({ ...day, label: dayLabel(day.at, now), difference: target == null ? null : round1(day.total - target) }))
 }
