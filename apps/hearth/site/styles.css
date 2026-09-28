@@ -161,7 +161,7 @@ h2 {
 
 .tabs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 4px;
   padding: 4px;
   border-radius: 999px;
@@ -171,6 +171,7 @@ h2 {
 
 .tab {
   min-height: 42px;
+  padding: 0 4px;
   border: none;
   border-radius: 999px;
   background: transparent;
@@ -315,6 +316,70 @@ h2 {
 .badge.over {
   background: color-mix(in srgb, var(--danger) 16%, var(--card));
   color: var(--ink);
+}
+
+/* Protein */
+
+.meter-fill.protein {
+  background: linear-gradient(90deg, var(--sage-2), var(--sage));
+}
+
+.eat.protein {
+  background: linear-gradient(135deg, var(--sage-2), var(--sage));
+  box-shadow: 0 16px 30px -18px color-mix(in srgb, var(--sage) 85%, transparent),
+    0 1px 0 rgb(255 255 255 / 0.3) inset;
+}
+
+#proteinTab .meal-dot {
+  background: var(--sage);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--sage) 22%, transparent);
+}
+
+.field-row.two {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* A meal and what it was made of */
+
+.meal-breakdown {
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  border: 1px solid var(--card-edge);
+  background: var(--card);
+  overflow: hidden;
+}
+
+.meal-breakdown .meal {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+.breakdown-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 14px 6px 36px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.breakdown-line:last-child {
+  padding-bottom: 12px;
+}
+
+.breakdown-line span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.breakdown-line strong {
+  flex: none;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Food picker */

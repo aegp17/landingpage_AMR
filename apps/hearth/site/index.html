@@ -46,6 +46,7 @@
       <div class="tabs" role="tablist" aria-label="Screens">
         <button class="tab" id="tabFasting" type="button" role="tab" aria-selected="true" aria-controls="fastingTab">Fasting</button>
         <button class="tab" id="tabCalories" type="button" role="tab" aria-selected="false" aria-controls="caloriesTab">Calories</button>
+        <button class="tab" id="tabProtein" type="button" role="tab" aria-selected="false" aria-controls="proteinTab">Protein</button>
       </div>
 
       <section class="tab-panel" id="fastingTab" role="tabpanel" aria-labelledby="tabFasting">
@@ -148,6 +149,40 @@
         </section>
       </section>
 
+      <section class="tab-panel" id="proteinTab" role="tabpanel" aria-labelledby="tabProtein" hidden>
+        <section class="card budget" aria-label="Protein today">
+          <p class="budget-label" id="proteinLabel">No goal yet</p>
+          <p class="budget-number"><span id="proteinValue">Set up</span> <span class="budget-unit" id="proteinUnit">your goal</span></p>
+          <div class="meter" aria-hidden="true"><div class="meter-fill protein" id="proteinMeter"></div></div>
+          <div class="budget-parts">
+            <div><p class="part-value" id="proteinPartGoal">–</p><p class="part-label">Goal</p></div>
+            <div><p class="part-value" id="proteinPartToday">0 g</p><p class="part-label">Eaten</p></div>
+            <div><p class="part-value" id="proteinPartLeft">–</p><p class="part-label">Left</p></div>
+          </div>
+          <button class="goal-chip" id="proteinGoalBtn" type="button" aria-haspopup="dialog">Set your goal</button>
+        </section>
+
+        <button class="eat protein" id="addProteinBtn" type="button">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M4 15h24a12 12 0 0 1-24 0Z" />
+            <path class="steam" d="M11 11c-1.5-1.8 1.5-3.2 0-5M16 11c-1.5-1.8 1.5-3.2 0-5M21 11c-1.5-1.8 1.5-3.2 0-5" />
+          </svg>
+          <span>Add a meal</span>
+        </button>
+
+        <section class="history" aria-labelledby="proteinTodayTitle">
+          <h2 id="proteinTodayTitle">Today</h2>
+          <div id="proteinList"></div>
+          <p class="empty" id="proteinEmpty">Nothing logged today. Add a meal to see its protein.</p>
+        </section>
+
+        <section class="history" aria-labelledby="proteinDaysTitle">
+          <h2 id="proteinDaysTitle">Earlier days</h2>
+          <div id="proteinDays"></div>
+          <p class="empty" id="proteinDaysEmpty">Days you log will gather here.</p>
+        </section>
+      </section>
+
       <footer class="foot">
         <span>Your logs stay on this device.</span>
         <button class="link-btn foot-link" id="aboutBtn" type="button" aria-haspopup="dialog">About Hearth</button>
@@ -241,16 +276,7 @@
         <h2 id="entryTitle" tabindex="-1">Add food</h2>
         <p class="dialog-hint" id="entryHint">Search what you ate, or type the calories.</p>
 
-        <div class="food-picker" id="foodPicker">
-          <label class="field">
-            <span>Add foods</span>
-            <input type="search" id="foodSearch" placeholder="rice, pollo, banana…" autocomplete="off" enterkeyhint="done" />
-          </label>
-          <p class="field-hint" id="foodHint"></p>
-          <div class="food-results" id="foodResults"></div>
-          <div class="food-items" id="foodItems"></div>
-          <p class="food-total" id="foodTotal" hidden></p>
-        </div>
+        <div class="food-picker" id="foodPicker"></div>
 
         <label class="field" id="manualField">
           <span id="kcalLabel">Calories</span>
@@ -264,6 +290,56 @@
         <div class="dialog-actions">
           <button type="button" class="ghost" data-close>Cancel</button>
           <button type="submit" class="solid" id="entrySave">Add food</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="proteinDialog" aria-labelledby="proteinDialogTitle">
+      <form id="proteinForm" method="dialog" novalidate>
+        <h2 id="proteinDialogTitle" tabindex="-1">Add a meal</h2>
+        <p class="dialog-hint">Search what you ate. Each food shows its protein, and the meal shows the total.</p>
+        <div class="food-picker" id="proteinPicker"></div>
+        <label class="field" id="proteinManualField">
+          <span>Or type the protein</span>
+          <input type="number" id="proteinGrams" inputmode="decimal" min="1" max="500" step="0.1" />
+        </label>
+        <label class="field">
+          <span>Name this meal (optional)</span>
+          <input type="text" id="proteinMealName" maxlength="60" autocomplete="off" />
+        </label>
+        <p class="form-error" id="proteinError" role="alert"></p>
+        <div class="dialog-actions">
+          <button type="button" class="ghost" data-close>Cancel</button>
+          <button type="submit" class="solid" id="proteinSave">Add meal</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="proteinGoalDialog" aria-labelledby="proteinGoalTitle">
+      <form id="proteinGoalForm" method="dialog" novalidate>
+        <h2 id="proteinGoalTitle" tabindex="-1" autofocus>Protein goal</h2>
+        <p class="dialog-hint">Worked out from your weight, or type your own number.</p>
+        <div class="field-row two">
+          <label class="field">
+            <span>Weight (kg)</span>
+            <input type="number" id="proteinWeight" inputmode="decimal" min="30" max="300" step="0.1" />
+          </label>
+          <label class="field">
+            <span>Grams per kilo</span>
+            <select id="proteinPerKg"></select>
+          </label>
+        </div>
+        <p class="field-hint" id="perKgHint"></p>
+        <div class="plan" id="proteinPlan"></div>
+        <label class="field">
+          <span>Use my own goal instead (optional)</span>
+          <input type="number" id="proteinTargetInput" inputmode="numeric" min="20" max="400" step="1" placeholder="e.g. 130" />
+        </label>
+        <p class="form-error" id="proteinGoalError" role="alert"></p>
+        <p class="small-print">A guide for healthy adults, not medical advice. Check with a professional before a big change, especially with a kidney condition.</p>
+        <div class="dialog-actions">
+          <button type="button" class="ghost" data-close>Cancel</button>
+          <button type="submit" class="solid">Save</button>
         </div>
       </form>
     </dialog>

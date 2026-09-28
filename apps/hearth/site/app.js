@@ -35,6 +35,7 @@ import {
 import { BUILD } from './version.js'
 import { anyDialogOpen, closeDialog, onDialogClosed, openDialog, toast } from './ui.js'
 import { calorieBackup, entryCount, eraseCalories, importCalories, render as renderCalories } from './calories.js'
+import { eraseProtein, importProtein, proteinBackup, proteinEntryCount, render as renderProtein } from './protein.js'
 
 const STORAGE_KEY = 'hearth.v1'
 const HISTORY_PAGE = 30
@@ -526,9 +527,14 @@ function disarmClear() {
 el.settingsBtn.addEventListener('click', () => {
   const meals = state.meals.length
   const entries = entryCount()
-  const logged = [meals ? `${meals} ${meals === 1 ? 'meal' : 'meals'}` : '', entries ? `${entries} calorie ${entries === 1 ? 'entry' : 'entries'}` : '']
+  const proteinMeals = proteinEntryCount()
+  const logged = [
+    meals ? `${meals} ${meals === 1 ? 'meal' : 'meals'}` : '',
+    entries ? `${entries} calorie ${entries === 1 ? 'entry' : 'entries'}` : '',
+    proteinMeals ? `${proteinMeals} protein ${proteinMeals === 1 ? 'meal' : 'meals'}` : '',
+  ]
     .filter(Boolean)
-    .join(' and ')
+    .join(', ')
   el.settingsSummary.textContent = logged
     ? `${logged}. They live only in this browser, so export a backup now and then.`
     : 'Nothing logged yet. Everything you log stays in this browser, on this device.'
@@ -538,7 +544,7 @@ el.settingsBtn.addEventListener('click', () => {
 
 el.exportBtn.addEventListener('click', async () => {
   const now = Date.now()
-  const json = JSON.stringify({ ...toBackup(state, now), calories: calorieBackup() }, null, 2)
+  const json = JSON.stringify({ ...toBackup(state, now), calories: calorieBackup(), protein: proteinBackup() }, null, 2)
   const name = `hearth-backup-${dayKey(now)}.json`
   const file = new File([json], name, { type: 'application/json' })
   try {
@@ -571,12 +577,16 @@ el.importInput.addEventListener('change', async () => {
     const { state: merged, added } = mergeMeals(state, imported)
     update(merged)
     // Older backups have no calories section; importing one must not wipe it.
-    const addedEntries = importCalories(JSON.parse(text).calories)
+    const parsed = JSON.parse(text)
+    const addedEntries = importCalories(parsed.calories)
+    const addedProtein = importProtein(parsed.protein)
     closeDialog(el.settingsDialog)
     const parts = []
     if (added) parts.push(`${added} ${added === 1 ? 'meal' : 'meals'}`)
     if (addedEntries) parts.push(`${addedEntries} calorie ${addedEntries === 1 ? 'entry' : 'entries'}`)
-    toast(parts.length ? `Imported ${parts.join(' and ')}.` : 'Everything in that file was already here.')
+    if (addedProtein) parts.push(`${addedProtein} protein ${addedProtein === 1 ? 'meal' : 'meals'}`)
+    const list = parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts.at(-1)}` : parts[0]
+    toast(parts.length ? `Imported ${list}.` : 'Everything in that file was already here.')
   } catch (error) {
     toast(error instanceof Error ? error.message : "Couldn't read that file.")
   }
@@ -592,12 +602,15 @@ el.clearBtn.addEventListener('click', () => {
   disarmClear()
   const previousMeals = state
   const previousCalories = calorieBackup()
+  const previousProtein = proteinBackup()
   update({ ...defaultState(), goalHours: state.goalHours, remindAtGoal: state.remindAtGoal })
   eraseCalories()
+  eraseProtein()
   closeDialog(el.settingsDialog)
   toast('Everything erased.', 'Undo', () => {
     update(previousMeals)
     importCalories(previousCalories)
+    importProtein(previousProtein)
   })
 })
 
@@ -607,6 +620,7 @@ const TAB_KEY = 'hearth.tab'
 const TABS = [
   { button: $('tabFasting'), panel: $('fastingTab'), name: 'fasting' },
   { button: $('tabCalories'), panel: $('caloriesTab'), name: 'calories' },
+  { button: $('tabProtein'), panel: $('proteinTab'), name: 'protein' },
 ]
 
 function showTab(name) {
@@ -616,6 +630,7 @@ function showTab(name) {
     tab.panel.hidden = !active
   }
   if (name === 'calories') renderCalories()
+  if (name === 'protein') renderProtein()
   try {
     localStorage.setItem(TAB_KEY, name)
   } catch {

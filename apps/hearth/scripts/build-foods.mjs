@@ -16,7 +16,7 @@ const SOURCE = {
   name: 'USDA FoodData Central, SR Legacy',
   dataset: 'FoodData_Central_sr_legacy_food_csv_2018-04',
   url: 'https://fdc.nal.usda.gov/download-datasets.html',
-  note: 'Energy in kcal per 100 g of the edible portion. Public domain.',
+  note: 'Energy (kcal) and protein (g) per 100 g of the edible portion. Public domain.',
 }
 
 // [fdcId, slug, display name, category, expected description snippet, Spanish aliases]
@@ -190,9 +190,12 @@ if (!dir) {
 }
 
 const descriptions = new Map(parseCsv(join(dir, 'food.csv')).map((r) => [r.fdc_id, r.description]))
+// 1008 is energy in kcal, 1003 is protein in grams, both per 100 g.
 const energy = new Map()
+const protein = new Map()
 for (const row of parseCsv(join(dir, 'food_nutrient.csv'))) {
   if (row.nutrient_id === '1008') energy.set(row.fdc_id, Number(row.amount))
+  else if (row.nutrient_id === '1003') protein.set(row.fdc_id, Number(row.amount))
 }
 const portionsByFood = new Map()
 for (const row of parseCsv(join(dir, 'food_portion.csv'))) {
@@ -206,10 +209,25 @@ for (const [fdcId, id, name, category, expected, aliases] of FOODS) {
   const key = String(fdcId)
   const description = descriptions.get(key)
   const kcal = energy.get(key)
+  const grams = protein.get(key)
   if (!description) problems.push(`${id}: fdc id ${fdcId} is not in this dataset`)
   else if (!description.toLowerCase().startsWith(expected.toLowerCase())) problems.push(`${id}: expected "${expected}…", dataset says "${description}"`)
   else if (!Number.isFinite(kcal)) problems.push(`${id}: no energy value`)
-  else foods.push({ id, name, category, aliases, kcal100: Math.round(kcal), portions: portionsFor(fdcId), fdcId, usda: description })
+  else if (!Number.isFinite(grams)) problems.push(`${id}: no protein value`)
+  else {
+    foods.push({
+      id,
+      name,
+      category,
+      aliases,
+      kcal100: Math.round(kcal),
+      // One decimal: rice at 2.7 g matters when the day's total is what counts.
+      protein100: Math.round(grams * 10) / 10,
+      portions: portionsFor(fdcId),
+      fdcId,
+      usda: description,
+    })
+  }
 }
 
 const ids = new Set()
