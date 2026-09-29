@@ -1,19 +1,29 @@
 // Pure logic for the Calories tab: no DOM, no storage.
 // Covered by apps/hearth/test/nutrition.test.mjs.
 import { dayKey, dayLabel } from './core.js'
+import { locale, t } from './i18n.js'
 
 export const CALORIE_STATE_VERSION = 1
 export const KCAL_PER_KG = 7700
 
 // Mifflin-St Jeor, the formula clinical calculators use. Everything here is an
 // estimate for one healthy adult, not advice.
+// Labels are looked up when they are shown, so the list survives a language change.
 export const ACTIVITIES = [
-  { key: 'sedentary', factor: 1.2, label: 'Mostly sitting', hint: 'Desk work, little walking' },
-  { key: 'light', factor: 1.375, label: 'Lightly active', hint: 'Light exercise 1–3 days a week' },
-  { key: 'moderate', factor: 1.55, label: 'Moderately active', hint: 'Exercise 3–5 days a week' },
-  { key: 'active', factor: 1.725, label: 'Very active', hint: 'Hard exercise 6–7 days a week' },
-  { key: 'intense', factor: 1.9, label: 'Extremely active', hint: 'Physical job or two sessions a day' },
-]
+  { key: 'sedentary', factor: 1.2 },
+  { key: 'light', factor: 1.375 },
+  { key: 'moderate', factor: 1.55 },
+  { key: 'active', factor: 1.725 },
+  { key: 'intense', factor: 1.9 },
+].map((activity) => ({
+  ...activity,
+  get label() {
+    return t(`activity.${activity.key}`)
+  },
+  get hint() {
+    return t(`activity.${activity.key}Hint`)
+  },
+}))
 
 // Kilograms per week. 0 keeps your weight.
 export const WEEKLY_GOALS = [0, 0.25, 0.5, 0.75, 1]
@@ -43,12 +53,12 @@ const isNumber = (value, { min, max }) => typeof value === 'number' && Number.is
 // Field by field, so the form can point at what is wrong.
 export function validateProfile(profile) {
   const errors = {}
-  if (profile?.sex !== 'female' && profile?.sex !== 'male') errors.sex = 'Pick one.'
-  if (!isNumber(profile?.age, LIMITS.age)) errors.age = `Age between ${LIMITS.age.min} and ${LIMITS.age.max}.`
-  if (!isNumber(profile?.heightCm, LIMITS.heightCm)) errors.heightCm = `Height between ${LIMITS.heightCm.min} and ${LIMITS.heightCm.max} cm.`
-  if (!isNumber(profile?.weightKg, LIMITS.weightKg)) errors.weightKg = `Weight between ${LIMITS.weightKg.min} and ${LIMITS.weightKg.max} kg.`
-  if (!ACTIVITIES.some((a) => a.key === profile?.activity)) errors.activity = 'Pick one.'
-  if (!WEEKLY_GOALS.includes(profile?.weeklyKg)) errors.weeklyKg = 'Pick one.'
+  if (profile?.sex !== 'female' && profile?.sex !== 'male') errors.sex = t('validate.pickOne')
+  if (!isNumber(profile?.age, LIMITS.age)) errors.age = t('validate.age', LIMITS.age)
+  if (!isNumber(profile?.heightCm, LIMITS.heightCm)) errors.heightCm = t('validate.height', LIMITS.heightCm)
+  if (!isNumber(profile?.weightKg, LIMITS.weightKg)) errors.weightKg = t('validate.weight', LIMITS.weightKg)
+  if (!ACTIVITIES.some((a) => a.key === profile?.activity)) errors.activity = t('validate.pickOne')
+  if (!WEEKLY_GOALS.includes(profile?.weeklyKg)) errors.weeklyKg = t('validate.pickOne')
   return { ok: Object.keys(errors).length === 0, errors }
 }
 
@@ -229,7 +239,7 @@ export function daySummaries(state, now, limit = 7) {
 }
 
 export function formatKcal(value) {
-  return new Intl.NumberFormat('en-US').format(Math.round(value))
+  return new Intl.NumberFormat(locale()).format(Math.round(value))
 }
 
 // ---------------------------------------------------------------- foods
@@ -299,7 +309,7 @@ export function itemsProtein(items) {
 // "36 g", "4.3 g": the decimal only earns its place under ten grams.
 export function formatGrams(value) {
   const grams = round1(value)
-  return `${grams >= 10 ? Math.round(grams) : grams} g`
+  return t('common.grams', { n: grams >= 10 ? Math.round(grams) : grams })
 }
 
 export function itemsTotal(items) {
@@ -309,10 +319,10 @@ export function itemsTotal(items) {
 // A sensible default name for the meal being logged.
 export function mealNameFor(date) {
   const hour = date.getHours()
-  if (hour >= 4 && hour < 11) return 'Breakfast'
-  if (hour >= 11 && hour < 16) return 'Lunch'
-  if (hour >= 16 && hour < 22) return 'Dinner'
-  return 'Snack'
+  if (hour >= 4 && hour < 11) return t('meal.breakfast')
+  if (hour >= 11 && hour < 16) return t('meal.lunch')
+  if (hour >= 16 && hour < 22) return t('meal.dinner')
+  return t('meal.snack')
 }
 
 // The foods someone actually logs, newest first, for one tap next time.
@@ -339,11 +349,19 @@ export function recentFoods(entries, foods, limit = 6) {
 export const PROTEIN_STATE_VERSION = 1
 // Grams of protein per kilo of body weight, with what they are usually for.
 export const PROTEIN_PER_KG = [
-  { value: 0.8, label: 'Basic need', hint: 'What an adult needs to stay healthy' },
-  { value: 1.2, label: 'Active', hint: 'Regular training, staying at your weight' },
-  { value: 1.6, label: 'Building muscle', hint: 'Strength training, or losing fat' },
-  { value: 2.0, label: 'High', hint: 'Hard training with a calorie deficit' },
-]
+  { value: 0.8, key: 'basic' },
+  { value: 1.2, key: 'active' },
+  { value: 1.6, key: 'muscle' },
+  { value: 2.0, key: 'high' },
+].map((option) => ({
+  ...option,
+  get label() {
+    return t(`perKg.${option.key}`)
+  },
+  get hint() {
+    return t(`perKg.${option.key}Hint`)
+  },
+}))
 export const PROTEIN_LIMITS = { entryGrams: { min: 1, max: 500 }, target: { min: 20, max: 400 } }
 
 export function defaultProteinState() {

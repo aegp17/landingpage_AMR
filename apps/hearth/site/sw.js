@@ -14,6 +14,7 @@ const ASSETS = [
   './styles.css',
   './app.js',
   './core.js',
+  './i18n.js',
   './nutrition.js',
   './foods.js',
   './foodpicker.js',
@@ -57,10 +58,15 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) => Promise.all(keys.filter((k) => k.startsWith('hearth-') && k !== CACHE).map((k) => caches.delete(k))))
-      .then(() => self.clients.claim()),
+    caches.keys().then(async (keys) => {
+      const older = keys.filter((key) => key.startsWith('hearth-') && key !== CACHE)
+      await Promise.all(older.map((key) => caches.delete(key)))
+      // Claiming a page that is still loading cancels its in-flight requests,
+      // which on a first visit left the app without one of its modules. Only an
+      // update needs to take over a page that is already running; a first
+      // install can wait for the next load.
+      if (older.length) await self.clients.claim()
+    }),
   )
 })
 

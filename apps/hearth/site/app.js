@@ -34,6 +34,7 @@ import {
 } from './core.js'
 import { BUILD } from './version.js'
 import { anyDialogOpen, closeDialog, onDialogClosed, openDialog, toast } from './ui.js'
+import { LANGUAGES, applyStaticText, language, languagePreference, onLanguageChange, setLanguagePreference, t } from './i18n.js'
 import { calorieBackup, entryCount, eraseCalories, importCalories, render as renderCalories } from './calories.js'
 import { eraseProtein, importProtein, proteinBackup, proteinEntryCount, render as renderProtein } from './protein.js'
 
@@ -85,6 +86,10 @@ const el = {
   remindStatus: $('remindStatus'),
   calendarBtn: $('calendarBtn'),
   calendarHint: $('calendarHint'),
+  languageRow: $('languageRow'),
+  languageRowHint: $('languageRowHint'),
+  languageDialog: $('languageDialog'),
+  languageList: $('languageList'),
   aboutBtn: $('aboutBtn'),
   aboutRow: $('aboutRow'),
   aboutDialog: $('aboutDialog'),
@@ -164,16 +169,16 @@ function render() {
 // Runs every second: the clock, the ring and the goal chip.
 function renderLive(now) {
   const last = lastMealAt(state.meals, now)
-  const goalLabel = `Goal ${state.goalHours}h`
+  const goalLabel = t('fast.goalChip', { hours: state.goalHours })
 
   if (last == null) {
     el.hero.classList.add('idle')
     el.hero.classList.remove('done')
-    el.clockMain.textContent = 'Ready when you are'
+    el.clockMain.textContent = t('fast.idleTitle')
     el.clockSec.textContent = ''
     el.clockLabel.textContent = ''
     el.clock.removeAttribute('aria-label')
-    el.stage.textContent = 'Tap “I ate” after your last meal.'
+    el.stage.textContent = t('fast.idleHint')
     el.goalBtn.textContent = goalLabel
     el.ringFill.style.strokeDashoffset = '100'
     document.title = 'Hearth'
@@ -187,16 +192,16 @@ function renderLive(now) {
   el.hero.classList.toggle('done', fraction >= 1)
   el.clockMain.textContent = clock.main
   el.clockSec.textContent = clock.seconds
-  el.clockLabel.textContent = 'hours fasted'
-  el.clock.setAttribute('aria-label', `${formatDuration(elapsed)} fasted`)
+  el.clockLabel.textContent = t('fast.hoursFasted')
+  el.clock.setAttribute('aria-label', t('fast.aria', { duration: formatDuration(elapsed) }))
   el.stage.textContent = stageFor(fraction)
   el.ringFill.style.strokeDashoffset = String(100 - Math.min(fraction, 1) * 100)
 
   const goalMs = state.goalHours * HOUR
   el.goalBtn.textContent =
     elapsed >= goalMs
-      ? `${goalLabel} · reached, +${formatDuration(elapsed - goalMs)}`
-      : `${goalLabel} · ${formatDuration(goalMs - elapsed)} to go`
+      ? t('fast.goalReached', { goal: goalLabel, over: formatDuration(elapsed - goalMs) })
+      : t('fast.goalToGo', { goal: goalLabel, left: formatDuration(goalMs - elapsed) })
   document.title = `${formatDuration(elapsed)} · Hearth`
 }
 
@@ -206,7 +211,7 @@ function renderSlow(now) {
 
   const last = lastMealAt(state.meals, now)
   el.since.hidden = last == null
-  if (last != null) el.since.textContent = `Last meal · ${dayLabel(last, now)} at ${formatTime(last)}`
+  if (last != null) el.since.textContent = t('fast.lastMeal', { day: dayLabel(last, now), time: formatTime(last) })
 
   const stats = computeStats(state.meals, now)
   el.statLongest.textContent = stats.mealCount ? formatDuration(stats.longestMs) : '–'
@@ -244,13 +249,13 @@ function renderHistory(now) {
       time.textContent = formatTime(item.at)
       const gap = document.createElement('p')
       gap.className = 'meal-gap'
-      gap.textContent = item.gapMs == null ? 'First meal logged' : `after a ${formatDuration(item.gapMs)} fast`
+      gap.textContent = item.gapMs == null ? t('fast.firstMeal') : t('fast.afterFast', { duration: formatDuration(item.gapMs) })
       text.append(time, gap)
 
       const del = document.createElement('button')
       del.type = 'button'
       del.className = 'meal-delete'
-      del.setAttribute('aria-label', `Delete meal from ${group.label} at ${formatTime(item.at)}`)
+      del.setAttribute('aria-label', t('fast.deleteMeal', { day: group.label, time: formatTime(item.at) }))
       del.append(crossIcon())
       del.addEventListener('click', () => deleteMeal(item.at))
 
@@ -325,23 +330,17 @@ function renderReminders() {
   const on = state.remindAtGoal && perm === 'granted'
   el.remindToggle.setAttribute('aria-checked', String(on))
   el.remindStatus.textContent =
-    perm === 'unsupported'
-      ? "This browser can't show notifications. Use the calendar below."
-      : perm === 'denied'
-        ? 'Blocked. Allow notifications for this site in your browser settings.'
-        : on
-          ? 'On. Alerts while Hearth is open or in the background.'
-          : 'Off. Tap to turn the alarm on.'
+    perm === 'unsupported' ? t('reminders.unsupported') : perm === 'denied' ? t('reminders.blocked') : on ? t('reminders.on') : t('reminders.off')
 
   const reachedAt = goalReachedAt(state, now)
   const running = reachedAt != null && reachedAt > now
   el.calendarBtn.disabled = !running
   el.calendarHint.textContent =
     reachedAt == null
-      ? 'Tap “I ate” first — a calendar alarm needs a fast in progress.'
+      ? t('reminders.calendarNoFast')
       : running
-        ? `Alarm at ${formatTime(reachedAt)}, ${dayLabel(reachedAt, now).toLowerCase()}. It rings even with Hearth closed.`
-        : 'You already reached this goal.'
+        ? t('reminders.calendarAt', { time: formatTime(reachedAt), day: dayLabel(reachedAt, now).toLowerCase() })
+        : t('reminders.calendarPast')
 }
 
 el.remindersRow.addEventListener('click', () => {
@@ -357,7 +356,7 @@ el.remindToggle.addEventListener('click', async () => {
     return
   }
   if (!canNotify) {
-    toast("This browser can't show notifications.")
+    toast(t('reminders.noNotifications'))
     return
   }
   let granted = Notification.permission === 'granted'
@@ -371,9 +370,7 @@ el.remindToggle.addEventListener('click', async () => {
   if (!granted) {
     renderReminders()
     toast(
-      Notification.permission === 'denied'
-        ? 'Notifications are blocked for this site. Allow them in your browser settings.'
-        : 'Allow notifications to hear the alarm.',
+      Notification.permission === 'denied' ? t('reminders.deniedToast') : t('reminders.askToast'),
     )
     return
   }
@@ -383,7 +380,7 @@ el.remindToggle.addEventListener('click', async () => {
   if (shouldNotifyGoal(next, now)) next = markNotified(next, lastMealAt(next.meals, now))
   update(next)
   renderReminders()
-  toast(`Alarm on. You'll hear it at ${state.goalHours}h.`)
+  toast(t('reminders.onToast', { hours: state.goalHours }))
 })
 
 el.calendarBtn.addEventListener('click', async () => {
@@ -393,7 +390,7 @@ el.calendarBtn.addEventListener('click', async () => {
   const file = new File([buildIcs(state, now)], name, { type: 'text/calendar' })
   try {
     if (navigator.canShare?.({ files: [file] })) {
-      await navigator.share({ files: [file], title: 'Fasting goal' })
+      await navigator.share({ files: [file], title: t('reminders.shareTitle') })
       return
     }
   } catch (error) {
@@ -407,7 +404,7 @@ el.calendarBtn.addEventListener('click', async () => {
   link.click()
   link.remove()
   setTimeout(() => URL.revokeObjectURL(url), 10000)
-  toast('Open the file to add the alarm to your calendar.')
+  toast(t('reminders.fileHint'))
 })
 
 // ---------------------------------------------------------------- actions
@@ -416,7 +413,7 @@ function logMealNow() {
   const now = Date.now()
   const last = lastMealAt(state.meals, now)
   if (last != null && now - last < DOUBLE_TAP_MS) {
-    toast('Already logged. Enjoy your meal.')
+    toast(t('fast.alreadyLogged'))
     return
   }
   update(addMeal(state, now))
@@ -429,14 +426,14 @@ function logMealNow() {
 
   const message =
     last == null
-      ? `Logged at ${formatTime(now)}. The clock is running.`
-      : `Logged at ${formatTime(now)} after a ${formatDuration(now - last)} fast.`
-  toast(message, 'Undo', () => update(removeMeal(state, now)))
+      ? t('fast.loggedFirst', { time: formatTime(now) })
+      : t('fast.loggedAfter', { time: formatTime(now), duration: formatDuration(now - last) })
+  toast(message, t('common.undo'), () => update(removeMeal(state, now)))
 }
 
 function deleteMeal(at) {
   update(removeMeal(state, at))
-  toast(`Removed the ${formatTime(at)} meal.`, 'Undo', () => update(addMeal(state, at)))
+  toast(t('fast.removed', { time: formatTime(at) }), t('common.undo'), () => update(addMeal(state, at)))
 }
 
 // ---------------------------------------------------------------- dialogs
@@ -459,9 +456,9 @@ el.earlierForm.addEventListener('submit', (event) => {
   const at = parseLocalInputValue(el.earlierInput.value)
   const now = Date.now()
   let error = ''
-  if (at == null) error = 'Pick a date and a time.'
-  else if (at > now) error = "That's still in the future."
-  else if (hasMealInMinute(state.meals, at)) error = 'You already logged a meal at that minute.'
+  if (at == null) error = t('earlier.noTime')
+  else if (at > now) error = t('earlier.future')
+  else if (hasMealInMinute(state.meals, at)) error = t('earlier.duplicate')
   if (error) {
     el.earlierError.textContent = error
     return
@@ -470,8 +467,8 @@ el.earlierForm.addEventListener('submit', (event) => {
   update(addMeal(state, at))
   askForPersistentStorage()
   const day = dayLabel(at, now)
-  const when = day === 'Today' || day === 'Yesterday' ? day.toLowerCase() : day
-  toast(`Added a meal from ${when} at ${formatTime(at)}.`, 'Undo', () => update(removeMeal(state, at)))
+  const when = day === t('common.today') || day === t('common.yesterday') ? day.toLowerCase() : day
+  toast(t('earlier.added', { day: when, time: formatTime(at) }), t('common.undo'), () => update(removeMeal(state, at)))
 })
 
 // Goal
@@ -514,6 +511,40 @@ el.aboutRow.addEventListener('click', () => {
   openAbout()
 })
 
+// Language
+
+function renderLanguageOptions() {
+  const options = ['auto', ...LANGUAGES].map((value) => {
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.className = 'row-btn'
+    button.setAttribute('role', 'radio')
+    button.dataset.language = value
+    button.setAttribute('aria-checked', String(languagePreference() === value))
+    const title = document.createElement('strong')
+    title.textContent = value === 'auto' ? t('language.auto') : t(`language.${value}`)
+    button.append(title)
+    if (value === 'auto') {
+      const hint = document.createElement('span')
+      hint.textContent = t('language.autoHint', { language: t(`language.${language()}`) })
+      button.append(hint)
+    }
+    button.addEventListener('click', () => {
+      setLanguagePreference(value)
+      renderLanguageOptions()
+      toast(t('language.changed'))
+    })
+    return button
+  })
+  el.languageList.replaceChildren(...options)
+}
+
+el.languageRow.addEventListener('click', () => {
+  closeDialog(el.settingsDialog)
+  renderLanguageOptions()
+  openDialog(el.languageDialog)
+})
+
 // Settings and backup
 
 let clearArmedTimer = 0
@@ -521,7 +552,7 @@ let clearArmedTimer = 0
 function disarmClear() {
   clearTimeout(clearArmedTimer)
   el.clearBtn.classList.remove('armed')
-  el.clearBtn.querySelector('strong').textContent = 'Erase everything'
+  el.clearBtn.querySelector('strong').textContent = t('settings.erase')
 }
 
 el.settingsBtn.addEventListener('click', () => {
@@ -529,15 +560,15 @@ el.settingsBtn.addEventListener('click', () => {
   const entries = entryCount()
   const proteinMeals = proteinEntryCount()
   const logged = [
-    meals ? `${meals} ${meals === 1 ? 'meal' : 'meals'}` : '',
-    entries ? `${entries} calorie ${entries === 1 ? 'entry' : 'entries'}` : '',
-    proteinMeals ? `${proteinMeals} protein ${proteinMeals === 1 ? 'meal' : 'meals'}` : '',
+    meals ? t(meals === 1 ? 'settings.mealsCount' : 'settings.mealsCountPlural', { n: meals }) : '',
+    entries ? t(entries === 1 ? 'settings.caloriesCount' : 'settings.caloriesCountPlural', { n: entries }) : '',
+    proteinMeals ? t(proteinMeals === 1 ? 'settings.proteinCount' : 'settings.proteinCountPlural', { n: proteinMeals }) : '',
   ]
     .filter(Boolean)
     .join(', ')
-  el.settingsSummary.textContent = logged
-    ? `${logged}. They live only in this browser, so export a backup now and then.`
-    : 'Nothing logged yet. Everything you log stays in this browser, on this device.'
+  el.settingsSummary.textContent = logged ? t('settings.summary', { logged }) : t('settings.empty')
+  el.languageRowHint.textContent =
+    languagePreference() === 'auto' ? t('settings.languageHint') : t('settings.languageHintFixed', { language: t(`language.${language()}`) })
   disarmClear()
   openDialog(el.settingsDialog)
 })
@@ -564,7 +595,7 @@ el.exportBtn.addEventListener('click', async () => {
   link.click()
   link.remove()
   setTimeout(() => URL.revokeObjectURL(url), 10000)
-  toast(`Saved ${name}.`)
+  toast(t('settings.saved', { file: name }))
 })
 
 el.importInput.addEventListener('change', async () => {
@@ -582,11 +613,11 @@ el.importInput.addEventListener('change', async () => {
     const addedProtein = importProtein(parsed.protein)
     closeDialog(el.settingsDialog)
     const parts = []
-    if (added) parts.push(`${added} ${added === 1 ? 'meal' : 'meals'}`)
-    if (addedEntries) parts.push(`${addedEntries} calorie ${addedEntries === 1 ? 'entry' : 'entries'}`)
-    if (addedProtein) parts.push(`${addedProtein} protein ${addedProtein === 1 ? 'meal' : 'meals'}`)
-    const list = parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts.at(-1)}` : parts[0]
-    toast(parts.length ? `Imported ${list}.` : 'Everything in that file was already here.')
+    if (added) parts.push(t(added === 1 ? 'settings.mealsCount' : 'settings.mealsCountPlural', { n: added }))
+    if (addedEntries) parts.push(t(addedEntries === 1 ? 'settings.caloriesCount' : 'settings.caloriesCountPlural', { n: addedEntries }))
+    if (addedProtein) parts.push(t(addedProtein === 1 ? 'settings.proteinCount' : 'settings.proteinCountPlural', { n: addedProtein }))
+    const list = parts.length > 1 ? t('settings.listAnd', { first: parts.slice(0, -1).join(', '), last: parts.at(-1) }) : parts[0]
+    toast(parts.length ? t('settings.imported', { list }) : t('settings.importedNothing'))
   } catch (error) {
     toast(error instanceof Error ? error.message : "Couldn't read that file.")
   }
@@ -595,7 +626,7 @@ el.importInput.addEventListener('change', async () => {
 el.clearBtn.addEventListener('click', () => {
   if (!el.clearBtn.classList.contains('armed')) {
     el.clearBtn.classList.add('armed')
-    el.clearBtn.querySelector('strong').textContent = 'Tap again to erase every meal'
+    el.clearBtn.querySelector('strong').textContent = t('settings.eraseConfirm')
     clearArmedTimer = setTimeout(disarmClear, 4000)
     return
   }
@@ -607,7 +638,7 @@ el.clearBtn.addEventListener('click', () => {
   eraseCalories()
   eraseProtein()
   closeDialog(el.settingsDialog)
-  toast('Everything erased.', 'Undo', () => {
+  toast(t('settings.erased'), t('common.undo'), () => {
     update(previousMeals)
     importCalories(previousCalories)
     importProtein(previousProtein)
@@ -686,6 +717,9 @@ const UPDATE_CHECK_MS = 30 * 60 * 1000
 const isStamped = (id) => typeof id === 'string' && /^[0-9a-f]{7,40}$/.test(id)
 let updatePending = false
 let reloading = false
+// True once we have asked for a newer build, so a page that was never
+// controlled still reloads when that build takes over.
+let expectingUpdate = false
 
 function applyPendingUpdate() {
   if (!updatePending || reloading || anyDialogOpen()) return
@@ -708,7 +742,10 @@ async function checkForUpdate() {
     const response = await fetch(`./version.json?t=${Date.now()}`, { cache: 'no-store' })
     if (!response.ok) return
     const remote = await response.json()
-    if (isStamped(remote.id) && remote.id !== BUILD.id) await registerWorker(remote.id)
+    if (isStamped(remote.id) && remote.id !== BUILD.id) {
+      expectingUpdate = true
+      await registerWorker(remote.id)
+    }
   } catch {
     /* offline or mid-deploy: try again later */
   }
@@ -718,8 +755,8 @@ function startUpdates() {
   if (!('serviceWorker' in navigator)) return
   let controlled = Boolean(navigator.serviceWorker.controller)
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    // The very first install also fires this; only a replacement needs a reload.
-    if (controlled) {
+    // A first install also fires this; only a replacement needs a reload.
+    if (controlled || expectingUpdate) {
       updatePending = true
       applyPendingUpdate()
     }
@@ -743,8 +780,16 @@ function announceUpdate() {
   } catch {
     return
   }
-  if (from && from !== BUILD.id) toast(`Hearth updated to ${BUILD.id}.`)
+  if (from && from !== BUILD.id) toast(t('about.updated', { id: BUILD.id }))
 }
+
+// Static text carries its key in the markup; the rest is redrawn.
+applyStaticText()
+onLanguageChange(() => {
+  applyStaticText()
+  render()
+  renderGoalOptions()
+})
 
 announceUpdate()
 startUpdates()

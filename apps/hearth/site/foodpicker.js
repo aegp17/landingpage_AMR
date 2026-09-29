@@ -3,8 +3,16 @@
 // (calories or grams of protein) and gets the items back.
 import { ITEM_LIMITS, makeItem, recentFoods, searchFoods } from './nutrition.js'
 import { STARTERS, getFoods, onFoodsLoaded } from './foods.js'
+import { language, onLanguageChange, t } from './i18n.js'
 
 const SVG_NS = 'http://www.w3.org/2000/svg'
+
+// Foods are named in the running language, falling back to what was stored
+// with the item when the table has no name for it.
+export function foodName(food, fallback = '') {
+  if (!food) return fallback
+  return (language() === 'es' && food.name_es) || food.name || fallback
+}
 
 function crossIcon() {
   const svg = document.createElementNS(SVG_NS, 'svg')
@@ -32,11 +40,11 @@ export function createPicker({ container, prefix, valueOf, format, per100, empty
   const field = document.createElement('label')
   field.className = 'field'
   const caption = document.createElement('span')
-  caption.textContent = 'Add foods'
+  caption.textContent = t('picker.addFoods')
   const search = document.createElement('input')
   search.type = 'search'
   search.id = `${prefix}Search`
-  search.placeholder = 'rice, pollo, banana…'
+  search.placeholder = t('picker.placeholder')
   search.autocomplete = 'off'
   search.enterKeyHint = 'done'
   field.append(caption, search)
@@ -82,11 +90,11 @@ export function createPicker({ container, prefix, valueOf, format, per100, empty
         ? emptyHint
         : query
           ? matches.length === 0
-            ? 'Nothing found. Try another word, or type the number below.'
+            ? t('picker.nothing')
             : ''
           : recent.length
-            ? 'Recent'
-            : 'Common foods'
+            ? t('picker.recent')
+            : t('picker.common')
 
     results.replaceChildren(...matches.map(resultRow))
   }
@@ -99,7 +107,7 @@ export function createPicker({ container, prefix, valueOf, format, per100, empty
     pick.type = 'button'
     pick.className = 'food-result-name'
     const name = document.createElement('strong')
-    name.textContent = food.name
+    name.textContent = foodName(food)
     const per = document.createElement('span')
     per.textContent = per100(food)
     pick.append(name, per)
@@ -108,12 +116,12 @@ export function createPicker({ container, prefix, valueOf, format, per100, empty
 
     const portions = document.createElement('div')
     portions.className = 'food-portions'
-    for (const portion of [...food.portions.slice(0, 2), { label: '100 g', grams: 100 }]) {
+    for (const portion of [...food.portions.slice(0, 2), { label: t('picker.hundred'), grams: 100 }]) {
       const chip = document.createElement('button')
       chip.type = 'button'
       chip.className = 'portion-chip'
       chip.textContent = `${portion.label} · ${format(valueOf(food, portion.grams))}`
-      chip.setAttribute('aria-label', `Add ${portion.label} of ${food.name}`)
+      chip.setAttribute('aria-label', t('picker.addPortion', { portion: portion.label, food: foodName(food) }))
       chip.addEventListener('click', () => add(food, portion.grams))
       portions.append(chip)
     }
@@ -128,7 +136,7 @@ export function createPicker({ container, prefix, valueOf, format, per100, empty
 
       const name = document.createElement('span')
       name.className = 'food-item-name'
-      name.textContent = item.name
+      name.textContent = foodName(foodOf(item), item.name)
 
       const grams = document.createElement('input')
       grams.type = 'number'
@@ -136,7 +144,7 @@ export function createPicker({ container, prefix, valueOf, format, per100, empty
       grams.min = String(ITEM_LIMITS.grams.min)
       grams.max = String(ITEM_LIMITS.grams.max)
       grams.value = String(item.grams)
-      grams.setAttribute('aria-label', `Grams of ${item.name}`)
+      grams.setAttribute('aria-label', t('picker.gramsOf', { food: foodName(foodOf(item), item.name) }))
 
       const unit = document.createElement('span')
       unit.className = 'food-item-unit'
@@ -158,7 +166,7 @@ export function createPicker({ container, prefix, valueOf, format, per100, empty
       const remove = document.createElement('button')
       remove.type = 'button'
       remove.className = 'meal-delete'
-      remove.setAttribute('aria-label', `Remove ${item.name}`)
+      remove.setAttribute('aria-label', t('picker.remove', { food: foodName(foodOf(item), item.name) }))
       remove.append(crossIcon())
       remove.addEventListener('click', () => {
         items = items.filter((_, i) => i !== index)
@@ -175,7 +183,7 @@ export function createPicker({ container, prefix, valueOf, format, per100, empty
 
   function renderTotal() {
     total.hidden = items.length === 0
-    total.textContent = `Total ${format(sum())}`
+    total.textContent = t('picker.total', { value: format(sum()) })
     onChange(items, sum())
   }
 
@@ -186,6 +194,12 @@ export function createPicker({ container, prefix, valueOf, format, per100, empty
   })
 
   onFoodsLoaded(renderResults)
+  onLanguageChange(() => {
+    caption.textContent = t('picker.addFoods')
+    search.placeholder = t('picker.placeholder')
+    renderResults()
+    renderItems()
+  })
 
   return {
     get items() {

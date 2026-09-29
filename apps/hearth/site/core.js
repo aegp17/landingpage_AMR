@@ -1,6 +1,8 @@
 // Pure logic for Hearth: no DOM, no storage. Everything here is covered by
 // apps/hearth/test/core.test.mjs (run with `node --test apps/hearth/test`).
 
+import { locale, t } from './i18n.js'
+
 export const MINUTE = 60 * 1000
 export const HOUR = 60 * MINUTE
 export const DAY = 24 * HOUR
@@ -8,8 +10,6 @@ export const DAY = 24 * HOUR
 export const GOALS = [12, 14, 16, 18, 20, 24]
 export const DEFAULT_GOAL = 16
 export const STATE_VERSION = 1
-
-const LOCALE = 'en-US'
 
 export function defaultState() {
   return { version: STATE_VERSION, goalHours: DEFAULT_GOAL, meals: [], remindAtGoal: false, notifiedFor: null }
@@ -87,12 +87,12 @@ export function formatClock(ms) {
   return { main: `${hours}:${pad(minutes)}`, seconds: `:${pad(seconds)}` }
 }
 
-// "15h 20m", "16h", "45m", "0m"
+// "15h 20m" in English, "15 h 20 min" in Spanish.
 export function formatDuration(ms) {
   const { hours, minutes } = splitDuration(ms)
-  if (hours === 0) return `${minutes}m`
-  if (minutes === 0) return `${hours}h`
-  return `${hours}h ${minutes}m`
+  if (hours === 0) return t('duration.minutes', { m: minutes })
+  if (minutes === 0) return t('duration.hours', { h: hours })
+  return t('duration.hoursMinutes', { h: hours, m: minutes })
 }
 
 export function progress(elapsedMs, goalHours) {
@@ -100,19 +100,19 @@ export function progress(elapsedMs, goalHours) {
 }
 
 export function stageFor(fraction) {
-  if (fraction >= 1) return 'Goal reached. Beautifully done.'
-  if (fraction >= 0.75) return 'Almost there. Keep it cozy.'
-  if (fraction >= 0.5) return 'Steady and calm.'
-  if (fraction >= 0.25) return 'Settling in nicely.'
-  return 'Freshly fed. Enjoy the warmth.'
+  if (fraction >= 1) return t('fast.stage4')
+  if (fraction >= 0.75) return t('fast.stage3')
+  if (fraction >= 0.5) return t('fast.stage2')
+  if (fraction >= 0.25) return t('fast.stage1')
+  return t('fast.stage0')
 }
 
 export function greetingFor(date) {
   const h = date.getHours()
-  if (h >= 5 && h < 12) return 'Good morning'
-  if (h >= 12 && h < 18) return 'Good afternoon'
-  if (h >= 18 && h < 22) return 'Good evening'
-  return 'Good night'
+  if (h >= 5 && h < 12) return t('greeting.morning')
+  if (h >= 12 && h < 18) return t('greeting.afternoon')
+  if (h >= 18 && h < 22) return t('greeting.evening')
+  return t('greeting.night')
 }
 
 // Local calendar day, so a meal at 23:50 and one at 00:10 land on different days
@@ -126,16 +126,16 @@ export function dayLabel(ts, now) {
   const today = new Date(now)
   const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1)
   const key = dayKey(ts)
-  if (key === dayKey(now)) return 'Today'
-  if (key === dayKey(yesterday.getTime())) return 'Yesterday'
+  if (key === dayKey(now)) return t('common.today')
+  if (key === dayKey(yesterday.getTime())) return t('common.yesterday')
   const d = new Date(ts)
   const options = { weekday: 'short', month: 'short', day: 'numeric' }
   if (d.getFullYear() !== today.getFullYear()) options.year = 'numeric'
-  return new Intl.DateTimeFormat(LOCALE, options).format(d)
+  return new Intl.DateTimeFormat(locale(), options).format(d)
 }
 
 export function formatTime(ts) {
-  return new Intl.DateTimeFormat(LOCALE, { hour: 'numeric', minute: '2-digit' }).format(new Date(ts))
+  return new Intl.DateTimeFormat(locale(), { hour: 'numeric', minute: '2-digit' }).format(new Date(ts))
 }
 
 // Value for <input type="datetime-local">, which works in local time without offset.
@@ -216,14 +216,14 @@ export function parseBackup(text) {
   try {
     data = JSON.parse(text)
   } catch {
-    throw new Error("That file isn't valid JSON.")
+    throw new Error(t('backup.notJson'))
   }
   if (!data || data.app !== 'hearth' || !Array.isArray(data.meals)) {
-    throw new Error("That file isn't a Hearth backup.")
+    throw new Error(t('backup.notHearth'))
   }
   const bad = data.meals.filter((m) => !m || !isValidTimestamp(m.at))
   if (bad.length) {
-    throw new Error(`The backup has ${bad.length} unreadable ${bad.length === 1 ? 'entry' : 'entries'}. Nothing was imported.`)
+    throw new Error(bad.length === 1 ? t('backup.damagedOne') : t('backup.damaged', { n: bad.length }))
   }
   return normalizeState(data)
 }
@@ -238,12 +238,12 @@ export function mergeMeals(state, imported) {
 
 // "Version 1a2b3c4 · Sep 17, 2026", or a plain label when running unstamped.
 export function formatBuild(build) {
-  if (!build || !/^[0-9a-f]{7,40}$/.test(build.id)) return 'Development build'
+  if (!build || !/^[0-9a-f]{7,40}$/.test(build.id)) return t('about.dev')
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(build.date || '')
-  if (!match) return `Version ${build.id}`
+  if (!match) return t('about.version', { id: build.id })
   const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
-  const label = new Intl.DateTimeFormat(LOCALE, { month: 'short', day: 'numeric', year: 'numeric' }).format(date)
-  return `Version ${build.id} · ${label}`
+  const label = new Intl.DateTimeFormat(locale(), { month: 'short', day: 'numeric', year: 'numeric' }).format(date)
+  return t('about.versionDated', { id: build.id, date: label })
 }
 
 // ---------------------------------------------------------------- reminders
@@ -272,8 +272,8 @@ export function shouldNotifyGoal(state, now) {
 
 export function goalNotification(state) {
   return {
-    title: `${state.goalHours}h fast complete`,
-    body: 'Goal reached. Eat when you are ready, then tap “I ate”.',
+    title: t('notification.title', { hours: state.goalHours }),
+    body: t('notification.body'),
   }
 }
 
@@ -285,9 +285,9 @@ const icsEscape = (text) => text.replace(/([\\;,])/g, '\\$1').replace(/\n/g, '\\
 export function buildIcs(state, now) {
   const reachedAt = goalReachedAt(state, now)
   if (reachedAt == null) throw new Error('No fast is running')
-  const summary = `Fasting goal reached (${state.goalHours}h)`
+  const summary = t('ics.summary', { hours: state.goalHours })
   const startedAt = reachedAt - state.goalHours * HOUR
-  const description = `Your ${state.goalHours}h fast, started at ${formatTime(startedAt)} on ${dayKey(startedAt)}, is complete.`
+  const description = t('ics.description', { hours: state.goalHours, time: formatTime(startedAt), date: dayKey(startedAt) })
   return [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
