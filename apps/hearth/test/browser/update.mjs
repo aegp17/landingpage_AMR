@@ -26,6 +26,9 @@ const toForeground = () => page.evaluate(() => document.dispatchEvent(new Event(
 
 await page.goto(server.appUrl)
 await page.evaluate(() => navigator.serviceWorker.ready)
+// A first install does not claim the page it was loaded from, so control
+// starts with the next load — which is what a returning visitor gets.
+await page.reload()
 await page.waitForFunction(() => navigator.serviceWorker.controller)
 
 check('About shows the stamped build', (await version()) === 'Version aaaaaaa · Sep 17, 2026', await version())
@@ -75,6 +78,26 @@ reloaded = false
 await toForeground()
 await page.waitForTimeout(4000)
 check('mismatched files: stays on the build that works', !reloaded && !(await cacheKeys()).includes('hearth-ddddddd'), JSON.stringify(await cacheKeys()))
+
+// ------------------------------------------------------------ a tab that was never controlled
+{
+  // A first visit is deliberately left uncontrolled, so this is the case where
+  // a deploy has to reach a page that no worker is driving yet.
+  const fresh = await browser.newContext(PHONE)
+  const page2 = await fresh.newPage()
+  await page2.goto(server.appUrl)
+  await page2.evaluate(() => navigator.serviceWorker.ready)
+  check('a first visit is not controlled yet', !(await page2.evaluate(() => Boolean(navigator.serviceWorker.controller))))
+  server.deploy('eeeeeee', '2026-09-29')
+  await Promise.all([
+    page2.waitForEvent('load', { timeout: 20000 }),
+    page2.evaluate(() => document.dispatchEvent(new Event('visibilitychange'))),
+  ])
+  await page2.click('#aboutBtn')
+  check('and it still updates itself', (await page2.textContent('#aboutVersion')) === 'Version eeeeeee · Sep 29, 2026', await page2.textContent('#aboutVersion'))
+  await fresh.close()
+  server.deploy('ccccccc', '2026-09-19')
+}
 
 check('no unexpected console errors', errors.filter((e) => !e.includes('ERR_INTERNET_DISCONNECTED') && !e.includes('sw.js?v=ddddddd')).length === 0, errors.join(' | '))
 

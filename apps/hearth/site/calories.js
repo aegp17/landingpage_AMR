@@ -1,8 +1,9 @@
 // The Calories tab: its own screen, its own storage key, nothing shared with
 // the fasting log except the toast and the dialog helpers.
 import { formatTime } from './core.js'
-import { createPicker } from './foodpicker.js'
-import { loadFoods } from './foods.js'
+import { createPicker, foodName } from './foodpicker.js'
+import { foodById, loadFoods } from './foods.js'
+import { onLanguageChange, t } from './i18n.js'
 import {
   ACTIVITIES,
   WEEKLY_GOALS,
@@ -100,7 +101,7 @@ function save() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch {
-    toast("This browser isn't letting Hearth save.")
+    toast(t('storage.refused'))
   }
 }
 
@@ -117,15 +118,15 @@ export function render() {
   const budget = dayBudget(state, now)
 
   if (budget.target == null) {
-    el.budgetLabel.textContent = 'No target yet'
-    el.budgetValue.textContent = budget.food ? formatKcal(budget.food) : 'Set up'
-    el.budgetUnit.textContent = budget.food ? 'kcal eaten today' : 'your numbers'
+    el.budgetLabel.textContent = t('cal.noTarget')
+    el.budgetValue.textContent = budget.food ? formatKcal(budget.food) : t('cal.setUp')
+    el.budgetUnit.textContent = budget.food ? t('cal.eatenToday') : t('cal.setUpUnit')
     el.meterFill.style.width = '0%'
     el.panel.classList.remove('over')
   } else {
-    el.budgetLabel.textContent = budget.over ? 'Over by' : 'Left today'
+    el.budgetLabel.textContent = budget.over ? t('cal.over') : t('cal.left')
     el.budgetValue.textContent = formatKcal(Math.abs(budget.remaining))
-    el.budgetUnit.textContent = 'kcal'
+    el.budgetUnit.textContent = t('cal.unit')
     el.meterFill.style.width = `${Math.min(100, Math.max(0, budget.fraction * 100))}%`
     el.panel.classList.toggle('over', budget.over)
   }
@@ -133,7 +134,7 @@ export function render() {
   el.partTarget.textContent = budget.target == null ? '–' : formatKcal(budget.target)
   el.partFood.textContent = formatKcal(budget.food)
   el.partExercise.textContent = formatKcal(budget.exercise)
-  el.numbersBtn.textContent = state.profile || state.targetOverride != null ? 'Your numbers' : 'Set up your numbers'
+  el.numbersBtn.textContent = state.profile || state.targetOverride != null ? t('cal.numbersBtn') : t('cal.numbersBtnEmpty')
 
   renderEntries(now)
   renderDays(now)
@@ -152,17 +153,17 @@ function renderEntries(now) {
     text.className = 'meal-text'
     const title = document.createElement('p')
     title.className = 'meal-time'
-    title.textContent = `${item.kind === 'exercise' ? '+' : ''}${formatKcal(item.kcal)} kcal`
+    title.textContent = item.kind === 'exercise' ? t('cal.kcalPlus', { n: formatKcal(item.kcal) }) : t('cal.kcal', { n: formatKcal(item.kcal) })
     const sub = document.createElement('p')
     sub.className = 'meal-gap'
-    const parts = [item.label, (item.items || []).map((i) => `${i.name} ${i.grams} g`).join(', '), formatTime(item.at)]
+    const parts = [item.label, (item.items || []).map((i) => `${foodName(foodById(i.foodId), i.name)} ${i.grams} g`).join(', '), formatTime(item.at)]
     sub.textContent = parts.filter(Boolean).join(' · ')
     text.append(title, sub)
 
     const remove = document.createElement('button')
     remove.type = 'button'
     remove.className = 'meal-delete'
-    remove.setAttribute('aria-label', `Delete ${item.label || item.kind} at ${formatTime(item.at)}`)
+    remove.setAttribute('aria-label', t('cal.deleteEntry', { what: item.label || t(item.kind === 'food' ? 'cal.addFood' : 'cal.addExercise'), time: formatTime(item.at) }))
     remove.append(crossIcon())
     remove.addEventListener('click', () => deleteEntry(item))
 
@@ -186,17 +187,19 @@ function renderDays(now) {
     title.textContent = day.label
     const sub = document.createElement('p')
     sub.className = 'meal-gap'
-    sub.textContent = `${formatKcal(day.food)} eaten${day.exercise ? `, ${formatKcal(day.exercise)} burned` : ''}`
+    sub.textContent = day.exercise
+      ? t('cal.dayEatenBurned', { eaten: formatKcal(day.food), burned: formatKcal(day.exercise) })
+      : t('cal.dayEaten', { n: formatKcal(day.food) })
     text.append(title, sub)
 
     const badge = document.createElement('span')
     badge.className = `badge ${day.difference == null ? '' : day.difference <= 0 ? 'under' : 'over'}`
     badge.textContent =
       day.difference == null
-        ? `${formatKcal(day.net)} net`
+        ? t('cal.dayNet', { n: formatKcal(day.net) })
         : day.difference <= 0
-          ? `${formatKcal(-day.difference)} under`
-          : `${formatKcal(day.difference)} over`
+          ? t('cal.dayUnder', { n: formatKcal(-day.difference) })
+          : t('cal.dayOver', { n: formatKcal(day.difference) })
 
     row.append(text, badge)
     return row
@@ -221,15 +224,17 @@ const picker = createPicker({
   container: el.foodPicker,
   prefix: 'food',
   valueOf: (food, grams) => foodKcal(food, grams),
-  format: (value) => `${formatKcal(value)} kcal`,
-  per100: (food) => `${formatKcal(food.kcal100)} kcal per 100 g`,
-  emptyHint: 'The food table could not load. Type the calories instead.',
+  format: (value) => t('cal.kcal', { n: formatKcal(value) }),
+  per100: (food) => t('cal.per100', { n: formatKcal(food.kcal100) }),
+  get emptyHint() {
+    return t('cal.tableFailed')
+  },
   history: () => state.entries,
   onChange(items, total) {
     draftItems = items
     // With foods chosen, the total is the number; typing one would fight it.
     el.manualField.hidden = items.length > 0
-    el.entrySave.textContent = items.length ? `Add ${formatKcal(total)} kcal` : 'Add food'
+    el.entrySave.textContent = items.length ? t('cal.addTotal', { n: formatKcal(total) }) : t('cal.addFoodTitle')
   },
 })
 
@@ -239,20 +244,18 @@ function openEntry(kind) {
   entryKind = kind
   const food = kind === 'food'
   draftItems = []
-  el.entryTitle.textContent = food ? 'Add food' : 'Add exercise'
-  el.entryHint.textContent = food
-    ? 'Search what you ate, or type the calories.'
-    : 'What you burned, from your watch or the machine. It goes back into the day.'
-  el.entryLabelCaption.textContent = food ? 'Name this meal (optional)' : 'What was it? (optional)'
-  el.entryLabel.placeholder = food ? 'Lunch, snack…' : 'Run, gym, walk…'
+  el.entryTitle.textContent = food ? t('cal.addFoodTitle') : t('cal.addExerciseTitle')
+  el.entryHint.textContent = food ? t('cal.addFoodHint') : t('cal.addExerciseHint')
+  el.entryLabelCaption.textContent = food ? t('cal.mealName') : t('cal.whatWasIt')
+  el.entryLabel.placeholder = food ? t('cal.mealPlaceholder') : t('cal.exercisePlaceholder')
   el.entryLabel.value = food ? mealNameFor(new Date()) : ''
   el.entryKcal.value = ''
   el.entryError.textContent = ''
   el.foodPicker.hidden = !food
   picker.reset()
   el.manualField.hidden = false
-  el.kcalLabel.textContent = food ? 'Or type the calories' : 'Calories'
-  el.entrySave.textContent = food ? 'Add food' : 'Add exercise'
+  el.kcalLabel.textContent = food ? t('cal.orCalories') : t('cal.calories')
+  el.entrySave.textContent = food ? t('cal.addFoodTitle') : t('cal.addExerciseTitle')
   openDialog(el.entryDialog)
   if (food) picker.focus()
   else el.entryKcal.focus()
@@ -260,7 +263,7 @@ function openEntry(kind) {
 
 function deleteEntry(item) {
   update(removeEntry(state, item.id))
-  toast(`Removed ${formatKcal(item.kcal)} kcal.`, 'Undo', () => update(addEntry(state, item)))
+  toast(t('cal.removed', { n: formatKcal(item.kcal) }), t('common.undo'), () => update(addEntry(state, item)))
 }
 
 el.addFoodBtn.addEventListener('click', () => openEntry('food'))
@@ -271,9 +274,7 @@ el.entryForm.addEventListener('submit', (event) => {
   const items = entryKind === 'food' ? draftItems : []
   const kcal = items.length ? itemsTotal(items) : Number(el.entryKcal.value)
   if (!Number.isFinite(kcal) || kcal < 1 || kcal > 10000) {
-    el.entryError.textContent = items.length
-      ? 'That meal adds up to more than 10,000 kcal. Check the grams.'
-      : 'Pick a food above, or enter a number between 1 and 10,000.'
+    el.entryError.textContent = items.length ? t('cal.tooMuch') : t('cal.badNumber')
     return
   }
   const entry = { ...makeEntry({ at: Date.now(), kcal, kind: entryKind, label: el.entryLabel.value }), ...(items.length ? { items } : {}) }
@@ -282,11 +283,11 @@ el.entryForm.addEventListener('submit', (event) => {
   const budget = dayBudget(state, Date.now())
   toast(
     budget.remaining == null
-      ? `Logged ${formatKcal(entry.kcal)} kcal.`
+      ? t('cal.logged', { n: formatKcal(entry.kcal) })
       : budget.over
-        ? `Logged. ${formatKcal(-budget.remaining)} kcal over today.`
-        : `Logged. ${formatKcal(budget.remaining)} kcal left today.`,
-    'Undo',
+        ? t('cal.loggedOver', { n: formatKcal(-budget.remaining) })
+        : t('cal.loggedLeft', { n: formatKcal(budget.remaining) }),
+    t('common.undo'),
     () => update(removeEntry(state, entry.id)),
   )
 })
@@ -334,14 +335,14 @@ function renderPlan() {
   renderActivityHint()
   const profile = draftProfile()
   if (!validateProfile(profile).ok) {
-    el.planBox.replaceChildren(document.createTextNode('Fill your age, height and weight to see an estimate.'))
+    el.planBox.replaceChildren(document.createTextNode(t('numbers.fillFirst')))
     return
   }
   const result = plan(profile)
   const rows = [
-    ['Burned in a day', `${formatKcal(result.maintenance)} kcal`],
-    ['Deficit', result.dailyDeficit ? `−${formatKcal(result.dailyDeficit)} kcal` : 'none'],
-    ['Suggested target', `${formatKcal(result.target)} kcal`],
+    [t('numbers.maintenance'), t('cal.kcal', { n: formatKcal(result.maintenance) })],
+    [t('numbers.deficit'), result.dailyDeficit ? `−${t('cal.kcal', { n: formatKcal(result.dailyDeficit) })}` : t('numbers.none')],
+    [t('numbers.suggested'), t('cal.kcal', { n: formatKcal(result.target) })],
   ]
   const list = rows.map(([label, value]) => {
     const row = document.createElement('div')
@@ -356,7 +357,7 @@ function renderPlan() {
   if (result.clamped) {
     const warning = document.createElement('p')
     warning.className = 'plan-warning'
-    warning.textContent = `That pace would put you under ${formatKcal(result.floor)} kcal a day, so the target stays there.`
+    warning.textContent = t('numbers.clamped', { n: formatKcal(result.floor) })
     list.push(warning)
   }
   el.planBox.replaceChildren(...list)
@@ -389,12 +390,12 @@ el.numbersForm.addEventListener('submit', (event) => {
     return
   }
   if (override != null && (!Number.isFinite(override) || override < 800 || override > 10000)) {
-    el.numbersError.textContent = 'A target of your own must be between 800 and 10,000 kcal.'
+    el.numbersError.textContent = t('numbers.ownRange')
     return
   }
   closeDialog(el.numbersDialog)
   update(setTargetOverride(setProfile(state, profile), override))
-  toast(`Target set to ${formatKcal(dayBudget(state, Date.now()).target)} kcal a day.`)
+  toast(t('numbers.saved', { n: formatKcal(dayBudget(state, Date.now()).target) }))
 })
 
 // ---------------------------------------------------------------- backup
@@ -443,9 +444,22 @@ for (const activity of ACTIVITIES) {
 for (const goal of WEEKLY_GOALS) {
   const option = document.createElement('option')
   option.value = String(goal)
-  option.textContent = goal === 0 ? 'Keep my weight' : `Lose ${goal} kg a week`
+  option.textContent = goal === 0 ? t('numbers.keepWeight') : t('numbers.lose', { n: goal })
   el.goalSelect.append(option)
 }
+
+// A language change relabels the selects and redraws the screen.
+onLanguageChange(() => {
+  for (const option of el.activitySelect.options) {
+    const activity = ACTIVITIES.find((a) => a.key === option.value)
+    if (activity) option.textContent = activity.label
+  }
+  for (const option of el.goalSelect.options) {
+    const goal = Number(option.value)
+    option.textContent = goal === 0 ? t('numbers.keepWeight') : t('numbers.lose', { n: goal })
+  }
+  render()
+})
 
 load()
 render()

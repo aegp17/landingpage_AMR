@@ -32,25 +32,25 @@
           </svg>
           <span>Hearth</span>
         </div>
-        <button class="icon-btn" id="settingsBtn" type="button" aria-label="Settings">
+        <button class="icon-btn" id="settingsBtn" type="button" aria-label="Settings" data-i18n-aria="aria.settings">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>
         </button>
       </header>
 
-      <p class="banner" id="storageBanner" hidden>
+      <p class="banner" id="storageBanner" data-i18n="storage.blocked" hidden>
         This browser isn't letting Hearth save. Your logs will disappear when you close it.
       </p>
 
       <p class="greeting" id="greeting">Hello</p>
 
-      <div class="tabs" role="tablist" aria-label="Screens">
-        <button class="tab" id="tabFasting" type="button" role="tab" aria-selected="true" aria-controls="fastingTab">Fasting</button>
-        <button class="tab" id="tabCalories" type="button" role="tab" aria-selected="false" aria-controls="caloriesTab">Calories</button>
-        <button class="tab" id="tabProtein" type="button" role="tab" aria-selected="false" aria-controls="proteinTab">Protein</button>
+      <div class="tabs" role="tablist" aria-label="Screens" data-i18n-aria="aria.screens">
+        <button class="tab" id="tabFasting" type="button" role="tab" aria-selected="true" aria-controls="fastingTab" data-i18n="tab.fasting">Fasting</button>
+        <button class="tab" id="tabCalories" type="button" role="tab" aria-selected="false" aria-controls="caloriesTab" data-i18n="tab.calories">Calories</button>
+        <button class="tab" id="tabProtein" type="button" role="tab" aria-selected="false" aria-controls="proteinTab" data-i18n="tab.protein">Protein</button>
       </div>
 
       <section class="tab-panel" id="fastingTab" role="tabpanel" aria-labelledby="tabFasting">
-      <section class="card hero" aria-label="Current fast">
+      <section class="card hero" aria-label="Current fast" data-i18n-aria="aria.currentFast">
         <div class="ring-wrap">
           <svg class="ring" viewBox="0 0 240 240" aria-hidden="true">
             <defs>
@@ -66,7 +66,7 @@
             <p class="clock" id="clock" role="timer" aria-live="off">
               <span id="clockMain">0:00</span><span class="clock-sec" id="clockSec">:00</span>
             </p>
-            <p class="clock-label" id="clockLabel">hours fasted</p>
+            <p class="clock-label" id="clockLabel" data-i18n="fast.hoursFasted">hours fasted</p>
           </div>
         </div>
         <p class="stage" id="stage"></p>
@@ -79,43 +79,43 @@
           <path d="M4 15h24a12 12 0 0 1-24 0Z" />
           <path class="steam" d="M11 11c-1.5-1.8 1.5-3.2 0-5M16 11c-1.5-1.8 1.5-3.2 0-5M21 11c-1.5-1.8 1.5-3.2 0-5" />
         </svg>
-        <span>I ate</span>
+        <span data-i18n="fast.ate">I ate</span>
       </button>
-      <button class="link-btn" id="earlierBtn" type="button" aria-haspopup="dialog">Forgot to tap? Log an earlier meal</button>
+      <button class="link-btn" id="earlierBtn" type="button" aria-haspopup="dialog" data-i18n="fast.forgot">Forgot to tap? Log an earlier meal</button>
 
-      <section class="stats" aria-label="Your stats">
+      <section class="stats" aria-label="Your stats" data-i18n-aria="aria.stats">
         <div class="stat">
           <p class="stat-value" id="statLongest">–</p>
-          <p class="stat-label">Longest fast</p>
+          <p class="stat-label" data-i18n="fast.statLongest">Longest fast</p>
         </div>
         <div class="stat">
           <p class="stat-value" id="statAverage">–</p>
-          <p class="stat-label">7-day average</p>
+          <p class="stat-label" data-i18n="fast.statAverage">7-day average</p>
         </div>
         <div class="stat">
           <p class="stat-value" id="statCount">0</p>
-          <p class="stat-label">Meals logged</p>
+          <p class="stat-label" data-i18n="fast.statCount">Meals logged</p>
         </div>
       </section>
 
       <section class="history" aria-labelledby="historyTitle">
-        <h2 id="historyTitle">Recent meals</h2>
+        <h2 id="historyTitle" data-i18n="fast.historyTitle">Recent meals</h2>
         <div id="history"></div>
-        <p class="empty" id="historyEmpty">Nothing logged yet. Your meals will gather here.</p>
-        <button class="link-btn" id="moreBtn" type="button" hidden>Show older meals</button>
+        <p class="empty" id="historyEmpty" data-i18n="fast.historyEmpty">Nothing logged yet. Your meals will gather here.</p>
+        <button class="link-btn" id="moreBtn" type="button" data-i18n="fast.showOlder" hidden>Show older meals</button>
       </section>
 
       </section>
 
       <section class="tab-panel" id="caloriesTab" role="tabpanel" aria-labelledby="tabCalories" hidden>
-        <section class="card budget" aria-label="Calories today">
+        <section class="card budget" aria-label="Calories today" data-i18n-aria="aria.caloriesToday">
           <p class="budget-label" id="budgetLabel">No target yet</p>
           <p class="budget-number"><span id="budgetValue">Set up</span> <span class="budget-unit" id="budgetUnit">your numbers</span></p>
           <div class="meter" aria-hidden="true"><div class="meter-fill" id="meterFill"></div></div>
           <div class="budget-parts">
-            <div><p class="part-value" id="partTarget">–</p><p class="part-label">Target</p></div>
-            <div><p class="part-value" id="partFood">0</p><p class="part-label">Eaten</p></div>
-            <div><p class="part-value" id="partExercise">0</p><p class="part-label">Burned</p></div>
+            <div><p class="part-value" id="partTarget">–</p><p class="part-label" data-i18n="cal.partTarget">Target</p></div>
+            <div><p class="part-value" id="partFood">0</p><p class="part-label" data-i18n="cal.partEaten">Eaten</p></div>
+            <div><p class="part-value" id="partExercise">0</p><p class="part-label" data-i18n="cal.partBurned">Burned</p></div>
           </div>
           <button class="goal-chip" id="numbersBtn" type="button" aria-haspopup="dialog">Set up your numbers</button>
         </section>
@@ -126,38 +126,38 @@
               <path d="M4 15h24a12 12 0 0 1-24 0Z" />
               <path class="steam" d="M11 11c-1.5-1.8 1.5-3.2 0-5M16 11c-1.5-1.8 1.5-3.2 0-5M21 11c-1.5-1.8 1.5-3.2 0-5" />
             </svg>
-            <span>Food</span>
+            <span data-i18n="cal.addFood">Food</span>
           </button>
           <button class="eat burn" id="addExerciseBtn" type="button">
             <svg viewBox="0 0 32 32" aria-hidden="true">
               <path d="M6 13h3v6H6zM23 13h3v6h-3zM10 15h12v2H10z" />
             </svg>
-            <span>Exercise</span>
+            <span data-i18n="cal.addExercise">Exercise</span>
           </button>
         </div>
 
         <section class="history" aria-labelledby="todayTitle">
-          <h2 id="todayTitle">Today</h2>
+          <h2 id="todayTitle" data-i18n="cal.today">Today</h2>
           <div id="entryList"></div>
-          <p class="empty" id="entriesEmpty">Nothing logged today. Add what you eat as you go.</p>
+          <p class="empty" id="entriesEmpty" data-i18n="cal.todayEmpty">Nothing logged today. Add what you eat as you go.</p>
         </section>
 
         <section class="history" aria-labelledby="daysTitle">
-          <h2 id="daysTitle">Earlier days</h2>
+          <h2 id="daysTitle" data-i18n="cal.earlier">Earlier days</h2>
           <div id="daysList"></div>
-          <p class="empty" id="daysEmpty">Days you log will gather here.</p>
+          <p class="empty" id="daysEmpty" data-i18n="cal.earlierEmpty">Days you log will gather here.</p>
         </section>
       </section>
 
       <section class="tab-panel" id="proteinTab" role="tabpanel" aria-labelledby="tabProtein" hidden>
-        <section class="card budget" aria-label="Protein today">
+        <section class="card budget" aria-label="Protein today" data-i18n-aria="aria.proteinToday">
           <p class="budget-label" id="proteinLabel">No goal yet</p>
           <p class="budget-number"><span id="proteinValue">Set up</span> <span class="budget-unit" id="proteinUnit">your goal</span></p>
           <div class="meter" aria-hidden="true"><div class="meter-fill protein" id="proteinMeter"></div></div>
           <div class="budget-parts">
-            <div><p class="part-value" id="proteinPartGoal">–</p><p class="part-label">Goal</p></div>
-            <div><p class="part-value" id="proteinPartToday">0 g</p><p class="part-label">Eaten</p></div>
-            <div><p class="part-value" id="proteinPartLeft">–</p><p class="part-label">Left</p></div>
+            <div><p class="part-value" id="proteinPartGoal">–</p><p class="part-label" data-i18n="protein.partGoal">Goal</p></div>
+            <div><p class="part-value" id="proteinPartToday">0 g</p><p class="part-label" data-i18n="protein.partEaten">Eaten</p></div>
+            <div><p class="part-value" id="proteinPartLeft">–</p><p class="part-label" data-i18n="protein.partLeft">Left</p></div>
           </div>
           <button class="goal-chip" id="proteinGoalBtn" type="button" aria-haspopup="dialog">Set your goal</button>
         </section>
@@ -167,231 +167,244 @@
             <path d="M4 15h24a12 12 0 0 1-24 0Z" />
             <path class="steam" d="M11 11c-1.5-1.8 1.5-3.2 0-5M16 11c-1.5-1.8 1.5-3.2 0-5M21 11c-1.5-1.8 1.5-3.2 0-5" />
           </svg>
-          <span>Add a meal</span>
+          <span data-i18n="protein.addMeal">Add a meal</span>
         </button>
 
         <section class="history" aria-labelledby="proteinTodayTitle">
-          <h2 id="proteinTodayTitle">Today</h2>
+          <h2 id="proteinTodayTitle" data-i18n="protein.todayTitle">Today</h2>
           <div id="proteinList"></div>
-          <p class="empty" id="proteinEmpty">Nothing logged today. Add a meal to see its protein.</p>
+          <p class="empty" id="proteinEmpty" data-i18n="protein.todayEmpty">Nothing logged today. Add a meal to see its protein.</p>
         </section>
 
         <section class="history" aria-labelledby="proteinDaysTitle">
-          <h2 id="proteinDaysTitle">Earlier days</h2>
+          <h2 id="proteinDaysTitle" data-i18n="protein.earlier">Earlier days</h2>
           <div id="proteinDays"></div>
-          <p class="empty" id="proteinDaysEmpty">Days you log will gather here.</p>
+          <p class="empty" id="proteinDaysEmpty" data-i18n="protein.earlierEmpty">Days you log will gather here.</p>
         </section>
       </section>
 
       <footer class="foot">
-        <span>Your logs stay on this device.</span>
-        <button class="link-btn foot-link" id="aboutBtn" type="button" aria-haspopup="dialog">About Hearth</button>
+        <span data-i18n="aria.footer">Your logs stay on this device.</span>
+        <button class="link-btn foot-link" id="aboutBtn" type="button" aria-haspopup="dialog" data-i18n="settings.about">About Hearth</button>
       </footer>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite">
       <span id="toastText"></span>
-      <button type="button" id="toastAction" hidden>Undo</button>
+      <button type="button" id="toastAction" data-i18n="common.undo" hidden>Undo</button>
     </div>
 
     <dialog id="earlierDialog" aria-labelledby="earlierTitle">
       <form id="earlierForm" method="dialog" novalidate>
-        <h2 id="earlierTitle" tabindex="-1" autofocus>When did you eat?</h2>
-        <p class="dialog-hint">Log a meal you forgot to tap. The clock picks up from your latest meal.</p>
+        <h2 id="earlierTitle" tabindex="-1" autofocus data-i18n="earlier.title">When did you eat?</h2>
+        <p class="dialog-hint" data-i18n="earlier.hint">Log a meal you forgot to tap. The clock picks up from your latest meal.</p>
         <label class="field">
-          <span>Date and time</span>
+          <span data-i18n="earlier.field">Date and time</span>
           <input type="datetime-local" id="earlierInput" required />
         </label>
         <p class="form-error" id="earlierError" role="alert"></p>
         <div class="dialog-actions">
-          <button type="button" class="ghost" data-close>Cancel</button>
-          <button type="submit" class="solid">Save meal</button>
+          <button type="button" class="ghost" data-close data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="solid" data-i18n="earlier.save">Save meal</button>
         </div>
       </form>
     </dialog>
 
     <dialog id="goalDialog" aria-labelledby="goalTitle">
-      <h2 id="goalTitle" tabindex="-1" autofocus>Fasting goal</h2>
-      <p class="dialog-hint">Pick the window you're aiming for. You can change it anytime.</p>
+      <h2 id="goalTitle" tabindex="-1" autofocus data-i18n="goal.title">Fasting goal</h2>
+      <p class="dialog-hint" data-i18n="goal.hint">Pick the window you're aiming for. You can change it anytime.</p>
       <div class="goal-grid" id="goalGrid" role="radiogroup" aria-labelledby="goalTitle"></div>
       <div class="dialog-actions">
-        <button type="button" class="ghost" data-close>Done</button>
+        <button type="button" class="ghost" data-close data-i18n="common.done">Done</button>
       </div>
     </dialog>
 
     <dialog id="settingsDialog" aria-labelledby="settingsTitle">
-      <h2 id="settingsTitle" tabindex="-1" autofocus>Settings</h2>
+      <h2 id="settingsTitle" tabindex="-1" autofocus data-i18n="settings.title">Settings</h2>
       <p class="dialog-hint" id="settingsSummary"></p>
       <div class="settings-list">
         <button type="button" class="row-btn" id="exportBtn">
-          <strong>Export backup</strong>
-          <span>Save your meals as a file.</span>
+          <strong data-i18n="settings.export">Export backup</strong>
+          <span data-i18n="settings.exportHint">Save your meals as a file.</span>
         </button>
         <label class="row-btn" for="importInput">
-          <strong>Import backup</strong>
-          <span>Adds meals from a Hearth file. Nothing is overwritten.</span>
+          <strong data-i18n="settings.import">Import backup</strong>
+          <span data-i18n="settings.importHint">Adds meals from a Hearth file. Nothing is overwritten.</span>
           <input type="file" id="importInput" accept="application/json,.json" />
         </label>
         <button type="button" class="row-btn" id="remindersRow" aria-haspopup="dialog">
-          <strong>Reminders</strong>
-          <span>Get told when your fast is done.</span>
+          <strong data-i18n="settings.reminders">Reminders</strong>
+          <span data-i18n="settings.remindersHint">Get told when your fast is done.</span>
+        </button>
+        <button type="button" class="row-btn" id="languageRow" aria-haspopup="dialog">
+          <strong data-i18n="settings.language">Language</strong>
+          <span id="languageRowHint"></span>
         </button>
         <button type="button" class="row-btn" id="aboutRow" aria-haspopup="dialog">
-          <strong>About Hearth</strong>
-          <span>Version and who made it.</span>
+          <strong data-i18n="settings.about">About Hearth</strong>
+          <span data-i18n="settings.aboutHint">Version and who made it.</span>
         </button>
         <button type="button" class="row-btn danger" id="clearBtn">
-          <strong>Erase everything</strong>
-          <span>Deletes every meal on this device.</span>
+          <strong data-i18n="settings.erase">Erase everything</strong>
+          <span data-i18n="settings.eraseHint">Deletes every meal on this device.</span>
         </button>
       </div>
       <div class="dialog-actions">
-        <button type="button" class="ghost" data-close>Close</button>
+        <button type="button" class="ghost" data-close data-i18n="common.close">Close</button>
       </div>
     </dialog>
 
     <dialog id="remindersDialog" aria-labelledby="remindersTitle">
-      <h2 id="remindersTitle" tabindex="-1" autofocus>Reminders</h2>
-      <p class="dialog-hint">Hearth can tell you the moment your fast is done.</p>
+      <h2 id="remindersTitle" tabindex="-1" autofocus data-i18n="reminders.title">Reminders</h2>
+      <p class="dialog-hint" data-i18n="reminders.hint">Hearth can tell you the moment your fast is done.</p>
       <div class="settings-list">
         <button type="button" class="row-btn toggle-row" id="remindToggle" role="switch" aria-checked="false">
           <span class="toggle-text">
-            <strong>Alert me at my goal</strong>
+            <strong data-i18n="reminders.toggle">Alert me at my goal</strong>
             <span id="remindStatus"></span>
           </span>
           <span class="toggle" aria-hidden="true"><span class="knob"></span></span>
         </button>
         <button type="button" class="row-btn" id="calendarBtn">
-          <strong>Add this goal to my calendar</strong>
+          <strong data-i18n="reminders.calendar">Add this goal to my calendar</strong>
           <span id="calendarHint"></span>
         </button>
       </div>
       <div class="dialog-actions">
-        <button type="button" class="ghost" data-close>Close</button>
+        <button type="button" class="ghost" data-close data-i18n="common.close">Close</button>
       </div>
     </dialog>
 
     <dialog id="entryDialog" aria-labelledby="entryTitle">
       <form id="entryForm" method="dialog" novalidate>
-        <h2 id="entryTitle" tabindex="-1">Add food</h2>
-        <p class="dialog-hint" id="entryHint">Search what you ate, or type the calories.</p>
+        <h2 id="entryTitle" tabindex="-1" data-i18n="cal.addFoodTitle">Add food</h2>
+        <p class="dialog-hint" id="entryHint" data-i18n="cal.addFoodHint">Search what you ate, or type the calories.</p>
 
         <div class="food-picker" id="foodPicker"></div>
 
         <label class="field" id="manualField">
-          <span id="kcalLabel">Calories</span>
+          <span id="kcalLabel" data-i18n="cal.calories">Calories</span>
           <input type="number" id="entryKcal" inputmode="numeric" min="1" max="10000" step="1" />
         </label>
         <label class="field">
-          <span id="entryLabelCaption">What was it? (optional)</span>
+          <span id="entryLabelCaption" data-i18n="cal.whatWasIt">What was it? (optional)</span>
           <input type="text" id="entryLabel" maxlength="60" autocomplete="off" />
         </label>
         <p class="form-error" id="entryError" role="alert"></p>
         <div class="dialog-actions">
-          <button type="button" class="ghost" data-close>Cancel</button>
-          <button type="submit" class="solid" id="entrySave">Add food</button>
+          <button type="button" class="ghost" data-close data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="solid" id="entrySave" data-i18n="cal.addFoodTitle">Add food</button>
         </div>
       </form>
     </dialog>
 
     <dialog id="proteinDialog" aria-labelledby="proteinDialogTitle">
       <form id="proteinForm" method="dialog" novalidate>
-        <h2 id="proteinDialogTitle" tabindex="-1">Add a meal</h2>
-        <p class="dialog-hint">Search what you ate. Each food shows its protein, and the meal shows the total.</p>
+        <h2 id="proteinDialogTitle" tabindex="-1" data-i18n="protein.dialogTitle">Add a meal</h2>
+        <p class="dialog-hint" data-i18n="protein.dialogHint">Search what you ate. Each food shows its protein, and the meal shows the total.</p>
         <div class="food-picker" id="proteinPicker"></div>
         <label class="field" id="proteinManualField">
-          <span>Or type the protein</span>
+          <span data-i18n="protein.orType">Or type the protein</span>
           <input type="number" id="proteinGrams" inputmode="decimal" min="1" max="500" step="0.1" />
         </label>
         <label class="field">
-          <span>Name this meal (optional)</span>
+          <span data-i18n="cal.mealName">Name this meal (optional)</span>
           <input type="text" id="proteinMealName" maxlength="60" autocomplete="off" />
         </label>
         <p class="form-error" id="proteinError" role="alert"></p>
         <div class="dialog-actions">
-          <button type="button" class="ghost" data-close>Cancel</button>
-          <button type="submit" class="solid" id="proteinSave">Add meal</button>
+          <button type="button" class="ghost" data-close data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="solid" id="proteinSave" data-i18n="protein.save">Add meal</button>
         </div>
       </form>
     </dialog>
 
     <dialog id="proteinGoalDialog" aria-labelledby="proteinGoalTitle">
       <form id="proteinGoalForm" method="dialog" novalidate>
-        <h2 id="proteinGoalTitle" tabindex="-1" autofocus>Protein goal</h2>
-        <p class="dialog-hint">Worked out from your weight, or type your own number.</p>
+        <h2 id="proteinGoalTitle" tabindex="-1" autofocus data-i18n="protein.goalTitle">Protein goal</h2>
+        <p class="dialog-hint" data-i18n="protein.goalHint">Worked out from your weight, or type your own number.</p>
         <div class="field-row two">
           <label class="field">
-            <span>Weight (kg)</span>
+            <span data-i18n="numbers.weight">Weight (kg)</span>
             <input type="number" id="proteinWeight" inputmode="decimal" min="30" max="300" step="0.1" />
           </label>
           <label class="field">
-            <span>Grams per kilo</span>
+            <span data-i18n="protein.perKg">Grams per kilo</span>
             <select id="proteinPerKg"></select>
           </label>
         </div>
         <p class="field-hint" id="perKgHint"></p>
         <div class="plan" id="proteinPlan"></div>
         <label class="field">
-          <span>Use my own goal instead (optional)</span>
-          <input type="number" id="proteinTargetInput" inputmode="numeric" min="20" max="400" step="1" placeholder="e.g. 130" />
+          <span data-i18n="protein.ownGoal">Use my own goal instead (optional)</span>
+          <input type="number" id="proteinTargetInput" inputmode="numeric" min="20" max="400" step="1" placeholder="e.g. 130" data-i18n-placeholder="protein.ownGoalPlaceholder" />
         </label>
         <p class="form-error" id="proteinGoalError" role="alert"></p>
-        <p class="small-print">A guide for healthy adults, not medical advice. Check with a professional before a big change, especially with a kidney condition.</p>
+        <p class="small-print" data-i18n="protein.smallPrint">A guide for healthy adults, not medical advice. Check with a professional before a big change, especially with a kidney condition.</p>
         <div class="dialog-actions">
-          <button type="button" class="ghost" data-close>Cancel</button>
-          <button type="submit" class="solid">Save</button>
+          <button type="button" class="ghost" data-close data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="solid" data-i18n="common.save">Save</button>
         </div>
       </form>
     </dialog>
 
     <dialog id="numbersDialog" aria-labelledby="numbersTitle">
       <form id="numbersForm" method="dialog" novalidate>
-        <h2 id="numbersTitle" tabindex="-1" autofocus>Your numbers</h2>
-        <p class="dialog-hint">Used to estimate what you burn in a day. It stays on this device.</p>
+        <h2 id="numbersTitle" tabindex="-1" autofocus data-i18n="numbers.title">Your numbers</h2>
+        <p class="dialog-hint" data-i18n="numbers.hint">Used to estimate what you burn in a day. It stays on this device.</p>
 
-        <div class="segmented" id="sexGroup" role="radiogroup" aria-label="Sex">
-          <button type="button" data-sex="female" role="radio" aria-checked="true">Female</button>
-          <button type="button" data-sex="male" role="radio" aria-checked="false">Male</button>
+        <div class="segmented" id="sexGroup" role="radiogroup" aria-label="Sex" data-i18n-aria="numbers.sex">
+          <button type="button" data-sex="female" role="radio" aria-checked="true" data-i18n="numbers.female">Female</button>
+          <button type="button" data-sex="male" role="radio" aria-checked="false" data-i18n="numbers.male">Male</button>
         </div>
 
         <div class="field-row">
           <label class="field">
-            <span>Age</span>
+            <span data-i18n="numbers.age">Age</span>
             <input type="number" id="ageInput" inputmode="numeric" min="14" max="100" step="1" />
           </label>
           <label class="field">
-            <span>Height (cm)</span>
+            <span data-i18n="numbers.height">Height (cm)</span>
             <input type="number" id="heightInput" inputmode="numeric" min="120" max="230" step="1" />
           </label>
           <label class="field">
-            <span>Weight (kg)</span>
+            <span data-i18n="numbers.weight">Weight (kg)</span>
             <input type="number" id="weightInput" inputmode="decimal" min="30" max="300" step="0.1" />
           </label>
         </div>
 
         <label class="field">
-          <span>How active are you?</span>
+          <span data-i18n="numbers.activity">How active are you?</span>
           <select id="activitySelect"></select>
         </label>
         <p class="field-hint" id="activityHint"></p>
         <label class="field">
-          <span>Weekly goal</span>
+          <span data-i18n="numbers.weeklyGoal">Weekly goal</span>
           <select id="goalSelect"></select>
         </label>
 
         <div class="plan" id="planBox"></div>
 
         <label class="field">
-          <span>Use my own target instead (optional)</span>
-          <input type="number" id="overrideInput" inputmode="numeric" min="800" max="10000" step="10" placeholder="e.g. 1700" />
+          <span data-i18n="numbers.ownTarget">Use my own target instead (optional)</span>
+          <input type="number" id="overrideInput" inputmode="numeric" min="800" max="10000" step="10" placeholder="e.g. 1700" data-i18n-placeholder="numbers.ownTargetPlaceholder" />
         </label>
         <p class="form-error" id="numbersError" role="alert"></p>
-        <p class="small-print">Estimates for healthy adults, not medical advice. Check with a professional before a big change, and especially if you are pregnant, breastfeeding, or managing a health condition.</p>
+        <p class="small-print" data-i18n="numbers.smallPrint">Estimates for healthy adults, not medical advice. Check with a professional before a big change, and especially if you are pregnant, breastfeeding, or managing a health condition.</p>
         <div class="dialog-actions">
-          <button type="button" class="ghost" data-close>Cancel</button>
-          <button type="submit" class="solid">Save</button>
+          <button type="button" class="ghost" data-close data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="solid" data-i18n="common.save">Save</button>
         </div>
       </form>
+    </dialog>
+
+    <dialog id="languageDialog" aria-labelledby="languageTitle">
+      <h2 id="languageTitle" tabindex="-1" autofocus data-i18n="language.title">Language</h2>
+      <p class="dialog-hint" data-i18n="language.hint">Hearth follows your device unless you pick one.</p>
+      <div class="settings-list" id="languageList" role="radiogroup" aria-labelledby="languageTitle"></div>
+      <div class="dialog-actions">
+        <button type="button" class="ghost" data-close data-i18n="common.close">Close</button>
+      </div>
     </dialog>
 
     <dialog id="aboutDialog" aria-labelledby="aboutTitle">
@@ -399,19 +412,19 @@
         <img class="about-icon" src="./icons/icon.svg" alt="" width="60" height="60" />
         <div>
           <h2 id="aboutTitle" tabindex="-1" autofocus>Hearth</h2>
-          <p class="dialog-hint">A cozy intermittent fasting timer.</p>
+          <p class="dialog-hint" data-i18n="about.tagline">A cozy intermittent fasting timer.</p>
         </div>
       </div>
       <p class="about-credit">
-        by <a href="https://www.instagram.com/aegp17/" target="_blank" rel="noopener noreferrer">@aegp17</a>
+        <span data-i18n="about.by">by</span> <a href="https://www.instagram.com/aegp17/" target="_blank" rel="noopener noreferrer">@aegp17</a>
       </p>
       <ul class="about-facts">
-        <li>Your meals never leave this device. No account, no sign-up.</li>
-        <li>Updates install on their own when you open the app.</li>
+        <li data-i18n="about.privacy">Your meals never leave this device. No account, no sign-up.</li>
+        <li data-i18n="about.updates">Updates install on their own when you open the app.</li>
       </ul>
       <p class="about-version" id="aboutVersion">Development build</p>
       <div class="dialog-actions">
-        <button type="button" class="ghost" data-close>Close</button>
+        <button type="button" class="ghost" data-close data-i18n="common.close">Close</button>
       </div>
     </dialog>
   </body>

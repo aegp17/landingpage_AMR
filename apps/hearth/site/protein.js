@@ -1,8 +1,9 @@
 // The Protein tab: its own log, its own storage key, its own goal. It shares
 // the food table and the picker with the Calories tab, and nothing else.
 import { formatTime } from './core.js'
-import { createPicker } from './foodpicker.js'
-import { loadFoods } from './foods.js'
+import { createPicker, foodName } from './foodpicker.js'
+import { foodById, loadFoods } from './foods.js'
+import { onLanguageChange, t } from './i18n.js'
 import {
   PROTEIN_LIMITS,
   PROTEIN_PER_KG,
@@ -83,7 +84,7 @@ function save() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch {
-    toast("This browser isn't letting Hearth save.")
+    toast(t('storage.refused'))
   }
 }
 
@@ -100,22 +101,22 @@ export function render() {
   const day = proteinDay(state, now)
 
   if (day.target == null) {
-    el.label.textContent = day.total ? 'Protein today' : 'No goal yet'
-    el.value.textContent = day.total ? formatGrams(day.total).replace(' g', '') : 'Set up'
-    el.unit.textContent = day.total ? 'g eaten today' : 'your goal'
+    el.label.textContent = day.total ? t('protein.today') : t('protein.noGoal')
+    el.value.textContent = day.total ? formatGrams(day.total).replace(' g', '') : t('protein.setUp')
+    el.unit.textContent = day.total ? t('protein.eatenToday') : t('protein.setUpUnit')
     el.meter.style.width = '0%'
   } else {
-    el.label.textContent = day.over ? 'Goal reached' : 'Protein today'
+    el.label.textContent = day.over ? t('protein.reached') : t('protein.today')
     el.value.textContent = formatGrams(day.total).replace(' g', '')
-    el.unit.textContent = `of ${day.target} g`
+    el.unit.textContent = t('protein.ofGoal', { n: day.target })
     el.meter.style.width = `${Math.min(100, Math.max(0, day.fraction * 100))}%`
   }
   el.panel.classList.toggle('done', day.over)
 
   el.partGoal.textContent = day.target == null ? '–' : `${day.target} g`
   el.partToday.textContent = formatGrams(day.total)
-  el.partLeft.textContent = day.remaining == null ? '–' : day.remaining > 0 ? formatGrams(day.remaining) : 'Done'
-  el.goalBtn.textContent = proteinTarget(state) == null ? 'Set your goal' : 'Your goal'
+  el.partLeft.textContent = day.remaining == null ? '–' : day.remaining > 0 ? formatGrams(day.remaining) : t('common.done')
+  el.goalBtn.textContent = proteinTarget(state) == null ? t('protein.goalBtnEmpty') : t('protein.goalBtn')
 
   renderEntries(now)
   renderDays(now)
@@ -134,7 +135,7 @@ function renderEntries(now) {
     text.className = 'meal-text'
     const title = document.createElement('p')
     title.className = 'meal-time'
-    title.textContent = `${formatGrams(entry.protein)} protein`
+    title.textContent = t('protein.rowTotal', { n: formatGrams(entry.protein) })
     const sub = document.createElement('p')
     sub.className = 'meal-gap'
     sub.textContent = [entry.label, formatTime(entry.at)].filter(Boolean).join(' · ')
@@ -143,7 +144,7 @@ function renderEntries(now) {
     const remove = document.createElement('button')
     remove.type = 'button'
     remove.className = 'meal-delete'
-    remove.setAttribute('aria-label', `Delete the meal at ${formatTime(entry.at)}`)
+    remove.setAttribute('aria-label', t('protein.deleteMeal', { time: formatTime(entry.at) }))
     remove.append(crossIcon())
     remove.addEventListener('click', () => deleteEntry(entry))
 
@@ -158,7 +159,7 @@ function renderEntries(now) {
         const line = document.createElement('p')
         line.className = 'breakdown-line'
         const name = document.createElement('span')
-        name.textContent = `${item.name} · ${item.grams} g`
+        name.textContent = `${foodName(foodById(item.foodId), item.name)} · ${item.grams} g`
         const grams = document.createElement('strong')
         grams.textContent = formatGrams(item.protein || 0)
         line.append(name, grams)
@@ -185,13 +186,17 @@ function renderDays(now) {
     title.textContent = day.label
     const sub = document.createElement('p')
     sub.className = 'meal-gap'
-    sub.textContent = `${formatGrams(day.total)} of protein`
+    sub.textContent = t('protein.dayTotal', { n: formatGrams(day.total) })
     text.append(title, sub)
 
     const badge = document.createElement('span')
     badge.className = `badge ${day.difference == null ? '' : day.difference >= 0 ? 'under' : 'over'}`
     badge.textContent =
-      day.difference == null ? formatGrams(day.total) : day.difference >= 0 ? 'Goal reached' : `${formatGrams(-day.difference)} short`
+      day.difference == null
+        ? formatGrams(day.total)
+        : day.difference >= 0
+          ? t('protein.reached')
+          : t('protein.short', { n: formatGrams(-day.difference) })
 
     row.append(text, badge)
     return row
@@ -217,13 +222,15 @@ const picker = createPicker({
   prefix: 'protein',
   valueOf: (food, grams) => foodProtein(food, grams),
   format: (value) => formatGrams(value),
-  per100: (food) => `${formatGrams(food.protein100)} protein per 100 g`,
-  emptyHint: 'The food table could not load. Type the grams of protein instead.',
+  per100: (food) => t('protein.per100', { n: formatGrams(food.protein100) }),
+  get emptyHint() {
+    return t('protein.tableFailed')
+  },
   history: () => state.entries,
   onChange(items, total) {
     draftItems = items
     el.manualField.hidden = items.length > 0
-    el.save.textContent = items.length ? `Add ${formatGrams(total)}` : 'Add meal'
+    el.save.textContent = items.length ? t('protein.addTotal', { n: formatGrams(total) }) : t('protein.save')
   },
 })
 
@@ -234,7 +241,7 @@ el.addBtn.addEventListener('click', () => {
   el.mealName.value = mealNameFor(new Date())
   el.error.textContent = ''
   el.manualField.hidden = false
-  el.save.textContent = 'Add meal'
+  el.save.textContent = t('protein.save')
   openDialog(el.dialog)
   picker.focus()
 })
@@ -245,12 +252,12 @@ el.form.addEventListener('submit', (event) => {
   const typed = Number(el.grams.value)
   const protein = items.length ? undefined : typed
   if (!items.length && (!Number.isFinite(typed) || typed < PROTEIN_LIMITS.entryGrams.min || typed > PROTEIN_LIMITS.entryGrams.max)) {
-    el.error.textContent = `Pick a food above, or enter between ${PROTEIN_LIMITS.entryGrams.min} and ${PROTEIN_LIMITS.entryGrams.max} g.`
+    el.error.textContent = t('protein.badNumber', PROTEIN_LIMITS.entryGrams)
     return
   }
   const entry = makeProteinEntry({ at: Date.now(), protein, label: el.mealName.value, items })
   if (entry.protein > PROTEIN_LIMITS.entryGrams.max) {
-    el.error.textContent = `That meal adds up to more than ${PROTEIN_LIMITS.entryGrams.max} g. Check the grams.`
+    el.error.textContent = t('protein.tooMuch', { max: PROTEIN_LIMITS.entryGrams.max })
     return
   }
   closeDialog(el.dialog)
@@ -258,18 +265,18 @@ el.form.addEventListener('submit', (event) => {
   const day = proteinDay(state, Date.now())
   toast(
     day.target == null
-      ? `Logged ${formatGrams(entry.protein)} of protein.`
+      ? t('protein.logged', { n: formatGrams(entry.protein) })
       : day.over
-        ? `Logged. ${formatGrams(day.total)} today — goal reached.`
-        : `Logged. ${formatGrams(day.remaining)} to go today.`,
-    'Undo',
+        ? t('protein.loggedReached', { n: formatGrams(day.total) })
+        : t('protein.loggedLeft', { n: formatGrams(day.remaining) }),
+    t('common.undo'),
     () => update(removeProteinEntry(state, entry.id)),
   )
 })
 
 function deleteEntry(entry) {
   update(removeProteinEntry(state, entry.id))
-  toast(`Removed ${formatGrams(entry.protein)} of protein.`, 'Undo', () => update(addProteinEntry(state, entry)))
+  toast(t('protein.removed', { n: formatGrams(entry.protein) }), t('common.undo'), () => update(addProteinEntry(state, entry)))
 }
 
 // ---------------------------------------------------------------- the goal
@@ -287,15 +294,15 @@ function renderGoalPreview() {
   el.perKgHint.textContent = option ? option.hint : ''
   const { weightKg, perKg } = draftGoal()
   if (weightKg == null || perKg == null || !Number.isFinite(weightKg)) {
-    el.plan.replaceChildren(document.createTextNode('Fill your weight to see a suggested goal.'))
+    el.plan.replaceChildren(document.createTextNode(t('protein.fillWeight')))
     return
   }
   const row = document.createElement('div')
   row.className = 'plan-row'
   const key = document.createElement('span')
-  key.textContent = `${weightKg} kg × ${perKg} g`
+  key.textContent = t('protein.preview', { weight: weightKg, perKg })
   const value = document.createElement('strong')
-  value.textContent = `${Math.round(weightKg * perKg)} g a day`
+  value.textContent = t('protein.previewValue', { n: Math.round(weightKg * perKg) })
   row.append(key, value)
   el.plan.replaceChildren(row)
 }
@@ -315,7 +322,7 @@ el.goalForm.addEventListener('submit', (event) => {
   event.preventDefault()
   const { weightKg, perKg, targetGrams } = draftGoal()
   if (targetGrams == null && (weightKg == null || !Number.isFinite(weightKg))) {
-    el.goalError.textContent = 'Enter your weight, or a goal of your own.'
+    el.goalError.textContent = t('protein.goalNeeded')
     return
   }
   try {
@@ -323,9 +330,9 @@ el.goalForm.addEventListener('submit', (event) => {
     if (proteinTarget(next) == null) throw new RangeError('No goal')
     closeDialog(el.goalDialog)
     update(next)
-    toast(`Goal set to ${proteinTarget(state)} g of protein a day.`)
+    toast(t('protein.goalSaved', { n: proteinTarget(state) }))
   } catch {
-    el.goalError.textContent = `A goal must be between ${PROTEIN_LIMITS.target.min} and ${PROTEIN_LIMITS.target.max} g, and a weight between 30 and 300 kg.`
+    el.goalError.textContent = t('protein.goalRange', PROTEIN_LIMITS.target)
   }
 })
 
@@ -368,9 +375,18 @@ window.addEventListener('storage', (event) => {
 for (const option of PROTEIN_PER_KG) {
   const node = document.createElement('option')
   node.value = String(option.value)
-  node.textContent = `${option.value} g · ${option.label}`
+  node.textContent = t('perKg.option', { n: option.value, label: option.label })
   el.perKg.append(node)
 }
+
+onLanguageChange(() => {
+  for (const option of el.perKg.options) {
+    const match = PROTEIN_PER_KG.find((item) => item.value === Number(option.value))
+    if (match) option.textContent = t('perKg.option', { n: match.value, label: match.label })
+  }
+  renderGoalPreview()
+  render()
+})
 
 load()
 render()

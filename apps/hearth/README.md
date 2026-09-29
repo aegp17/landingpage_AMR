@@ -82,8 +82,9 @@ Pushing a change to `main` is enough: installed copies update themselves.
 
 1. The deploy workflow runs `scripts/stamp-build.mjs`, which writes the short commit sha and date into `version.js` and `version.json`. It fails the deploy if the placeholders are missing, because an unstamped app never updates.
 2. The app compares its build id with `version.json` (fetched with `no-store`) when it opens, when it comes back to the foreground, and every 30 minutes.
-3. On a new id it registers `sw.js?v=<new id>`. Because the URL is new, the browser installs it right away, even though Cloudflare tells browsers to keep `.js` files for 4 hours. The worker downloads every file with `?v=<new id>` and `cache: 'reload'`, which skips both the CDN and the browser cache, and refuses to install if `version.js` isn't the expected build.
-4. The new worker takes over and the page reloads itself, waiting for any open dialog to close, then shows "Hearth was updated". The About dialog shows the version.
+3. A first install does **not** claim the page that installed it: claiming a page that is still loading cancels its in-flight requests, which left the app without one of its modules. Control starts on the next load, and an update still claims — that page is already running, and reloads itself anyway.
+4. On a new id it registers `sw.js?v=<new id>`. Because the URL is new, the browser installs it right away, even though Cloudflare tells browsers to keep `.js` files for 4 hours. The worker downloads every file with `?v=<new id>` and `cache: 'reload'`, which skips both the CDN and the browser cache, and refuses to install if `version.js` isn't the expected build.
+5. The new worker takes over and the page reloads itself, waiting for any open dialog to close, then shows "Hearth was updated". The About dialog shows the version.
 
 When you add a file, list it in `ASSETS` in `sw.js`. Running locally the placeholders stay in place, the About dialog says "Development build" and no update check runs. After editing files, reload twice or unregister the worker in DevTools.
 

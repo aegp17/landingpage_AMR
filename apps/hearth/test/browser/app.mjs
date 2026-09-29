@@ -13,6 +13,12 @@ const page = await context.newPage()
 const errors = []
 page.on('pageerror', (e) => errors.push(String(e)))
 page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
+// A file the worker forgot to cache only shows up as a failed request, so they
+// count as errors too — except the update check, which is meant to fail offline.
+page.on('requestfailed', (r) => {
+  const path = new URL(r.url()).pathname
+  if (!path.endsWith('/version.json')) errors.push(`request ${path} ${r.failure()?.errorText}`)
+})
 
 await page.goto(server.appUrl)
 await page.waitForLoadState('networkidle')

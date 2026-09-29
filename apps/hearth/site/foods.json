@@ -5,11 +5,12 @@
   "url": "https://fdc.nal.usda.gov/download-datasets.html",
   "note": "Energy (kcal) and protein (g) per 100 g of the edible portion. Public domain."
  },
- "built": "2026-09-28",
+ "built": "2026-09-29",
  "foods": [
   {
    "id": "white-rice",
    "name": "White rice, cooked",
+   "name_es": "Arroz blanco, cocido",
    "category": "grains",
    "aliases": [
     "arroz",
@@ -29,6 +30,7 @@
   {
    "id": "brown-rice",
    "name": "Brown rice, cooked",
+   "name_es": "Arroz integral, cocido",
    "category": "grains",
    "aliases": [
     "arroz integral"
@@ -47,6 +49,7 @@
   {
    "id": "pasta",
    "name": "Pasta, cooked",
+   "name_es": "Pasta, cocida",
    "category": "grains",
    "aliases": [
     "fideo",
@@ -76,6 +79,7 @@
   {
    "id": "quinoa",
    "name": "Quinoa, cooked",
+   "name_es": "Quinua, cocida",
    "category": "grains",
    "aliases": [
     "quinua",
@@ -95,6 +99,7 @@
   {
    "id": "oats",
    "name": "Oats, dry",
+   "name_es": "Avena, cruda",
    "category": "grains",
    "aliases": [
     "avena"
@@ -117,6 +122,7 @@
   {
    "id": "corn-flakes",
    "name": "Corn flakes",
+   "name_es": "Hojuelas de maíz",
    "category": "grains",
    "aliases": [
     "hojuelas de maiz",
@@ -136,6 +142,7 @@
   {
    "id": "white-bread",
    "name": "White bread",
+   "name_es": "Pan blanco",
    "category": "grains",
    "aliases": [
     "pan",
@@ -163,6 +170,7 @@
   {
    "id": "wheat-bread",
    "name": "Whole-wheat bread",
+   "name_es": "Pan integral",
    "category": "grains",
    "aliases": [
     "pan integral"
@@ -185,6 +193,7 @@
   {
    "id": "burger-bun",
    "name": "Hamburger bun",
+   "name_es": "Pan de hamburguesa",
    "category": "grains",
    "aliases": [
     "pan de hamburguesa"
@@ -207,6 +216,7 @@
   {
    "id": "corn-tortilla",
    "name": "Corn tortilla",
+   "name_es": "Tortilla de maíz",
    "category": "grains",
    "aliases": [
     "tortilla de maiz"
@@ -229,6 +239,7 @@
   {
    "id": "flour-tortilla",
    "name": "Flour tortilla",
+   "name_es": "Tortilla de harina",
    "category": "grains",
    "aliases": [
     "tortilla de harina"
@@ -255,6 +266,7 @@
   {
    "id": "chicken-breast",
    "name": "Chicken breast, roasted",
+   "name_es": "Pechuga de pollo, asada",
    "category": "protein",
    "aliases": [
     "pollo",
@@ -282,6 +294,7 @@
   {
    "id": "chicken-thigh",
    "name": "Chicken thigh, roasted",
+   "name_es": "Muslo de pollo, asado",
    "category": "protein",
    "aliases": [
     "muslo de pollo",
@@ -309,6 +322,7 @@
   {
    "id": "ground-beef",
    "name": "Ground beef, cooked",
+   "name_es": "Carne molida, cocida",
    "category": "protein",
    "aliases": [
     "carne molida",
@@ -328,6 +342,7 @@
   {
    "id": "beef-steak",
    "name": "Beef steak, lean",
+   "name_es": "Bistec de res, magro",
    "category": "protein",
    "aliases": [
     "bistec",
@@ -348,6 +363,7 @@
   {
    "id": "pork-chop",
    "name": "Pork chop, broiled",
+   "name_es": "Chuleta de cerdo, asada",
    "category": "protein",
    "aliases": [
     "chuleta",
@@ -368,6 +384,7 @@
   {
    "id": "tilapia",
    "name": "Tilapia, cooked",
+   "name_es": "Tilapia, cocida",
    "category": "protein",
    "aliases": [
     "tilapia",
@@ -387,6 +404,7 @@
   {
    "id": "cod",
    "name": "White fish (cod), cooked",
+   "name_es": "Pescado blanco (bacalao), cocido",
    "category": "protein",
    "aliases": [
     "pescado blanco",
@@ -411,6 +429,7 @@
   {
    "id": "salmon",
    "name": "Salmon, cooked",
+   "name_es": "Salmón, cocido",
    "category": "protein",
    "aliases": [
     "salmon"
@@ -433,6 +452,7 @@
   {
    "id": "canned-tuna",
    "name": "Canned tuna in water",
+   "name_es": "Atún en agua, en lata",
    "category": "protein",
    "aliases": [
     "atun",
@@ -460,6 +480,7 @@
   {
    "id": "shrimp",
    "name": "Shrimp, cooked",
+   "name_es": "Camarón, cocido",
    "category": "protein",
    "aliases": [
     "camaron",
@@ -483,6 +504,7 @@
   {
    "id": "boiled-egg",
    "name": "Egg, hard-boiled",
+   "name_es": "Huevo cocido",
    "category": "protein",
    "aliases": [
     "huevo",
@@ -511,6 +533,7 @@
   {
    "id": "fried-egg",
    "name": "Egg, fried",
+   "name_es": "Huevo frito",
    "category": "protein",
    "aliases": [
     "huevo frito"
@@ -529,6 +552,7 @@
   {
    "id": "whole-milk",
    "name": "Whole milk",
+   "name_es": "Leche entera",
    "category": "dairy",
    "aliases": [
     "leche",
@@ -552,6 +576,7 @@
   {
    "id": "milk-2",
    "name": "Milk, 2%",
+   "name_es": "Leche semidescremada",
    "category": "dairy",
    "aliases": [
     "leche semidescremada"
@@ -570,6 +595,7 @@
   {
    "id": "skim-milk",
    "name": "Skim milk",
+   "name_es": "Leche descremada",
    "category": "dairy",
    "aliases": [
     "leche descremada"
@@ -588,6 +614,7 @@
   {
    "id": "plain-yogurt",
    "name": "Plain yogurt",
+   "name_es": "Yogur natural",
    "category": "dairy",
    "aliases": [
     "yogur",
@@ -615,6 +642,7 @@
   {
    "id": "greek-yogurt",
    "name": "Greek yogurt, nonfat",
+   "name_es": "Yogur griego, sin grasa",
    "category": "dairy",
    "aliases": [
     "yogur griego"
@@ -633,6 +661,7 @@
   {
    "id": "queso-fresco",
    "name": "Queso fresco",
+   "name_es": "Queso fresco",
    "category": "dairy",
    "aliases": [
     "queso fresco",
@@ -652,6 +681,7 @@
   {
    "id": "mozzarella",
    "name": "Mozzarella",
+   "name_es": "Queso mozzarella",
    "category": "dairy",
    "aliases": [
     "mozzarella"
@@ -674,6 +704,7 @@
   {
    "id": "cheddar",
    "name": "Cheddar",
+   "name_es": "Queso cheddar",
    "category": "dairy",
    "aliases": [
     "cheddar"
@@ -692,6 +723,7 @@
   {
    "id": "butter",
    "name": "Butter",
+   "name_es": "Mantequilla",
    "category": "fats",
    "aliases": [
     "mantequilla"
@@ -714,6 +746,7 @@
   {
    "id": "black-beans",
    "name": "Black beans, cooked",
+   "name_es": "Frejol negro, cocido",
    "category": "legumes",
    "aliases": [
     "frejol negro",
@@ -734,6 +767,7 @@
   {
    "id": "kidney-beans",
    "name": "Red beans, cooked",
+   "name_es": "Frejol rojo, cocido",
    "category": "legumes",
    "aliases": [
     "frejol",
@@ -758,6 +792,7 @@
   {
    "id": "lentils",
    "name": "Lentils, cooked",
+   "name_es": "Lentejas, cocidas",
    "category": "legumes",
    "aliases": [
     "lenteja",
@@ -781,6 +816,7 @@
   {
    "id": "chickpeas",
    "name": "Chickpeas, cooked",
+   "name_es": "Garbanzos, cocidos",
    "category": "legumes",
    "aliases": [
     "garbanzo"
@@ -799,6 +835,7 @@
   {
    "id": "boiled-potato",
    "name": "Potato, boiled",
+   "name_es": "Papa cocida",
    "category": "vegetables",
    "aliases": [
     "papa",
@@ -826,6 +863,7 @@
   {
    "id": "french-fries",
    "name": "French fries",
+   "name_es": "Papas fritas",
    "category": "vegetables",
    "aliases": [
     "papas fritas"
@@ -852,6 +890,7 @@
   {
    "id": "sweet-potato",
    "name": "Sweet potato, baked",
+   "name_es": "Camote al horno",
    "category": "vegetables",
    "aliases": [
     "camote",
@@ -879,6 +918,7 @@
   {
    "id": "cassava",
    "name": "Cassava (yuca), raw",
+   "name_es": "Yuca, cruda",
    "category": "vegetables",
    "aliases": [
     "yuca"
@@ -897,6 +937,7 @@
   {
    "id": "green-plantain",
    "name": "Green plantain, boiled",
+   "name_es": "Plátano verde, cocido",
    "category": "vegetables",
    "aliases": [
     "verde",
@@ -917,6 +958,7 @@
   {
    "id": "fried-plantain",
    "name": "Green plantain, fried",
+   "name_es": "Plátano verde, frito",
    "category": "vegetables",
    "aliases": [
     "patacon",
@@ -937,6 +979,7 @@
   {
    "id": "ripe-plantain",
    "name": "Ripe plantain, baked",
+   "name_es": "Maduro al horno",
    "category": "vegetables",
    "aliases": [
     "maduro",
@@ -960,6 +1003,7 @@
   {
    "id": "corn",
    "name": "Sweet corn, boiled",
+   "name_es": "Choclo, cocido",
    "category": "vegetables",
    "aliases": [
     "choclo",
@@ -987,6 +1031,7 @@
   {
    "id": "tomato",
    "name": "Tomato, raw",
+   "name_es": "Tomate, crudo",
    "category": "vegetables",
    "aliases": [
     "tomate"
@@ -1013,6 +1058,7 @@
   {
    "id": "lettuce",
    "name": "Romaine lettuce",
+   "name_es": "Lechuga romana",
    "category": "vegetables",
    "aliases": [
     "lechuga"
@@ -1035,6 +1081,7 @@
   {
    "id": "broccoli",
    "name": "Broccoli, raw",
+   "name_es": "Brócoli, crudo",
    "category": "vegetables",
    "aliases": [
     "brocoli"
@@ -1061,6 +1108,7 @@
   {
    "id": "carrot",
    "name": "Carrot, raw",
+   "name_es": "Zanahoria, cruda",
    "category": "vegetables",
    "aliases": [
     "zanahoria"
@@ -1087,6 +1135,7 @@
   {
    "id": "cucumber",
    "name": "Cucumber",
+   "name_es": "Pepino",
    "category": "vegetables",
    "aliases": [
     "pepino"
@@ -1105,6 +1154,7 @@
   {
    "id": "onion",
    "name": "Onion, raw",
+   "name_es": "Cebolla, cruda",
    "category": "vegetables",
    "aliases": [
     "cebolla"
@@ -1131,6 +1181,7 @@
   {
    "id": "bell-pepper",
    "name": "Red bell pepper",
+   "name_es": "Pimiento rojo",
    "category": "vegetables",
    "aliases": [
     "pimiento"
@@ -1157,6 +1208,7 @@
   {
    "id": "spinach",
    "name": "Spinach, raw",
+   "name_es": "Espinaca, cruda",
    "category": "vegetables",
    "aliases": [
     "espinaca"
@@ -1179,6 +1231,7 @@
   {
    "id": "avocado",
    "name": "Avocado",
+   "name_es": "Aguacate",
    "category": "vegetables",
    "aliases": [
     "aguacate",
@@ -1206,6 +1259,7 @@
   {
    "id": "banana",
    "name": "Banana",
+   "name_es": "Banana",
    "category": "fruit",
    "aliases": [
     "banana",
@@ -1234,6 +1288,7 @@
   {
    "id": "apple",
    "name": "Apple",
+   "name_es": "Manzana",
    "category": "fruit",
    "aliases": [
     "manzana"
@@ -1260,6 +1315,7 @@
   {
    "id": "orange",
    "name": "Orange",
+   "name_es": "Naranja",
    "category": "fruit",
    "aliases": [
     "naranja"
@@ -1286,6 +1342,7 @@
   {
    "id": "papaya",
    "name": "Papaya",
+   "name_es": "Papaya",
    "category": "fruit",
    "aliases": [
     "papaya"
@@ -1312,6 +1369,7 @@
   {
    "id": "pineapple",
    "name": "Pineapple",
+   "name_es": "Piña",
    "category": "fruit",
    "aliases": [
     "piña",
@@ -1339,6 +1397,7 @@
   {
    "id": "mango",
    "name": "Mango",
+   "name_es": "Mango",
    "category": "fruit",
    "aliases": [
     "mango"
@@ -1361,6 +1420,7 @@
   {
    "id": "strawberry",
    "name": "Strawberries",
+   "name_es": "Frutillas",
    "category": "fruit",
    "aliases": [
     "frutilla",
@@ -1388,6 +1448,7 @@
   {
    "id": "watermelon",
    "name": "Watermelon",
+   "name_es": "Sandía",
    "category": "fruit",
    "aliases": [
     "sandia"
@@ -1414,6 +1475,7 @@
   {
    "id": "grapes",
    "name": "Grapes",
+   "name_es": "Uvas",
    "category": "fruit",
    "aliases": [
     "uva",
@@ -1437,6 +1499,7 @@
   {
    "id": "olive-oil",
    "name": "Olive oil",
+   "name_es": "Aceite de oliva",
    "category": "fats",
    "aliases": [
     "aceite de oliva"
@@ -1463,6 +1526,7 @@
   {
    "id": "vegetable-oil",
    "name": "Vegetable oil",
+   "name_es": "Aceite vegetal",
    "category": "fats",
    "aliases": [
     "aceite"
@@ -1489,6 +1553,7 @@
   {
    "id": "mayonnaise",
    "name": "Mayonnaise",
+   "name_es": "Mayonesa",
    "category": "fats",
    "aliases": [
     "mayonesa"
@@ -1511,6 +1576,7 @@
   {
    "id": "peanut-butter",
    "name": "Peanut butter",
+   "name_es": "Mantequilla de maní",
    "category": "fats",
    "aliases": [
     "mantequilla de mani"
@@ -1533,6 +1599,7 @@
   {
    "id": "peanuts",
    "name": "Peanuts, roasted",
+   "name_es": "Maní, tostado",
    "category": "fats",
    "aliases": [
     "mani"
@@ -1555,6 +1622,7 @@
   {
    "id": "almonds",
    "name": "Almonds",
+   "name_es": "Almendras",
    "category": "fats",
    "aliases": [
     "almendra",
@@ -1578,6 +1646,7 @@
   {
    "id": "walnuts",
    "name": "Walnuts",
+   "name_es": "Nueces",
    "category": "fats",
    "aliases": [
     "nuez",
@@ -1605,6 +1674,7 @@
   {
    "id": "sugar",
    "name": "Sugar",
+   "name_es": "Azúcar",
    "category": "sweets",
    "aliases": [
     "azucar"
@@ -1623,6 +1693,7 @@
   {
    "id": "honey",
    "name": "Honey",
+   "name_es": "Miel",
    "category": "sweets",
    "aliases": [
     "miel"
@@ -1645,6 +1716,7 @@
   {
    "id": "dark-chocolate",
    "name": "Dark chocolate",
+   "name_es": "Chocolate negro",
    "category": "sweets",
    "aliases": [
     "chocolate negro"
@@ -1667,6 +1739,7 @@
   {
    "id": "milk-chocolate",
    "name": "Milk chocolate",
+   "name_es": "Chocolate con leche",
    "category": "sweets",
    "aliases": [
     "chocolate"
@@ -1693,6 +1766,7 @@
   {
    "id": "ice-cream",
    "name": "Vanilla ice cream",
+   "name_es": "Helado de vainilla",
    "category": "sweets",
    "aliases": [
     "helado"
@@ -1711,6 +1785,7 @@
   {
    "id": "cookies",
    "name": "Chocolate chip cookies",
+   "name_es": "Galletas con chispas de chocolate",
    "category": "sweets",
    "aliases": [
     "galletas"
@@ -1737,6 +1812,7 @@
   {
    "id": "potato-chips",
    "name": "Potato chips",
+   "name_es": "Papas fritas de funda",
    "category": "snacks",
    "aliases": [
     "papas fritas de funda",
@@ -1756,6 +1832,7 @@
   {
    "id": "popcorn",
    "name": "Popcorn, air-popped",
+   "name_es": "Canguil",
    "category": "snacks",
    "aliases": [
     "canguil",
@@ -1779,6 +1856,7 @@
   {
    "id": "cola",
    "name": "Cola",
+   "name_es": "Cola",
    "category": "drinks",
    "aliases": [
     "cola",
@@ -1798,6 +1876,7 @@
   {
    "id": "orange-juice",
    "name": "Orange juice",
+   "name_es": "Jugo de naranja",
    "category": "drinks",
    "aliases": [
     "jugo de naranja"
@@ -1820,6 +1899,7 @@
   {
    "id": "coffee",
    "name": "Black coffee",
+   "name_es": "Café negro",
    "category": "drinks",
    "aliases": [
     "cafe"
@@ -1838,6 +1918,7 @@
   {
    "id": "tea",
    "name": "Black tea",
+   "name_es": "Té negro",
    "category": "drinks",
    "aliases": [
     "te"
@@ -1856,6 +1937,7 @@
   {
    "id": "beer",
    "name": "Beer",
+   "name_es": "Cerveza",
    "category": "drinks",
    "aliases": [
     "cerveza"
@@ -1874,6 +1956,7 @@
   {
    "id": "red-wine",
    "name": "Red wine",
+   "name_es": "Vino tinto",
    "category": "drinks",
    "aliases": [
     "vino",
@@ -1893,6 +1976,7 @@
   {
    "id": "pizza",
    "name": "Cheese pizza",
+   "name_es": "Pizza de queso",
    "category": "prepared",
    "aliases": [
     "pizza"
@@ -1919,6 +2003,7 @@
   {
    "id": "hamburger",
    "name": "Hamburger, plain",
+   "name_es": "Hamburguesa simple",
    "category": "prepared",
    "aliases": [
     "hamburguesa"
