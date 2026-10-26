@@ -37,6 +37,7 @@ import { anyDialogOpen, closeDialog, onDialogClosed, openDialog, toast } from '.
 import { LANGUAGES, applyStaticText, language, languagePreference, onLanguageChange, setLanguagePreference, t } from './i18n.js'
 import { calorieBackup, entryCount, eraseCalories, importCalories, render as renderCalories } from './calories.js'
 import { eraseProtein, importProtein, proteinBackup, proteinEntryCount, render as renderProtein } from './protein.js'
+import { barbellBackup, eraseBarbell, importBarbell, render as renderBarbell } from './barbell.js'
 
 const STORAGE_KEY = 'hearth.v1'
 const HISTORY_PAGE = 30
@@ -575,7 +576,7 @@ el.settingsBtn.addEventListener('click', () => {
 
 el.exportBtn.addEventListener('click', async () => {
   const now = Date.now()
-  const json = JSON.stringify({ ...toBackup(state, now), calories: calorieBackup(), protein: proteinBackup() }, null, 2)
+  const json = JSON.stringify({ ...toBackup(state, now), calories: calorieBackup(), protein: proteinBackup(), barbell: barbellBackup() }, null, 2)
   const name = `hearth-backup-${dayKey(now)}.json`
   const file = new File([json], name, { type: 'application/json' })
   try {
@@ -611,6 +612,7 @@ el.importInput.addEventListener('change', async () => {
     const parsed = JSON.parse(text)
     const addedEntries = importCalories(parsed.calories)
     const addedProtein = importProtein(parsed.protein)
+    importBarbell(parsed.barbell)
     closeDialog(el.settingsDialog)
     const parts = []
     if (added) parts.push(t(added === 1 ? 'settings.mealsCount' : 'settings.mealsCountPlural', { n: added }))
@@ -637,6 +639,7 @@ el.clearBtn.addEventListener('click', () => {
   update({ ...defaultState(), goalHours: state.goalHours, remindAtGoal: state.remindAtGoal })
   eraseCalories()
   eraseProtein()
+  eraseBarbell()
   closeDialog(el.settingsDialog)
   toast(t('settings.erased'), t('common.undo'), () => {
     update(previousMeals)
@@ -652,6 +655,7 @@ const TABS = [
   { button: $('tabFasting'), panel: $('fastingTab'), name: 'fasting' },
   { button: $('tabCalories'), panel: $('caloriesTab'), name: 'calories' },
   { button: $('tabProtein'), panel: $('proteinTab'), name: 'protein' },
+  { button: $('tabBarbell'), panel: $('barbellTab'), name: 'barbell' },
 ]
 
 function showTab(name) {
@@ -662,6 +666,7 @@ function showTab(name) {
   }
   if (name === 'calories') renderCalories()
   if (name === 'protein') renderProtein()
+  if (name === 'barbell') renderBarbell()
   try {
     localStorage.setItem(TAB_KEY, name)
   } catch {
