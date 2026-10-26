@@ -16,6 +16,8 @@ const ASSETS = [
   './core.js',
   './i18n.js',
   './nutrition.js',
+  './plates.js',
+  './barbell.js',
   './foods.js',
   './foodpicker.js',
   './protein.js',

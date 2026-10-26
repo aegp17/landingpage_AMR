@@ -28,7 +28,7 @@ const tabs = (page) => page.$$eval('.tabs .tab', (nodes) => nodes.map((n) => n.t
 {
   const { context, page, errors } = await open('es-EC', { saved: state({ meals: [{ at: Date.now() - 9.5 * HOUR }] }) })
   check('the page declares Spanish', (await page.getAttribute('html', 'lang')) === 'es')
-  check('the tabs are in Spanish', JSON.stringify(await tabs(page)) === '["Ayuno","Calorías","Proteína"]', JSON.stringify(await tabs(page)))
+  check('the tabs are in Spanish', JSON.stringify(await tabs(page)) === '["Ayuno","Calorías","Proteína","Barra"]', JSON.stringify(await tabs(page)))
   check('the button says "Ya comí"', (await page.textContent('#eatBtn')).trim() === 'Ya comí')
   check('the clock label too', (await page.textContent('#clockLabel')) === 'horas de ayuno')
   check('and the stage message', (await page.textContent('#stage')) === 'Vas firme y tranquilo.', await page.textContent('#stage'))
@@ -44,7 +44,8 @@ const tabs = (page) => page.$$eval('.tabs .tab', (nodes) => nodes.map((n) => n.t
 
   await page.click('#tabCalories')
   check('the calories card is Spanish', (await page.textContent('#budgetLabel')) === 'Sin objetivo', await page.textContent('#budgetLabel'))
-  check('its parts too', (await page.textContent('.budget-parts')).includes('Objetivo') && (await page.textContent('.budget-parts')).includes('Quemado'))
+  const parts = await page.textContent('#caloriesTab .budget-parts')
+  check('its parts too', parts.includes('Objetivo') && parts.includes('Quemado'), parts.replace(/\s+/g, ' ').trim())
   await page.click('#addFoodBtn')
   check('the food dialog is Spanish', (await page.textContent('#entryTitle')) === 'Agregar comida')
   check('the meal is named in Spanish', ['Desayuno', 'Almuerzo', 'Cena', 'Snack'].includes(await page.inputValue('#entryLabel')), await page.inputValue('#entryLabel'))
@@ -71,7 +72,7 @@ const tabs = (page) => page.$$eval('.tabs .tab', (nodes) => nodes.map((n) => n.t
 // ------------------------------------------------------------ an English phone
 {
   const { context, page } = await open('en-US')
-  check('English stays English', JSON.stringify(await tabs(page)) === '["Fasting","Calories","Protein"]', JSON.stringify(await tabs(page)))
+  check('English stays English', JSON.stringify(await tabs(page)) === '["Fasting","Calories","Protein","Bar"]', JSON.stringify(await tabs(page)))
   check('the page declares English', (await page.getAttribute('html', 'lang')) === 'en')
   check('the button says "I ate"', (await page.textContent('#eatBtn')).trim() === 'I ate')
   await context.close()

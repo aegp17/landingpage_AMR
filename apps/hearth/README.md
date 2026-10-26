@@ -1,6 +1,6 @@
 # Hearth
 
-A cozy intermittent fasting timer, with a calorie tab and a protein tab. Private and unlisted: it is not linked from the landing page and asks search engines not to index it.
+A cozy intermittent fasting timer, with calorie, protein and barbell tabs. Private and unlisted: it is not linked from the landing page and asks search engines not to index it.
 
 - **Published at:** `https://agentic-amr.com/hearth-ac5490/` (the folder name is set in `.github/workflows/deploy.yml`).
 - **Front end only:** plain HTML, CSS and ES modules, no build step and no dependencies. Nothing leaves the device. Meals live in `localStorage` under `hearth.v1`, on the device and browser where they were logged.
@@ -16,6 +16,8 @@ site/          published as-is
   core.js      pure logic for fasting (time math, stats, backup format), no DOM
   calories.js  the Calories tab: its own screen and its own storage key
   protein.js   the Protein tab: same again, its own log and goal
+  barbell.js   the Bar tab: the drawing and the plate steppers
+  plates.js    pure logic for the bar: measurements, capacity, totals
   foodpicker.js the search-and-portions component both food tabs use
   foods.js     loads foods.json once and shares it
   nutrition.js pure logic for both (BMR, targets, day budget, protein, search), no DOM
@@ -39,6 +41,8 @@ node apps/hearth/test/browser/update.mjs          # a deploy landing on an open 
 node apps/hearth/test/browser/reminders.mjs       # the alarm and the calendar file
 node apps/hearth/test/browser/calories.mjs        # the calorie tab, and the tabs apart
 node apps/hearth/test/browser/protein.mjs         # the protein tab, its goal and breakdown
+node apps/hearth/test/browser/language.mjs        # Spanish, English, and the override
+node apps/hearth/test/browser/barbell.mjs         # the bar, its steppers and the sleeve limit
 python3 -m http.server -d apps/hearth/site 8080   # then open http://localhost:8080/
 node apps/hearth/scripts/build-icons.mjs          # after editing icons/icon.svg
 ```
@@ -47,9 +51,9 @@ The browser suites drive Chromium through the Playwright install already on the 
 
 Every path in the app is relative (`./`), so it works from any folder name.
 
-## The three tabs
+## The four tabs
 
-They share the page, the backup, the food table and nothing else. Fasting keeps its state under `hearth.v1`, Calories under `hearth.calories.v1`, Protein under `hearth.protein.v1`, and each module owns its own DOM. The last tab you used is remembered in `hearth.tab`.
+They share the page, the backup, the food table and nothing else. Fasting keeps its state under `hearth.v1`, Calories under `hearth.calories.v1`, Protein under `hearth.protein.v1`, Bar under `hearth.barbell.v1`, and each module owns its own DOM. The last tab you used is remembered in `hearth.tab`.
 
 **Calories.** You fill in sex, age, height, weight and how active you are; `nutrition.js` estimates what you burn in a day with Mifflin-St Jeor times an activity factor, subtracts the deficit your weekly goal implies (1 kg a week = 7,700 kcal = 1,100 kcal a day), and suggests a daily target. You can override it with your own number. Food spends the day's budget, exercise gives it back, and days roll over on the local calendar.
 
@@ -66,6 +70,22 @@ A meal can hold several foods: each item keeps its food id, grams and calories, 
 Two rules the code keeps: the suggested target never goes below 1,200 kcal for women or 1,500 for men — it clamps and says so — and the dialog states in small print that these are estimates, not medical advice.
 
 **Protein.** Its own log, on purpose: a day of protein is not the same record as a day of calories, and the two tabs stay independent. A meal is built with the same picker, but priced in grams of protein instead of calories; the row in the log shows the meal's total and, under it, every food with what it contributed. The goal comes from body weight × grams per kilo (0.8 basic, 1.2 active, 1.6 building muscle, 2.0 high) or from a number you type. Reaching it is the good outcome, so it reads "Goal reached" rather than a warning. Protein shows one decimal below ten grams and whole grams above, because 2.7 g of rice adds up over a day while 46.5 g of chicken does not need the decimal.
+
+**Bar.** A plate calculator drawn to scale. Each denomination has a − / + stepper whose number is the plates **per side**; the bar is redrawn from that, and the total is shown in pounds and kilos. Plates stack heaviest first, the way they are loaded in a gym, and the sleeve has a real limit: the `+` goes dead when the next plate would not fit, and switching to the shorter 35 lb bar drops the lightest plates until the load fits. Tapping the drawing does nothing on purpose — a 2.5 lb plate is 8 mm of sleeve, and nobody hits that with a thumb.
+
+The measurements in `plates.js` are published specs, not estimates:
+
+| measurement | source |
+|---|---|
+| bars 2200 / 2010 mm long, 28 / 25 mm shaft, 50 mm sleeves | IWF dimensions for the men's 20 kg and women's 15 kg bars |
+| loadable sleeve 415 / 320 mm | the length IWF-pattern bars are built to |
+| 45, 35, 25, 15, 10 lb: 450 mm across, 2.40" / 1.90" / 1.50" / 1.04" / 0.83" wide | Rogue Echo Bumper V2 published widths |
+| 5 and 2.5 lb: 190 and 160 mm across | Rogue Calibrated LB steel change plates |
+| 5 and 2.5 lb: 11 and 8 mm wide | derived from the plate's mass and the density of steel, because no thickness is published. Marked `approxWidth` in the data |
+| colours 45 blue, 35 yellow, 25 green | Rogue Color LB Training 2.0 |
+| 15 and 10 lb black, 5 and 2.5 lb steel | no colour standard exists for those in pounds; makers differ, and these follow Rogue |
+
+A bar sold as "45 lb" is really 20 kg, or 44.1 lb, and a "35 lb" bar is 15 kg, 33.1 lb. The app uses the round numbers everyone says in the gym, so the total is 45 or 35 plus the plates.
 
 ## Reminders
 

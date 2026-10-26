@@ -31,6 +31,8 @@ test('no Spanish string was left in English by accident', () => {
   const same = Object.keys(en).filter((key) => en[key] === es[key])
   // The few that are the same in both: units, formatting, and words Spanish borrows.
   const allowed = [
+    'bar.kg',
+    'bar.plate',
     'cal.kcal',
     'cal.kcalPlus',
     'cal.unit',
@@ -115,8 +117,9 @@ test('every key the code asks for exists, and every key in the dictionary is use
     .join('\n')
   const html = readFileSync(site + 'index.html', 'utf8')
   const used = new Set()
+  const templates = new Set()
   for (const match of sources.matchAll(/\bt\(\s*'([\w.]+)'/g)) used.add(match[1])
-  for (const match of sources.matchAll(/\bt\(\s*`([\w.]+)\$\{/g)) used.add(match[1])
+  for (const match of sources.matchAll(/\bt\(\s*`([\w.]+)\$\{/g)) templates.add(match[1])
   for (const match of html.matchAll(/data-i18n(?:-placeholder|-aria)?="([\w.]+)"/g)) used.add(match[1])
   // A key chosen inside a call, like t(n === 1 ? 'a.one' : 'a.many'), only shows
   // up as a bare literal, so the dead-key check looks for those too.
@@ -124,13 +127,12 @@ test('every key the code asks for exists, and every key in the dictionary is use
   for (const match of sources.matchAll(/'([a-z][\w]*\.[\w.]+)'/g)) mentioned.add(match[1])
 
   const { en } = i18n.dictionaries()
-  // Keys built from a template contribute only their prefix; they end in a dot.
-  const unknown = [...used].filter((key) => !key.endsWith('.') && !(key in en))
+  const unknown = [...used].filter((key) => !(key in en))
   assert.deepEqual(unknown, [], 'the code asks for keys the dictionary does not have')
+  for (const prefix of templates) {
+    assert.ok(Object.keys(en).some((key) => key.startsWith(prefix)), `nothing answers the template ${prefix}\${...}`)
+  }
 
-  // Keys built at runtime (activity.*, perKg.*, language.*) are reached through
-  // a template, so they are counted by their prefix.
-  const prefixes = ['activity.', 'perKg.', 'language.']
-  const unused = Object.keys(en).filter((key) => !mentioned.has(key) && !prefixes.some((prefix) => key.startsWith(prefix)))
+  const unused = Object.keys(en).filter((key) => !mentioned.has(key) && ![...templates].some((prefix) => key.startsWith(prefix)))
   assert.deepEqual(unused, [], 'dead keys in the dictionary')
 })

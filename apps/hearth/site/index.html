@@ -47,6 +47,7 @@
         <button class="tab" id="tabFasting" type="button" role="tab" aria-selected="true" aria-controls="fastingTab" data-i18n="tab.fasting">Fasting</button>
         <button class="tab" id="tabCalories" type="button" role="tab" aria-selected="false" aria-controls="caloriesTab" data-i18n="tab.calories">Calories</button>
         <button class="tab" id="tabProtein" type="button" role="tab" aria-selected="false" aria-controls="proteinTab" data-i18n="tab.protein">Protein</button>
+        <button class="tab" id="tabBarbell" type="button" role="tab" aria-selected="false" aria-controls="barbellTab" data-i18n="tab.barbell">Bar</button>
       </div>
 
       <section class="tab-panel" id="fastingTab" role="tabpanel" aria-labelledby="tabFasting">
@@ -181,6 +182,23 @@
           <div id="proteinDays"></div>
           <p class="empty" id="proteinDaysEmpty" data-i18n="protein.earlierEmpty">Days you log will gather here.</p>
         </section>
+      </section>
+
+      <section class="tab-panel" id="barbellTab" role="tabpanel" aria-labelledby="tabBarbell" hidden>
+        <section class="card bar-card" aria-label="What's on the bar" data-i18n-aria="bar.ariaCard">
+          <p class="budget-number"><span id="barTotalLb">45</span> <span class="budget-unit">lb</span></p>
+          <p class="bar-kg" id="barTotalKg">20.4 kg</p>
+          <div class="segmented" id="barGroup" role="radiogroup" aria-label="Barbell" data-i18n-aria="bar.group"></div>
+          <div class="bar-stage">
+            <svg id="barDrawing" viewBox="0 0 700 196" role="img" aria-label="Loaded barbell"></svg>
+          </div>
+          <p class="bar-side" id="barSide"></p>
+        </section>
+
+        <div class="plate-rows" id="plateRows"></div>
+
+        <button class="link-btn" id="barClear" type="button" data-i18n="bar.clear">Empty the bar</button>
+        <p class="bar-note" id="barNote"></p>
       </section>
 
       <footer class="foot">
